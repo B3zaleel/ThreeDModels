@@ -1,8 +1,24 @@
-
+﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{7D388FB1-4C7A-410B-B186-92D5CD8819E9}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ThreeDModels", "ThreeDModels", "{A75E239E-4BB5-423D-B7E9-D60E96855389}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Format", "Format", "{9352709B-38FB-4B82-BB5B-740A7746887C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ThreeDModels.Format.Obj", "src\ThreeDModels\Format\Obj\ThreeDModels.Format.Obj.csproj", "{78D6BD09-7DD1-4969-94B9-BB50460D259F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{A6C0B1F1-9114-40AD-8816-BDBEDC940CED}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ThreeDModels", "ThreeDModels", "{20393DEC-9CB9-4259-B145-0655B408ACA1}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Format", "Format", "{2E7AAD7B-6592-4BCD-9766-CBD16C6553BF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ThreeDModels.Format.Obj.UnitTests", "tests\ThreeDModels\Format\Obj.UnitTests\ThreeDModels.Format.Obj.UnitTests.csproj", "{272082CD-8882-40F1-A232-E64F43156B1F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -10,5 +26,23 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{78D6BD09-7DD1-4969-94B9-BB50460D259F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{78D6BD09-7DD1-4969-94B9-BB50460D259F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{78D6BD09-7DD1-4969-94B9-BB50460D259F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{78D6BD09-7DD1-4969-94B9-BB50460D259F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{272082CD-8882-40F1-A232-E64F43156B1F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{272082CD-8882-40F1-A232-E64F43156B1F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{272082CD-8882-40F1-A232-E64F43156B1F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{272082CD-8882-40F1-A232-E64F43156B1F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{A75E239E-4BB5-423D-B7E9-D60E96855389} = {7D388FB1-4C7A-410B-B186-92D5CD8819E9}
+		{9352709B-38FB-4B82-BB5B-740A7746887C} = {A75E239E-4BB5-423D-B7E9-D60E96855389}
+		{78D6BD09-7DD1-4969-94B9-BB50460D259F} = {9352709B-38FB-4B82-BB5B-740A7746887C}
+		{20393DEC-9CB9-4259-B145-0655B408ACA1} = {A6C0B1F1-9114-40AD-8816-BDBEDC940CED}
+		{2E7AAD7B-6592-4BCD-9766-CBD16C6553BF} = {20393DEC-9CB9-4259-B145-0655B408ACA1}
+		{272082CD-8882-40F1-A232-E64F43156B1F} = {2E7AAD7B-6592-4BCD-9766-CBD16C6553BF}
 	EndGlobalSection
 EndGlobal

@@ -1,0 +1,49 @@
+using System.Text.Json;
+using ThreeDModels.Format.Gltf.Elements;
+using static ThreeDModels.Format.Gltf.IO.Utf8JsonReaderHelpers;
+
+namespace ThreeDModels.Format.Gltf.IO;
+
+public static class IntegerMapSerialization
+{
+    public static IntegerMap? Read(GltfReaderContext context)
+    {
+        IntegerMap integerMap = [];
+        Dictionary<string, object?>? extensions = null;
+        object? extras = null;
+        if (context.JsonReader.TokenType == JsonTokenType.PropertyName && context.JsonReader.Read())
+        {
+        }
+        if (context.JsonReader.TokenType == JsonTokenType.Null)
+        {
+            return null;
+        }
+        else if (context.JsonReader.TokenType != JsonTokenType.StartObject)
+        {
+            throw new InvalidDataException("Failed to find start of property.");
+        }
+        while (context.JsonReader.Read())
+        {
+            if (context.JsonReader.TokenType == JsonTokenType.EndObject)
+            {
+                break;
+            }
+            var propertyName = context.JsonReader.GetString();
+            if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(IntegerMap.Extensions)))
+            {
+                extensions = ExtensionsSerialization.Read<IntegerMap>(context);
+            }
+            else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(IntegerMap.Extras)))
+            {
+                extras = ExtrasSerialization.Read(context);
+            }
+            else
+            {
+                integerMap.Add(propertyName!, (int)ReadInteger(context)!);
+            }
+        }
+        integerMap.Extensions = extensions;
+        integerMap.Extras = extras;
+        return integerMap;
+    }
+}

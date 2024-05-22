@@ -6,7 +6,7 @@ namespace ThreeDModels.Format.Gltf.IO;
 
 internal static class MeshPrimitiveSerialization
 {
-    public static MeshPrimitive? Read(GltfReaderContext context)
+    public static MeshPrimitive? Read(ref Utf8JsonReader jsonReader, GltfReaderContext context)
     {
         IntegerMap? attributes = null;
         int? indices = null;
@@ -15,51 +15,51 @@ internal static class MeshPrimitiveSerialization
         List<IntegerMap>? targets = null;
         Dictionary<string, object?>? extensions = null;
         object? extras = null;
-        if (context.JsonReader.TokenType == JsonTokenType.PropertyName && context.JsonReader.Read())
+        if (jsonReader.TokenType == JsonTokenType.PropertyName && jsonReader.Read())
         {
         }
-        if (context.JsonReader.TokenType == JsonTokenType.Null)
+        if (jsonReader.TokenType == JsonTokenType.Null)
         {
             return null;
         }
-        else if (context.JsonReader.TokenType != JsonTokenType.StartObject)
+        else if (jsonReader.TokenType != JsonTokenType.StartObject)
         {
             throw new InvalidDataException("Failed to find start of property.");
         }
-        while (context.JsonReader.Read())
+        while (jsonReader.Read())
         {
-            if (context.JsonReader.TokenType == JsonTokenType.EndObject)
+            if (jsonReader.TokenType == JsonTokenType.EndObject)
             {
                 break;
             }
-            var propertyName = context.JsonReader.GetString();
+            var propertyName = jsonReader.GetString();
             if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(MeshPrimitive.Attributes)))
             {
-                attributes = IntegerMapSerialization.Read(context);
+                attributes = IntegerMapSerialization.Read(ref jsonReader, context);
             }
             else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(MeshPrimitive.Indices)))
             {
-                indices = ReadInteger(context);
+                indices = ReadInteger(ref jsonReader);
             }
             else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(MeshPrimitive.Material)))
             {
-                material = ReadInteger(context);
+                material = ReadInteger(ref jsonReader);
             }
             else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(MeshPrimitive.Mode)))
             {
-                mode = ReadInteger(context);
+                mode = ReadInteger(ref jsonReader);
             }
             else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(MeshPrimitive.Indices)))
             {
-                targets = ReadList(context, JsonTokenType.StartObject, reader => IntegerMapSerialization.Read(reader)!);
+                targets = ReadList(ref jsonReader, context, JsonTokenType.StartObject, (ref Utf8JsonReader reader, GltfReaderContext ctx) => IntegerMapSerialization.Read(ref reader, ctx)!);
             }
             else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(MeshPrimitive.Extensions)))
             {
-                extensions = ExtensionsSerialization.Read<MeshPrimitive>(context);
+                extensions = ExtensionsSerialization.Read<MeshPrimitive>(ref jsonReader, context);
             }
             else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(MeshPrimitive.Extras)))
             {
-                extras = ExtrasSerialization.Read(context);
+                extras = ExtrasSerialization.Read(ref jsonReader, context);
             }
             else
             {

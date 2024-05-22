@@ -6,50 +6,50 @@ namespace ThreeDModels.Format.Gltf.IO;
 
 internal static class AnimationSerialization
 {
-    public static Animation? Read(GltfReaderContext context)
+    public static Animation? Read(ref Utf8JsonReader jsonReader, GltfReaderContext context)
     {
         List<AnimationChannel>? channels = null;
         List<AnimationSampler>? samplers = null;
         string? name = null;
         Dictionary<string, object?>? extensions = null;
         object? extras = null;
-        if (context.JsonReader.TokenType == JsonTokenType.PropertyName && context.JsonReader.Read())
+        if (jsonReader.TokenType == JsonTokenType.PropertyName && jsonReader.Read())
         {
         }
-        if (context.JsonReader.TokenType == JsonTokenType.Null)
+        if (jsonReader.TokenType == JsonTokenType.Null)
         {
             return null;
         }
-        else if (context.JsonReader.TokenType != JsonTokenType.StartObject)
+        else if (jsonReader.TokenType != JsonTokenType.StartObject)
         {
             throw new InvalidDataException("Failed to find start of property.");
         }
-        while (context.JsonReader.Read())
+        while (jsonReader.Read())
         {
-            if (context.JsonReader.TokenType == JsonTokenType.EndObject)
+            if (jsonReader.TokenType == JsonTokenType.EndObject)
             {
                 break;
             }
-            var propertyName = context.JsonReader.GetString();
+            var propertyName = jsonReader.GetString();
             if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(Animation.Channels)))
             {
-                channels = ReadList(context, JsonTokenType.StartObject, reader => AnimationChannelSerialization.Read(reader)!);
+                channels = ReadList(ref jsonReader, context, JsonTokenType.StartObject, (ref Utf8JsonReader reader, GltfReaderContext ctx) => AnimationChannelSerialization.Read(ref reader, ctx)!);
             }
             else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(Animation.Samplers)))
             {
-                samplers = ReadList(context, JsonTokenType.StartObject, reader => AnimationSamplerSerialization.Read(reader)!);
+                samplers = ReadList(ref jsonReader, context, JsonTokenType.StartObject, (ref Utf8JsonReader reader, GltfReaderContext ctx) => AnimationSamplerSerialization.Read(ref reader, ctx)!);
             }
             else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(Animation.Name)))
             {
-                name = ReadString(context);
+                name = ReadString(ref jsonReader);
             }
             else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(Animation.Extensions)))
             {
-                extensions = ExtensionsSerialization.Read<Animation>(context);
+                extensions = ExtensionsSerialization.Read<Animation>(ref jsonReader, context);
             }
             else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(Animation.Extras)))
             {
-                extras = ExtrasSerialization.Read(context);
+                extras = ExtrasSerialization.Read(ref jsonReader, context);
             }
             else
             {

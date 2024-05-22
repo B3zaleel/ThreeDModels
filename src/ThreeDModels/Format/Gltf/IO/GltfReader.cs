@@ -70,13 +70,14 @@ public class GltfReader
             binaryReader.BaseStream.Seek(0, SeekOrigin.Begin);
             jsonChunk = binaryReader.ReadBytes((int)binaryReader.BaseStream.Length);
         }
-        var context = new GltfReaderContext(new Utf8JsonReader(jsonChunk), _extensions);
-        context.JsonReader.Read();
-        if (context.JsonReader.TokenType == JsonTokenType.Null)
+        var jsonReader = new Utf8JsonReader(jsonChunk);
+        var context = new GltfReaderContext(_extensions);
+        jsonReader.Read();
+        if (jsonReader.TokenType == JsonTokenType.Null)
         {
             return null;
         }
-        else if (context.JsonReader.TokenType != JsonTokenType.StartObject)
+        else if (jsonReader.TokenType != JsonTokenType.StartObject)
         {
             throw new InvalidDataException($"Failed to find {nameof(Gltf)} property");
         }
@@ -99,88 +100,88 @@ public class GltfReader
         List<Texture>? textures = null;
         Dictionary<string, object?>? extensions = null;
         object? extras = null;
-        while (context.JsonReader.Read())
+        while (jsonReader.Read())
         {
-            if (context.JsonReader.TokenType == JsonTokenType.EndObject)
+            if (jsonReader.TokenType == JsonTokenType.EndObject)
             {
                 break;
             }
-            var propertyName = context.JsonReader.GetString();
+            var propertyName = jsonReader.GetString();
             if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(Gltf.ExtensionsUsed)))
             {
-                extensionsUsed = ReadStringList(context);
+                extensionsUsed = ReadStringList(ref jsonReader, context);
             }
             else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(Gltf.ExtensionsRequired)))
             {
-                extensionsRequired = ReadStringList(context);
+                extensionsRequired = ReadStringList(ref jsonReader, context);
             }
             else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(Gltf.Accessors)))
             {
-                accessors = ReadList(context, JsonTokenType.StartObject, reader => AccessorSerialization.Read(reader)!);
+                accessors = ReadList(ref jsonReader, context, JsonTokenType.StartObject, (ref Utf8JsonReader reader, GltfReaderContext ctx) => AccessorSerialization.Read(ref reader, ctx)!);
             }
             else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(Gltf.Animations)))
             {
-                animations = ReadList(context, JsonTokenType.StartObject, reader => AnimationSerialization.Read(reader)!);
+                animations = ReadList(ref jsonReader, context, JsonTokenType.StartObject, (ref Utf8JsonReader reader, GltfReaderContext ctx) => AnimationSerialization.Read(ref reader, ctx)!);
             }
             else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(Gltf.Asset)))
             {
-                asset = AssetSerialization.Read(context);
+                asset = AssetSerialization.Read(ref jsonReader, context);
             }
             else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(Gltf.Buffers)))
             {
-                buffers = ReadList(context, JsonTokenType.StartObject, reader => BufferSerialization.Read(reader)!);
+                buffers = ReadList(ref jsonReader, context, JsonTokenType.StartObject, (ref Utf8JsonReader reader, GltfReaderContext ctx) => BufferSerialization.Read(ref reader, ctx)!);
             }
             else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(Gltf.BufferViews)))
             {
-                bufferViews = ReadList(context, JsonTokenType.StartObject, reader => BufferViewSerialization.Read(reader)!);
+                bufferViews = ReadList(ref jsonReader, context, JsonTokenType.StartObject, (ref Utf8JsonReader reader, GltfReaderContext ctx) => BufferViewSerialization.Read(ref reader, ctx)!);
             }
             else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(Gltf.Cameras)))
             {
-                cameras = ReadList(context, JsonTokenType.StartObject, reader => CameraSerialization.Read(reader)!);
+                cameras = ReadList(ref jsonReader, context, JsonTokenType.StartObject, (ref Utf8JsonReader reader, GltfReaderContext ctx) => CameraSerialization.Read(ref reader, ctx)!);
             }
             else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(Gltf.Images)))
             {
-                images = ReadList(context, JsonTokenType.StartObject, reader => ImageSerialization.Read(reader)!);
+                images = ReadList(ref jsonReader, context, JsonTokenType.StartObject, (ref Utf8JsonReader reader, GltfReaderContext ctx) => ImageSerialization.Read(ref reader, ctx)!);
             }
             else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(Gltf.Materials)))
             {
-                materials = ReadList(context, JsonTokenType.StartObject, reader => MaterialSerialization.Read(reader)!);
+                materials = ReadList(ref jsonReader, context, JsonTokenType.StartObject, (ref Utf8JsonReader reader, GltfReaderContext ctx) => MaterialSerialization.Read(ref reader, ctx)!);
             }
             else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(Gltf.Meshes)))
             {
-                meshes = ReadList(context, JsonTokenType.StartObject, reader => MeshSerialization.Read(reader)!);
+                meshes = ReadList(ref jsonReader, context, JsonTokenType.StartObject, (ref Utf8JsonReader reader, GltfReaderContext ctx) => MeshSerialization.Read(ref reader, ctx)!);
             }
             else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(Gltf.Nodes)))
             {
-                nodes = ReadList(context, JsonTokenType.StartObject, reader => NodeSerialization.Read(reader)!);
+                nodes = ReadList(ref jsonReader, context, JsonTokenType.StartObject, (ref Utf8JsonReader reader, GltfReaderContext ctx) => NodeSerialization.Read(ref reader, ctx)!);
             }
             else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(Gltf.Samplers)))
             {
-                samplers = ReadList(context, JsonTokenType.StartObject, reader => SamplerSerialization.Read(reader)!);
+                samplers = ReadList(ref jsonReader, context, JsonTokenType.StartObject, (ref Utf8JsonReader reader, GltfReaderContext ctx) => SamplerSerialization.Read(ref reader, ctx)!);
             }
             else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(Gltf.Scene)))
             {
-                scene = ReadInteger(context);
+                scene = ReadInteger(ref jsonReader);
             }
             else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(Gltf.Scenes)))
             {
-                scenes = ReadList(context, JsonTokenType.StartObject, reader => SceneSerialization.Read(reader)!);
+                scenes = ReadList(ref jsonReader, context, JsonTokenType.StartObject, (ref Utf8JsonReader reader, GltfReaderContext ctx) => SceneSerialization.Read(ref reader, ctx)!);
             }
             else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(Gltf.Skins)))
             {
-                skins = ReadList(context, JsonTokenType.StartObject, reader => SkinSerialization.Read(reader)!);
+                skins = ReadList(ref jsonReader, context, JsonTokenType.StartObject, (ref Utf8JsonReader reader, GltfReaderContext ctx) => SkinSerialization.Read(ref reader, ctx)!);
             }
             else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(Gltf.Textures)))
             {
-                textures = ReadList(context, JsonTokenType.StartObject, reader => TextureSerialization.Read(reader)!);
+                textures = ReadList(ref jsonReader, context, JsonTokenType.StartObject, (ref Utf8JsonReader reader, GltfReaderContext ctx) => TextureSerialization.Read(ref reader, ctx)!);
             }
-            else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(Asset.Extensions)))
+            else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(Gltf.Extensions)))
             {
-                extensions = ExtensionsSerialization.Read<Gltf>(context);
+                extensions = ExtensionsSerialization.Read<Gltf>(ref jsonReader, context);
             }
-            else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(Asset.Extras)))
+            else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(Gltf.Extras)))
             {
-                extras = ExtrasSerialization.Read(context);
+                extras = ExtrasSerialization.Read(ref jsonReader, context);
             }
             else
             {

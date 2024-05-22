@@ -1,3 +1,5 @@
+using System.Text.Json;
+
 namespace ThreeDModels.Format.Gltf.IO;
 
 public interface IGltfExtension
@@ -6,5 +8,5 @@ public interface IGltfExtension
     /// The name of the extension.
     /// </summary>
     public string Name { get; }
-    public object? Read(GltfReaderContext context, Type parentType);
+    public object? Read(ref Utf8JsonReader jsonReader, GltfReaderContext context, Type parentType);
 }

@@ -6,45 +6,45 @@ namespace ThreeDModels.Format.Gltf.IO;
 
 internal static class TextureInfoSerialization
 {
-    public static TextureInfo? Read(GltfReaderContext context)
+    public static TextureInfo? Read(ref Utf8JsonReader jsonReader, GltfReaderContext context)
     {
         int? index = null;
         int? texCoord = null;
         Dictionary<string, object?>? extensions = null;
         object? extras = null;
-        if (context.JsonReader.TokenType == JsonTokenType.PropertyName && context.JsonReader.Read())
+        if (jsonReader.TokenType == JsonTokenType.PropertyName && jsonReader.Read())
         {
         }
-        if (context.JsonReader.TokenType == JsonTokenType.Null)
+        if (jsonReader.TokenType == JsonTokenType.Null)
         {
             return null;
         }
-        else if (context.JsonReader.TokenType != JsonTokenType.StartObject)
+        else if (jsonReader.TokenType != JsonTokenType.StartObject)
         {
             throw new InvalidDataException("Failed to find start of property.");
         }
-        while (context.JsonReader.Read())
+        while (jsonReader.Read())
         {
-            if (context.JsonReader.TokenType == JsonTokenType.EndObject)
+            if (jsonReader.TokenType == JsonTokenType.EndObject)
             {
                 break;
             }
-            var propertyName = context.JsonReader.GetString();
+            var propertyName = jsonReader.GetString();
             if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(TextureInfo.Index)))
             {
-                index = ReadInteger(context);
+                index = ReadInteger(ref jsonReader);
             }
             else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(TextureInfo.TexCoord)))
             {
-                texCoord = ReadInteger(context);
+                texCoord = ReadInteger(ref jsonReader);
             }
             else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(TextureInfo.Extensions)))
             {
-                extensions = ExtensionsSerialization.Read<TextureInfo>(context);
+                extensions = ExtensionsSerialization.Read<TextureInfo>(ref jsonReader, context);
             }
             else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(TextureInfo.Extras)))
             {
-                extras = ExtrasSerialization.Read(context);
+                extras = ExtrasSerialization.Read(ref jsonReader, context);
             }
             else
             {

@@ -6,7 +6,7 @@ namespace ThreeDModels.Format.Gltf.IO;
 
 internal static class CameraPerspectiveSerialization
 {
-    public static CameraPerspective? Read(GltfReaderContext context)
+    public static CameraPerspective? Read(ref Utf8JsonReader jsonReader, GltfReaderContext context)
     {
         float? aspectRatio = null;
         float? yfov = null;
@@ -14,47 +14,47 @@ internal static class CameraPerspectiveSerialization
         float? znear = null;
         Dictionary<string, object?>? extensions = null;
         object? extras = null;
-        if (context.JsonReader.TokenType == JsonTokenType.PropertyName && context.JsonReader.Read())
+        if (jsonReader.TokenType == JsonTokenType.PropertyName && jsonReader.Read())
         {
         }
-        if (context.JsonReader.TokenType == JsonTokenType.Null)
+        if (jsonReader.TokenType == JsonTokenType.Null)
         {
             return null;
         }
-        else if (context.JsonReader.TokenType != JsonTokenType.StartObject)
+        else if (jsonReader.TokenType != JsonTokenType.StartObject)
         {
             throw new InvalidDataException("Failed to find start of property.");
         }
-        while (context.JsonReader.Read())
+        while (jsonReader.Read())
         {
-            if (context.JsonReader.TokenType == JsonTokenType.EndObject)
+            if (jsonReader.TokenType == JsonTokenType.EndObject)
             {
                 break;
             }
-            var propertyName = context.JsonReader.GetString();
+            var propertyName = jsonReader.GetString();
             if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(aspectRatio)))
             {
-                aspectRatio = ReadFloat(context);
+                aspectRatio = ReadFloat(ref jsonReader);
             }
             else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(yfov)))
             {
-                yfov = ReadFloat(context);
+                yfov = ReadFloat(ref jsonReader);
             }
             else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(zfar)))
             {
-                zfar = ReadFloat(context);
+                zfar = ReadFloat(ref jsonReader);
             }
             else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(znear)))
             {
-                znear = ReadFloat(context);
+                znear = ReadFloat(ref jsonReader);
             }
             else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(CameraPerspective.Extensions)))
             {
-                extensions = ExtensionsSerialization.Read<CameraPerspective>(context);
+                extensions = ExtensionsSerialization.Read<CameraPerspective>(ref jsonReader, context);
             }
             else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(CameraPerspective.Extras)))
             {
-                extras = ExtrasSerialization.Read(context);
+                extras = ExtrasSerialization.Read(ref jsonReader, context);
             }
             else
             {

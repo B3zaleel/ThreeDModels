@@ -1,9 +1,11 @@
-using System.Text.Json;
-
 namespace ThreeDModels.Format.Gltf.IO;
 
-public readonly ref struct GltfReaderContext(Utf8JsonReader jsonReader, Dictionary<string, ExtensionElementReader> extensions)
+public class GltfReaderContext
 {
-    internal readonly Dictionary<string, ExtensionElementReader> Extensions = extensions;
-    public readonly Utf8JsonReader JsonReader = jsonReader;
+    internal readonly Dictionary<string, ExtensionElementReader> Extensions;
+
+    internal GltfReaderContext(Dictionary<string, ExtensionElementReader> extensions)
+    {
+        Extensions = extensions;
+    }
 }

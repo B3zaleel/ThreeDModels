@@ -6,7 +6,7 @@ namespace ThreeDModels.Format.Gltf.IO;
 
 internal static class MaterialSerialization
 {
-    public static Material? Read(GltfReaderContext context)
+    public static Material? Read(ref Utf8JsonReader jsonReader, GltfReaderContext context)
     {
         MaterialPbrMetallicRoughness? pbrMetallicRoughness = null;
         MaterialNormalTextureInfo? normalTexture = null;
@@ -19,67 +19,67 @@ internal static class MaterialSerialization
         string? name = null;
         Dictionary<string, object?>? extensions = null;
         object? extras = null;
-        if (context.JsonReader.TokenType == JsonTokenType.PropertyName && context.JsonReader.Read())
+        if (jsonReader.TokenType == JsonTokenType.PropertyName && jsonReader.Read())
         {
         }
-        if (context.JsonReader.TokenType == JsonTokenType.Null)
+        if (jsonReader.TokenType == JsonTokenType.Null)
         {
             return null;
         }
-        else if (context.JsonReader.TokenType != JsonTokenType.StartObject)
+        else if (jsonReader.TokenType != JsonTokenType.StartObject)
         {
             throw new InvalidDataException("Failed to find start of property.");
         }
-        while (context.JsonReader.Read())
+        while (jsonReader.Read())
         {
-            if (context.JsonReader.TokenType == JsonTokenType.EndObject)
+            if (jsonReader.TokenType == JsonTokenType.EndObject)
             {
                 break;
             }
-            var propertyName = context.JsonReader.GetString();
+            var propertyName = jsonReader.GetString();
             if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(Material.PbrMetallicRoughness)))
             {
-                pbrMetallicRoughness = MaterialPbrMetallicRoughnessSerialization.Read(context);
+                pbrMetallicRoughness = MaterialPbrMetallicRoughnessSerialization.Read(ref jsonReader, context);
             }
             if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(Material.NormalTexture)))
             {
-                normalTexture = MaterialNormalTextureInfoSerialization.Read(context);
+                normalTexture = MaterialNormalTextureInfoSerialization.Read(ref jsonReader, context);
             }
             if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(Material.OcclusionTexture)))
             {
-                occlusionTexture = MaterialOcclusionTextureInfoSerialization.Read(context);
+                occlusionTexture = MaterialOcclusionTextureInfoSerialization.Read(ref jsonReader, context);
             }
             if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(Material.EmissiveTexture)))
             {
-                emissiveTexture = TextureInfoSerialization.Read(context);
+                emissiveTexture = TextureInfoSerialization.Read(ref jsonReader, context);
             }
             if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(Material.EmissiveFactor)))
             {
-                emissiveFactor = ReadFloatList(context)?.ToArray();
+                emissiveFactor = ReadFloatList(ref jsonReader, context)?.ToArray();
             }
             if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(Material.AlphaMode)))
             {
-                alphaMode = ReadString(context);
+                alphaMode = ReadString(ref jsonReader);
             }
             if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(Material.AlphaCutoff)))
             {
-                alphaCutoff = ReadFloat(context);
+                alphaCutoff = ReadFloat(ref jsonReader);
             }
             if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(Material.DoubleSided)))
             {
-                doubleSided = ReadBoolean(context);
+                doubleSided = ReadBoolean(ref jsonReader);
             }
             else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(Material.Name)))
             {
-                name = ReadString(context);
+                name = ReadString(ref jsonReader);
             }
             else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(Material.Extensions)))
             {
-                extensions = ExtensionsSerialization.Read<Material>(context);
+                extensions = ExtensionsSerialization.Read<Material>(ref jsonReader, context);
             }
             else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(Material.Extras)))
             {
-                extras = ExtrasSerialization.Read(context);
+                extras = ExtrasSerialization.Read(ref jsonReader, context);
             }
             else
             {

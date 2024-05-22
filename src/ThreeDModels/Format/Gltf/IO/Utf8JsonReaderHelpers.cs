@@ -4,87 +4,91 @@ namespace ThreeDModels.Format.Gltf.IO;
 
 public static class Utf8JsonReaderHelpers
 {
-    public static string? ReadString(GltfReaderContext context)
+    public static string? ReadString(ref Utf8JsonReader jsonReader)
     {
-        if (context.JsonReader.TokenType == JsonTokenType.PropertyName && context.JsonReader.Read())
-        {
-        }
-        return context.JsonReader.TokenType == JsonTokenType.String ? context.JsonReader.GetString() : null;
-    }
-
-    public static bool? ReadBoolean(GltfReaderContext context)
-    {
-        if (context.JsonReader.TokenType == JsonTokenType.PropertyName && context.JsonReader.Read())
-        {
-        }
-        return context.JsonReader.TokenType == JsonTokenType.True || context.JsonReader.TokenType == JsonTokenType.False
-            ? context.JsonReader.GetBoolean()
-            : null;
-    }
-
-    public static float? ReadFloat(GltfReaderContext context)
-    {
-        if (context.JsonReader.TokenType == JsonTokenType.PropertyName && context.JsonReader.Read())
-        {
-        }
-        return context.JsonReader.TokenType == JsonTokenType.Number ? context.JsonReader.GetSingle() : null;
-    }
-
-    public static int? ReadInteger(GltfReaderContext context)
-    {
-        if (context.JsonReader.TokenType == JsonTokenType.PropertyName && context.JsonReader.Read())
-        {
-        }
-        return context.JsonReader.TokenType == JsonTokenType.Number ? context.JsonReader.GetInt32() : null;
-    }
-
-    public static List<T>? ReadList<T>(GltfReaderContext context, JsonTokenType tokenType, ArrayElementReader<T> elementReader)
-    {
-        context.JsonReader.Read();
-        if (context.JsonReader.TokenType == JsonTokenType.Null)
+        if (jsonReader.TokenType == JsonTokenType.PropertyName && !jsonReader.Read())
         {
             return null;
         }
-        else if (context.JsonReader.TokenType != JsonTokenType.StartArray)
+        return jsonReader.TokenType == JsonTokenType.String ? jsonReader.GetString() : null;
+    }
+
+    public static bool? ReadBoolean(ref Utf8JsonReader jsonReader)
+    {
+        if (jsonReader.TokenType == JsonTokenType.PropertyName && !jsonReader.Read())
+        {
+            return null;
+        }
+        return jsonReader.TokenType == JsonTokenType.True || jsonReader.TokenType == JsonTokenType.False
+            ? jsonReader.GetBoolean()
+            : null;
+    }
+
+    public static float? ReadFloat(ref Utf8JsonReader jsonReader)
+    {
+        if (jsonReader.TokenType == JsonTokenType.PropertyName && !jsonReader.Read())
+        {
+            return null;
+        }
+        return jsonReader.TokenType == JsonTokenType.Number ? jsonReader.GetSingle() : null;
+    }
+
+    public static int? ReadInteger(ref Utf8JsonReader jsonReader)
+    {
+        if (jsonReader.TokenType == JsonTokenType.PropertyName && !jsonReader.Read())
+        {
+            return null;
+        }
+        return jsonReader.TokenType == JsonTokenType.Number ? jsonReader.GetInt32() : null;
+    }
+
+    public static List<T>? ReadList<T>(ref Utf8JsonReader jsonReader, GltfReaderContext context, JsonTokenType tokenType, ArrayElementReader<T> elementReader)
+    {
+        jsonReader.Read();
+        if (jsonReader.TokenType == JsonTokenType.Null)
+        {
+            return null;
+        }
+        else if (jsonReader.TokenType != JsonTokenType.StartArray)
         {
             throw new InvalidDataException($"Failed to find start of array.");
         }
         var list = new List<T>();
-        while (context.JsonReader.Read())
+        while (jsonReader.Read())
         {
-            if (context.JsonReader.TokenType == JsonTokenType.EndArray)
+            if (jsonReader.TokenType == JsonTokenType.EndArray)
             {
                 break;
             }
-            else if (context.JsonReader.TokenType == JsonTokenType.Comment || context.JsonReader.TokenType == JsonTokenType.Null)
+            else if (jsonReader.TokenType == JsonTokenType.Comment || jsonReader.TokenType == JsonTokenType.Null)
             {
                 continue;
             }
-            else if (context.JsonReader.TokenType == tokenType)
+            else if (jsonReader.TokenType == tokenType)
             {
-                list.Add(elementReader(context));
+                list.Add(elementReader(ref jsonReader, context));
                 continue;
             }
             else
             {
-                throw new InvalidDataException($"Unexpected token: {context.JsonReader.TokenType}");
+                throw new InvalidDataException($"Unexpected token: {jsonReader.TokenType}");
             }
         }
         return list;
     }
 
-    public static List<string>? ReadStringList(GltfReaderContext context)
+    public static List<string>? ReadStringList(ref Utf8JsonReader jsonReader, GltfReaderContext context)
     {
-        return ReadList(context, JsonTokenType.String, reader => ReadString(reader)!);
+        return ReadList(ref jsonReader, context, JsonTokenType.String, (ref Utf8JsonReader reader, GltfReaderContext _) => ReadString(ref reader)!);
     }
 
-    public static List<int>? ReadIntegerList(GltfReaderContext context)
+    public static List<int>? ReadIntegerList(ref Utf8JsonReader jsonReader, GltfReaderContext context)
     {
-        return ReadList(context, JsonTokenType.Number, reader => (int)ReadInteger(reader)!);
+        return ReadList(ref jsonReader, context, JsonTokenType.Number, (ref Utf8JsonReader reader, GltfReaderContext _) => (int)ReadInteger(ref reader)!);
     }
 
-    public static List<float>? ReadFloatList(GltfReaderContext context)
+    public static List<float>? ReadFloatList(ref Utf8JsonReader jsonReader, GltfReaderContext context)
     {
-        return ReadList(context, JsonTokenType.Number, reader => (float)ReadFloat(reader)!);
+        return ReadList(ref jsonReader, context, JsonTokenType.Number, (ref Utf8JsonReader reader, GltfReaderContext _) => (float)ReadFloat(ref reader)!);
     }
 }

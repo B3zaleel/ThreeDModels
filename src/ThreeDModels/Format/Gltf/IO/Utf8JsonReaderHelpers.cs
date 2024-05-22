@@ -6,16 +6,18 @@ public static class Utf8JsonReaderHelpers
 {
     public static string? ReadString(ref Utf8JsonReader jsonReader)
     {
-        if (jsonReader.TokenType == JsonTokenType.PropertyName && jsonReader.Read())
+        if (jsonReader.TokenType == JsonTokenType.PropertyName && !jsonReader.Read())
         {
+            return null;
         }
         return jsonReader.TokenType == JsonTokenType.String ? jsonReader.GetString() : null;
     }
 
     public static bool? ReadBoolean(ref Utf8JsonReader jsonReader)
     {
-        if (jsonReader.TokenType == JsonTokenType.PropertyName && jsonReader.Read())
+        if (jsonReader.TokenType == JsonTokenType.PropertyName && !jsonReader.Read())
         {
+            return null;
         }
         return jsonReader.TokenType == JsonTokenType.True || jsonReader.TokenType == JsonTokenType.False
             ? jsonReader.GetBoolean()
@@ -24,16 +26,18 @@ public static class Utf8JsonReaderHelpers
 
     public static float? ReadFloat(ref Utf8JsonReader jsonReader)
     {
-        if (jsonReader.TokenType == JsonTokenType.PropertyName && jsonReader.Read())
+        if (jsonReader.TokenType == JsonTokenType.PropertyName && !jsonReader.Read())
         {
+            return null;
         }
         return jsonReader.TokenType == JsonTokenType.Number ? jsonReader.GetSingle() : null;
     }
 
     public static int? ReadInteger(ref Utf8JsonReader jsonReader)
     {
-        if (jsonReader.TokenType == JsonTokenType.PropertyName && jsonReader.Read())
+        if (jsonReader.TokenType == JsonTokenType.PropertyName && !jsonReader.Read())
         {
+            return null;
         }
         return jsonReader.TokenType == JsonTokenType.Number ? jsonReader.GetInt32() : null;
     }

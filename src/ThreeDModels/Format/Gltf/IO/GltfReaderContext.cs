@@ -1,5 +1,3 @@
-using System.Text.Json;
-
 namespace ThreeDModels.Format.Gltf.IO;
 
 public class GltfReaderContext

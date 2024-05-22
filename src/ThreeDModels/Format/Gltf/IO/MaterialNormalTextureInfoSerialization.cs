@@ -6,50 +6,50 @@ namespace ThreeDModels.Format.Gltf.IO;
 
 internal static class MaterialNormalTextureInfoSerialization
 {
-    public static MaterialNormalTextureInfo? Read(GltfReaderContext context)
+    public static MaterialNormalTextureInfo? Read(ref Utf8JsonReader jsonReader, GltfReaderContext context)
     {
         int? index = null;
         int? texCoord = null;
         float? scale = null;
         Dictionary<string, object?>? extensions = null;
         object? extras = null;
-        if (context.JsonReader.TokenType == JsonTokenType.PropertyName && context.JsonReader.Read())
+        if (jsonReader.TokenType == JsonTokenType.PropertyName && jsonReader.Read())
         {
         }
-        if (context.JsonReader.TokenType == JsonTokenType.Null)
+        if (jsonReader.TokenType == JsonTokenType.Null)
         {
             return null;
         }
-        else if (context.JsonReader.TokenType != JsonTokenType.StartObject)
+        else if (jsonReader.TokenType != JsonTokenType.StartObject)
         {
             throw new InvalidDataException("Failed to find start of property.");
         }
-        while (context.JsonReader.Read())
+        while (jsonReader.Read())
         {
-            if (context.JsonReader.TokenType == JsonTokenType.EndObject)
+            if (jsonReader.TokenType == JsonTokenType.EndObject)
             {
                 break;
             }
-            var propertyName = context.JsonReader.GetString();
+            var propertyName = jsonReader.GetString();
             if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(MaterialNormalTextureInfo.Index)))
             {
-                index = ReadInteger(context);
+                index = ReadInteger(ref jsonReader);
             }
             else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(MaterialNormalTextureInfo.TexCoord)))
             {
-                texCoord = ReadInteger(context);
+                texCoord = ReadInteger(ref jsonReader);
             }
             else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(MaterialNormalTextureInfo.Scale)))
             {
-                scale = ReadFloat(context);
+                scale = ReadFloat(ref jsonReader);
             }
             else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(MaterialNormalTextureInfo.Extensions)))
             {
-                extensions = ExtensionsSerialization.Read<MaterialNormalTextureInfo>(context);
+                extensions = ExtensionsSerialization.Read<MaterialNormalTextureInfo>(ref jsonReader, context);
             }
             else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(MaterialNormalTextureInfo.Extras)))
             {
-                extras = ExtrasSerialization.Read(context);
+                extras = ExtrasSerialization.Read(ref jsonReader, context);
             }
             else
             {

@@ -6,40 +6,40 @@ namespace ThreeDModels.Format.Gltf.IO;
 
 public static class IntegerMapSerialization
 {
-    public static IntegerMap? Read(GltfReaderContext context)
+    public static IntegerMap? Read(ref Utf8JsonReader jsonReader, GltfReaderContext context)
     {
         IntegerMap integerMap = [];
         Dictionary<string, object?>? extensions = null;
         object? extras = null;
-        if (context.JsonReader.TokenType == JsonTokenType.PropertyName && context.JsonReader.Read())
+        if (jsonReader.TokenType == JsonTokenType.PropertyName && jsonReader.Read())
         {
         }
-        if (context.JsonReader.TokenType == JsonTokenType.Null)
+        if (jsonReader.TokenType == JsonTokenType.Null)
         {
             return null;
         }
-        else if (context.JsonReader.TokenType != JsonTokenType.StartObject)
+        else if (jsonReader.TokenType != JsonTokenType.StartObject)
         {
             throw new InvalidDataException("Failed to find start of property.");
         }
-        while (context.JsonReader.Read())
+        while (jsonReader.Read())
         {
-            if (context.JsonReader.TokenType == JsonTokenType.EndObject)
+            if (jsonReader.TokenType == JsonTokenType.EndObject)
             {
                 break;
             }
-            var propertyName = context.JsonReader.GetString();
+            var propertyName = jsonReader.GetString();
             if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(IntegerMap.Extensions)))
             {
-                extensions = ExtensionsSerialization.Read<IntegerMap>(context);
+                extensions = ExtensionsSerialization.Read<IntegerMap>(ref jsonReader, context);
             }
             else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(IntegerMap.Extras)))
             {
-                extras = ExtrasSerialization.Read(context);
+                extras = ExtrasSerialization.Read(ref jsonReader, context);
             }
             else
             {
-                integerMap.Add(propertyName!, (int)ReadInteger(context)!);
+                integerMap.Add(propertyName!, (int)ReadInteger(ref jsonReader)!);
             }
         }
         integerMap.Extensions = extensions;

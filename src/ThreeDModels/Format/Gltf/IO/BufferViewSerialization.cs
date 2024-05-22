@@ -6,7 +6,7 @@ namespace ThreeDModels.Format.Gltf.IO;
 
 internal static class BufferViewSerialization
 {
-    public static BufferView? Read(GltfReaderContext context)
+    public static BufferView? Read(ref Utf8JsonReader jsonReader, GltfReaderContext context)
     {
         int? buffer = null;
         int? byteOffset = null;
@@ -16,55 +16,55 @@ internal static class BufferViewSerialization
         string? name = null;
         Dictionary<string, object?>? extensions = null;
         object? extras = null;
-        if (context.JsonReader.TokenType == JsonTokenType.PropertyName && context.JsonReader.Read())
+        if (jsonReader.TokenType == JsonTokenType.PropertyName && jsonReader.Read())
         {
         }
-        if (context.JsonReader.TokenType == JsonTokenType.Null)
+        if (jsonReader.TokenType == JsonTokenType.Null)
         {
             return null;
         }
-        else if (context.JsonReader.TokenType != JsonTokenType.StartObject)
+        else if (jsonReader.TokenType != JsonTokenType.StartObject)
         {
             throw new InvalidDataException("Failed to find start of property.");
         }
-        while (context.JsonReader.Read())
+        while (jsonReader.Read())
         {
-            if (context.JsonReader.TokenType == JsonTokenType.EndObject)
+            if (jsonReader.TokenType == JsonTokenType.EndObject)
             {
                 break;
             }
-            var propertyName = context.JsonReader.GetString();
+            var propertyName = jsonReader.GetString();
             if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(BufferView.Buffer)))
             {
-                buffer = ReadInteger(context);
+                buffer = ReadInteger(ref jsonReader);
             }
             else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(BufferView.ByteOffset)))
             {
-                byteOffset = ReadInteger(context);
+                byteOffset = ReadInteger(ref jsonReader);
             }
             else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(BufferView.ByteLength)))
             {
-                byteLength = ReadInteger(context);
+                byteLength = ReadInteger(ref jsonReader);
             }
             else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(BufferView.ByteStride)))
             {
-                byteStride = ReadInteger(context);
+                byteStride = ReadInteger(ref jsonReader);
             }
             else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(BufferView.Target)))
             {
-                target = ReadInteger(context);
+                target = ReadInteger(ref jsonReader);
             }
             else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(BufferView.Name)))
             {
-                name = ReadString(context);
+                name = ReadString(ref jsonReader);
             }
             else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(BufferView.Extensions)))
             {
-                extensions = ExtensionsSerialization.Read<BufferView>(context);
+                extensions = ExtensionsSerialization.Read<BufferView>(ref jsonReader, context);
             }
             else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(BufferView.Extras)))
             {
-                extras = ExtrasSerialization.Read(context);
+                extras = ExtrasSerialization.Read(ref jsonReader, context);
             }
             else
             {

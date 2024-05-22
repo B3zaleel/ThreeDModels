@@ -6,7 +6,7 @@ namespace ThreeDModels.Format.Gltf.IO;
 
 internal static class CameraSerialization
 {
-    public static Camera? Read(GltfReaderContext context)
+    public static Camera? Read(ref Utf8JsonReader jsonReader, GltfReaderContext context)
     {
         CameraOrthographic? orthographic = null;
         CameraPerspective? perspective = null;
@@ -14,47 +14,47 @@ internal static class CameraSerialization
         string? name = null;
         Dictionary<string, object?>? extensions = null;
         object? extras = null;
-        if (context.JsonReader.TokenType == JsonTokenType.PropertyName && context.JsonReader.Read())
+        if (jsonReader.TokenType == JsonTokenType.PropertyName && jsonReader.Read())
         {
         }
-        if (context.JsonReader.TokenType == JsonTokenType.Null)
+        if (jsonReader.TokenType == JsonTokenType.Null)
         {
             return null;
         }
-        else if (context.JsonReader.TokenType != JsonTokenType.StartObject)
+        else if (jsonReader.TokenType != JsonTokenType.StartObject)
         {
             throw new InvalidDataException("Failed to find start of property.");
         }
-        while (context.JsonReader.Read())
+        while (jsonReader.Read())
         {
-            if (context.JsonReader.TokenType == JsonTokenType.EndObject)
+            if (jsonReader.TokenType == JsonTokenType.EndObject)
             {
                 break;
             }
-            var propertyName = context.JsonReader.GetString();
+            var propertyName = jsonReader.GetString();
             if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(Camera.Orthographic)))
             {
-                orthographic = CameraOrthographicSerialization.Read(context);
+                orthographic = CameraOrthographicSerialization.Read(ref jsonReader, context);
             }
             else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(Camera.Perspective)))
             {
-                perspective = CameraPerspectiveSerialization.Read(context);
+                perspective = CameraPerspectiveSerialization.Read(ref jsonReader, context);
             }
             else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(Camera.Type)))
             {
-                type = ReadString(context);
+                type = ReadString(ref jsonReader);
             }
             else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(Camera.Name)))
             {
-                name = ReadString(context);
+                name = ReadString(ref jsonReader);
             }
             else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(Camera.Extensions)))
             {
-                extensions = ExtensionsSerialization.Read<Camera>(context);
+                extensions = ExtensionsSerialization.Read<Camera>(ref jsonReader, context);
             }
             else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(Camera.Extras)))
             {
-                extras = ExtrasSerialization.Read(context);
+                extras = ExtrasSerialization.Read(ref jsonReader, context);
             }
             else
             {

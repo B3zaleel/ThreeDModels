@@ -6,7 +6,7 @@ namespace ThreeDModels.Format.Gltf.IO;
 
 internal static class ImageSerialization
 {
-    public static Image? Read(GltfReaderContext context)
+    public static Image? Read(ref Utf8JsonReader jsonReader, GltfReaderContext context)
     {
         string? uri = null;
         string? mimeType = null;
@@ -14,47 +14,47 @@ internal static class ImageSerialization
         string? name = null;
         Dictionary<string, object?>? extensions = null;
         object? extras = null;
-        if (context.JsonReader.TokenType == JsonTokenType.PropertyName && context.JsonReader.Read())
+        if (jsonReader.TokenType == JsonTokenType.PropertyName && jsonReader.Read())
         {
         }
-        if (context.JsonReader.TokenType == JsonTokenType.Null)
+        if (jsonReader.TokenType == JsonTokenType.Null)
         {
             return null;
         }
-        else if (context.JsonReader.TokenType != JsonTokenType.StartObject)
+        else if (jsonReader.TokenType != JsonTokenType.StartObject)
         {
             throw new InvalidDataException("Failed to find start of property.");
         }
-        while (context.JsonReader.Read())
+        while (jsonReader.Read())
         {
-            if (context.JsonReader.TokenType == JsonTokenType.EndObject)
+            if (jsonReader.TokenType == JsonTokenType.EndObject)
             {
                 break;
             }
-            var propertyName = context.JsonReader.GetString();
+            var propertyName = jsonReader.GetString();
             if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(Image.Uri)))
             {
-                uri = ReadString(context);
+                uri = ReadString(ref jsonReader);
             }
             else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(Image.MimeType)))
             {
-                mimeType = ReadString(context);
+                mimeType = ReadString(ref jsonReader);
             }
             else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(Image.BufferView)))
             {
-                bufferView = ReadInteger(context);
+                bufferView = ReadInteger(ref jsonReader);
             }
             else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(Image.Name)))
             {
-                name = ReadString(context);
+                name = ReadString(ref jsonReader);
             }
             else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(Image.Extensions)))
             {
-                extensions = ExtensionsSerialization.Read<Image>(context);
+                extensions = ExtensionsSerialization.Read<Image>(ref jsonReader, context);
             }
             else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(Image.Extras)))
             {
-                extras = ExtrasSerialization.Read(context);
+                extras = ExtrasSerialization.Read(ref jsonReader, context);
             }
             else
             {

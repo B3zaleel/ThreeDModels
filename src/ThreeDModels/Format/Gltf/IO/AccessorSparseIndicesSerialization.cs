@@ -6,50 +6,50 @@ namespace ThreeDModels.Format.Gltf.IO;
 
 internal static class AccessorSparseIndicesSerialization
 {
-    public static AccessorSparseIndices? Read(GltfReaderContext context)
+    public static AccessorSparseIndices? Read(ref Utf8JsonReader jsonReader, GltfReaderContext context)
     {
         int? bufferView = null;
         int? byteOffset = 0;
         int? componentType = 0;
         Dictionary<string, object?>? extensions = null;
         object? extras = null;
-        if (context.JsonReader.TokenType == JsonTokenType.PropertyName && context.JsonReader.Read())
+        if (jsonReader.TokenType == JsonTokenType.PropertyName && jsonReader.Read())
         {
         }
-        if (context.JsonReader.TokenType == JsonTokenType.Null)
+        if (jsonReader.TokenType == JsonTokenType.Null)
         {
             return null;
         }
-        else if (context.JsonReader.TokenType != JsonTokenType.StartObject)
+        else if (jsonReader.TokenType != JsonTokenType.StartObject)
         {
             throw new InvalidDataException("Failed to find start of property.");
         }
-        while (context.JsonReader.Read())
+        while (jsonReader.Read())
         {
-            if (context.JsonReader.TokenType == JsonTokenType.EndObject)
+            if (jsonReader.TokenType == JsonTokenType.EndObject)
             {
                 break;
             }
-            var propertyName = context.JsonReader.GetString();
+            var propertyName = jsonReader.GetString();
             if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(AccessorSparseIndices.BufferView)))
             {
-                bufferView = ReadInteger(context);
+                bufferView = ReadInteger(ref jsonReader);
             }
             else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(AccessorSparseIndices.ByteOffset)))
             {
-                byteOffset = ReadInteger(context);
+                byteOffset = ReadInteger(ref jsonReader);
             }
             else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(AccessorSparseIndices.ComponentType)))
             {
-                componentType = ReadInteger(context);
+                componentType = ReadInteger(ref jsonReader);
             }
             else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(AccessorSparseIndices.Extensions)))
             {
-                extensions = ExtensionsSerialization.Read<AccessorSparseIndices>(context);
+                extensions = ExtensionsSerialization.Read<AccessorSparseIndices>(ref jsonReader, context);
             }
             else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(AccessorSparseIndices.Extras)))
             {
-                extras = ExtrasSerialization.Read(context);
+                extras = ExtrasSerialization.Read(ref jsonReader, context);
             }
             else
             {

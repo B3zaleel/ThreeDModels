@@ -44,7 +44,7 @@ public class FbGeometryMetadataExtension : IGltfExtension
 {
     public string Name => nameof(FB_geometry_metadata);
 
-    public object? Read(GltfReaderContext context, Type parentType)
+    public object? Read(ref Utf8JsonReader jsonReader, GltfReaderContext context, Type parentType)
     {
         if (parentType != typeof(Scene))
         {
@@ -55,43 +55,43 @@ public class FbGeometryMetadataExtension : IGltfExtension
         SceneBounds? sceneBounds = null;
         Dictionary<string, object?>? extensions = null;
         object? extras = null;
-        if (context.JsonReader.TokenType == JsonTokenType.PropertyName && context.JsonReader.Read())
+        if (jsonReader.TokenType == JsonTokenType.PropertyName && jsonReader.Read())
         {
         }
-        if (context.JsonReader.TokenType == JsonTokenType.Null)
+        if (jsonReader.TokenType == JsonTokenType.Null)
         {
             return null;
         }
-        else if (context.JsonReader.TokenType != JsonTokenType.StartObject)
+        else if (jsonReader.TokenType != JsonTokenType.StartObject)
         {
             throw new InvalidDataException("Failed to find start of property.");
         }
-        while (context.JsonReader.Read())
+        while (jsonReader.Read())
         {
-            if (context.JsonReader.TokenType == JsonTokenType.EndObject)
+            if (jsonReader.TokenType == JsonTokenType.EndObject)
             {
                 break;
             }
-            var propertyName = context.JsonReader.GetString();
+            var propertyName = jsonReader.GetString();
             if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(FB_geometry_metadata.VertexCount)))
             {
-                vertexCount = ReadFloat(context);
+                vertexCount = ReadFloat(ref jsonReader);
             }
             else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(FB_geometry_metadata.PrimitiveCount)))
             {
-                primitiveCount = ReadFloat(context);
+                primitiveCount = ReadFloat(ref jsonReader);
             }
             else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(FB_geometry_metadata.SceneBounds)))
             {
-                sceneBounds = SceneBoundsSerialization.Read(context);
+                sceneBounds = SceneBoundsSerialization.Read(ref jsonReader, context);
             }
             else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(FB_geometry_metadata.Extensions)))
             {
-                extensions = ExtensionsSerialization.Read<FB_geometry_metadata>(context);
+                extensions = ExtensionsSerialization.Read<FB_geometry_metadata>(ref jsonReader, context);
             }
             else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(FB_geometry_metadata.Extras)))
             {
-                extras = ExtrasSerialization.Read(context);
+                extras = ExtrasSerialization.Read(ref jsonReader, context);
             }
             else
             {
@@ -111,45 +111,45 @@ public class FbGeometryMetadataExtension : IGltfExtension
 
 public class SceneBoundsSerialization
 {
-    public static SceneBounds? Read(GltfReaderContext context)
+    public static SceneBounds? Read(ref Utf8JsonReader jsonReader, GltfReaderContext context)
     {
         float[]? min = null;
         float[]? max = null;
         Dictionary<string, object?>? extensions = null;
         object? extras = null;
-        if (context.JsonReader.TokenType == JsonTokenType.PropertyName && context.JsonReader.Read())
+        if (jsonReader.TokenType == JsonTokenType.PropertyName && jsonReader.Read())
         {
         }
-        if (context.JsonReader.TokenType == JsonTokenType.Null)
+        if (jsonReader.TokenType == JsonTokenType.Null)
         {
             return null;
         }
-        else if (context.JsonReader.TokenType != JsonTokenType.StartObject)
+        else if (jsonReader.TokenType != JsonTokenType.StartObject)
         {
             throw new InvalidDataException("Failed to find start of property.");
         }
-        while (context.JsonReader.Read())
+        while (jsonReader.Read())
         {
-            if (context.JsonReader.TokenType == JsonTokenType.EndObject)
+            if (jsonReader.TokenType == JsonTokenType.EndObject)
             {
                 break;
             }
-            var propertyName = context.JsonReader.GetString();
+            var propertyName = jsonReader.GetString();
             if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(SceneBounds.Min)))
             {
-                min = ReadFloatList(context)?.ToArray();
+                min = ReadFloatList(ref jsonReader, context)?.ToArray();
             }
             else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(SceneBounds.Max)))
             {
-                max = ReadFloatList(context)?.ToArray();
+                max = ReadFloatList(ref jsonReader, context)?.ToArray();
             }
             else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(SceneBounds.Extensions)))
             {
-                extensions = ExtensionsSerialization.Read<AccessorSparse>(context);
+                extensions = ExtensionsSerialization.Read<AccessorSparse>(ref jsonReader, context);
             }
             else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(SceneBounds.Extras)))
             {
-                extras = ExtrasSerialization.Read(context);
+                extras = ExtrasSerialization.Read(ref jsonReader, context);
             }
             else
             {

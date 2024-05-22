@@ -6,7 +6,7 @@ namespace ThreeDModels.Format.Gltf.IO;
 
 internal static class SamplerSerialization
 {
-    public static Sampler? Read(GltfReaderContext context)
+    public static Sampler? Read(ref Utf8JsonReader jsonReader, GltfReaderContext context)
     {
         int? magFilter = null;
         int? minFilter = null;
@@ -15,49 +15,49 @@ internal static class SamplerSerialization
         string? name = null;
         Dictionary<string, object?>? extensions = null;
         object? extras = null;
-        context.JsonReader.Read();
-        if (context.JsonReader.TokenType == JsonTokenType.Null)
+        jsonReader.Read();
+        if (jsonReader.TokenType == JsonTokenType.Null)
         {
             return null;
         }
-        else if (context.JsonReader.TokenType != JsonTokenType.StartObject)
+        else if (jsonReader.TokenType != JsonTokenType.StartObject)
         {
             throw new InvalidDataException($"Failed to find {nameof(Asset)} property");
         }
-        while (context.JsonReader.Read())
+        while (jsonReader.Read())
         {
-            if (context.JsonReader.TokenType == JsonTokenType.EndObject)
+            if (jsonReader.TokenType == JsonTokenType.EndObject)
             {
                 break;
             }
-            var propertyName = context.JsonReader.GetString();
+            var propertyName = jsonReader.GetString();
             if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(Sampler.MagFilter)))
             {
-                magFilter = ReadInteger(context);
+                magFilter = ReadInteger(ref jsonReader);
             }
             else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(Sampler.MinFilter)))
             {
-                minFilter = ReadInteger(context);
+                minFilter = ReadInteger(ref jsonReader);
             }
             else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(Sampler.WrapS)))
             {
-                wrapS = ReadInteger(context);
+                wrapS = ReadInteger(ref jsonReader);
             }
             else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(Sampler.WrapT)))
             {
-                wrapT = ReadInteger(context);
+                wrapT = ReadInteger(ref jsonReader);
             }
             else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(Sampler.WrapT)))
             {
-                name = ReadString(context);
+                name = ReadString(ref jsonReader);
             }
             else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(Sampler.Extensions)))
             {
-                extensions = ExtensionsSerialization.Read<Sampler>(context);
+                extensions = ExtensionsSerialization.Read<Sampler>(ref jsonReader, context);
             }
             else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(Sampler.Extras)))
             {
-                extras = ExtrasSerialization.Read(context);
+                extras = ExtrasSerialization.Read(ref jsonReader, context);
             }
             else
             {

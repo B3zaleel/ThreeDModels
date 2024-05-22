@@ -6,50 +6,50 @@ namespace ThreeDModels.Format.Gltf.IO;
 
 internal static class AnimationSamplerSerialization
 {
-    public static AnimationSampler? Read(GltfReaderContext context)
+    public static AnimationSampler? Read(ref Utf8JsonReader jsonReader, GltfReaderContext context)
     {
         int? input = null;
         string? interpolation = null;
         int? output = null;
         Dictionary<string, object?>? extensions = null;
         object? extras = null;
-        if (context.JsonReader.TokenType == JsonTokenType.PropertyName && context.JsonReader.Read())
+        if (jsonReader.TokenType == JsonTokenType.PropertyName && jsonReader.Read())
         {
         }
-        if (context.JsonReader.TokenType == JsonTokenType.Null)
+        if (jsonReader.TokenType == JsonTokenType.Null)
         {
             return null;
         }
-        else if (context.JsonReader.TokenType != JsonTokenType.StartObject)
+        else if (jsonReader.TokenType != JsonTokenType.StartObject)
         {
             throw new InvalidDataException("Failed to find start of property.");
         }
-        while (context.JsonReader.Read())
+        while (jsonReader.Read())
         {
-            if (context.JsonReader.TokenType == JsonTokenType.EndObject)
+            if (jsonReader.TokenType == JsonTokenType.EndObject)
             {
                 break;
             }
-            var propertyName = context.JsonReader.GetString();
+            var propertyName = jsonReader.GetString();
             if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(AnimationSampler.Input)))
             {
-                input = ReadInteger(context);
+                input = ReadInteger(ref jsonReader);
             }
             else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(AnimationSampler.Interpolation)))
             {
-                interpolation = ReadString(context);
+                interpolation = ReadString(ref jsonReader);
             }
             else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(AnimationSampler.Output)))
             {
-                output = ReadInteger(context);
+                output = ReadInteger(ref jsonReader);
             }
             else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(AnimationSampler.Extensions)))
             {
-                extensions = ExtensionsSerialization.Read<AnimationSampler>(context);
+                extensions = ExtensionsSerialization.Read<AnimationSampler>(ref jsonReader, context);
             }
             else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(AnimationSampler.Extras)))
             {
-                extras = ExtrasSerialization.Read(context);
+                extras = ExtrasSerialization.Read(ref jsonReader, context);
             }
             else
             {

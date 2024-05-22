@@ -6,7 +6,7 @@ namespace ThreeDModels.Format.Gltf.IO;
 
 internal static class MaterialPbrMetallicRoughnessSerialization
 {
-    public static MaterialPbrMetallicRoughness? Read(GltfReaderContext context)
+    public static MaterialPbrMetallicRoughness? Read(ref Utf8JsonReader jsonReader, GltfReaderContext context)
     {
         float[]? baseColorFactor = null;
         TextureInfo? baseColorTexture = null;
@@ -15,51 +15,51 @@ internal static class MaterialPbrMetallicRoughnessSerialization
         TextureInfo? metallicRoughnessTexture = null;
         Dictionary<string, object?>? extensions = null;
         object? extras = null;
-        if (context.JsonReader.TokenType == JsonTokenType.PropertyName && context.JsonReader.Read())
+        if (jsonReader.TokenType == JsonTokenType.PropertyName && jsonReader.Read())
         {
         }
-        if (context.JsonReader.TokenType == JsonTokenType.Null)
+        if (jsonReader.TokenType == JsonTokenType.Null)
         {
             return null;
         }
-        else if (context.JsonReader.TokenType != JsonTokenType.StartObject)
+        else if (jsonReader.TokenType != JsonTokenType.StartObject)
         {
             throw new InvalidDataException("Failed to find start of property.");
         }
-        while (context.JsonReader.Read())
+        while (jsonReader.Read())
         {
-            if (context.JsonReader.TokenType == JsonTokenType.EndObject)
+            if (jsonReader.TokenType == JsonTokenType.EndObject)
             {
                 break;
             }
-            var propertyName = context.JsonReader.GetString();
+            var propertyName = jsonReader.GetString();
             if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(MaterialPbrMetallicRoughness.BaseColorFactor)))
             {
-                baseColorFactor = ReadFloatList(context)?.ToArray();
+                baseColorFactor = ReadFloatList(ref jsonReader, context)?.ToArray();
             }
             else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(MaterialPbrMetallicRoughness.BaseColorTexture)))
             {
-                baseColorTexture = TextureInfoSerialization.Read(context);
+                baseColorTexture = TextureInfoSerialization.Read(ref jsonReader, context);
             }
             else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(MaterialPbrMetallicRoughness.MetallicFactor)))
             {
-                metallicFactor = ReadFloat(context);
+                metallicFactor = ReadFloat(ref jsonReader);
             }
             else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(MaterialPbrMetallicRoughness.RoughnessFactor)))
             {
-                roughnessFactor = ReadFloat(context);
+                roughnessFactor = ReadFloat(ref jsonReader);
             }
             else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(MaterialPbrMetallicRoughness.MetallicRoughnessTexture)))
             {
-                metallicRoughnessTexture = TextureInfoSerialization.Read(context);
+                metallicRoughnessTexture = TextureInfoSerialization.Read(ref jsonReader, context);
             }
             else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(MaterialPbrMetallicRoughness.Extensions)))
             {
-                extensions = ExtensionsSerialization.Read<MaterialPbrMetallicRoughness>(context);
+                extensions = ExtensionsSerialization.Read<MaterialPbrMetallicRoughness>(ref jsonReader, context);
             }
             else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(MaterialPbrMetallicRoughness.Extras)))
             {
-                extras = ExtrasSerialization.Read(context);
+                extras = ExtrasSerialization.Read(ref jsonReader, context);
             }
             else
             {

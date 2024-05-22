@@ -14,7 +14,7 @@ public class Node : IGltfRootProperty
     /// <summary>
     /// The indices of this node's children.
     /// </summary>
-    public int? Children { get; set; }
+    public List<int>? Children { get; set; }
     /// <summary>
     /// The index of the skin referenced by this node.
     /// </summary>

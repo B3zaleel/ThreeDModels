@@ -9,7 +9,7 @@ internal static class NodeSerialization
     public static Node? Read(ref Utf8JsonReader jsonReader, GltfReaderContext context)
     {
         int? camera = null;
-        int? children = null;
+        List<int>? children = null;
         int? skin = null;
         float[]? matrix = null;
         int? mesh = null;
@@ -44,7 +44,7 @@ internal static class NodeSerialization
             }
             else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(Node.Children)))
             {
-                children = ReadInteger(ref jsonReader);
+                children = ReadIntegerList(ref jsonReader, context);
             }
             else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(Node.Skin)))
             {
@@ -118,6 +118,10 @@ internal static class NodeSerialization
         if (weights != null && mesh == null)
         {
             throw new InvalidDataException("Node.mesh must be defined if Node.weights has been defined.");
+        }
+        if (children != null && children.Count == 0)
+        {
+            throw new InvalidDataException("Node.children must have at least one element.");
         }
 
         return new()

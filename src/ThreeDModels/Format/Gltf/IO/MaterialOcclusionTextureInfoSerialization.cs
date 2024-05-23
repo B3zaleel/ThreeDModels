@@ -31,23 +31,23 @@ internal static class MaterialOcclusionTextureInfoSerialization
                 break;
             }
             var propertyName = jsonReader.GetString();
-            if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(MaterialOcclusionTextureInfo.Index)))
+            if (propertyName == nameof(index))
             {
                 index = ReadInteger(ref jsonReader);
             }
-            else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(MaterialOcclusionTextureInfo.TexCoord)))
+            else if (propertyName == nameof(texCoord))
             {
                 texCoord = ReadInteger(ref jsonReader);
             }
-            else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(MaterialOcclusionTextureInfo.Strength)))
+            else if (propertyName == nameof(strength))
             {
                 strength = ReadFloat(ref jsonReader);
             }
-            else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(MaterialOcclusionTextureInfo.Extensions)))
+            else if (propertyName == nameof(extensions))
             {
                 extensions = ExtensionsSerialization.Read<MaterialOcclusionTextureInfo>(ref jsonReader, context);
             }
-            else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(MaterialOcclusionTextureInfo.Extras)))
+            else if (propertyName == nameof(extras))
             {
                 extras = ExtrasSerialization.Read(ref jsonReader, context);
             }

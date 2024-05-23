@@ -31,23 +31,23 @@ internal static class AccessorSparseSerialization
                 break;
             }
             var propertyName = jsonReader.GetString();
-            if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(AccessorSparse.Count)))
+            if (propertyName == nameof(count))
             {
                 count = ReadInteger(ref jsonReader);
             }
-            else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(AccessorSparse.Indices)))
+            else if (propertyName == nameof(indices))
             {
                 indices = AccessorSparseIndicesSerialization.Read(ref jsonReader, context);
             }
-            else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(AccessorSparse.Values)))
+            else if (propertyName == nameof(values))
             {
                 values = AccessorSparseValuesSerialization.Read(ref jsonReader, context);
             }
-            else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(AccessorSparse.Extensions)))
+            else if (propertyName == nameof(extensions))
             {
                 extensions = ExtensionsSerialization.Read<AccessorSparse>(ref jsonReader, context);
             }
-            else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(AccessorSparse.Extras)))
+            else if (propertyName == nameof(extras))
             {
                 extras = ExtrasSerialization.Read(ref jsonReader, context);
             }

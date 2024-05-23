@@ -22,8 +22,6 @@ public class KHR_draco_mesh_compression : IGltfProperty
 public class KhrDracoMeshCompressionExtension : IGltfExtension
 {
     public string Name => nameof(KHR_draco_mesh_compression);
-    private const string _name_BufferView = "bufferView";
-    private const string _name_Attributes = "attributes";
 
     public object? Read(ref Utf8JsonReader jsonReader, GltfReaderContext context, Type parentType)
     {
@@ -53,19 +51,19 @@ public class KhrDracoMeshCompressionExtension : IGltfExtension
                 break;
             }
             var propertyName = jsonReader.GetString();
-            if (propertyName == _name_BufferView)
+            if (propertyName == nameof(bufferView))
             {
                 bufferView = ReadInteger(ref jsonReader);
             }
-            else if (propertyName == _name_Attributes)
+            else if (propertyName == nameof(attributes))
             {
                 attributes = IntegerMapSerialization.Read(ref jsonReader, context);
             }
-            else if (propertyName == PropertyNames.Extensions)
+            else if (propertyName == nameof(extensions))
             {
                 extensions = ExtensionsSerialization.Read<KHR_draco_mesh_compression>(ref jsonReader, context);
             }
-            else if (propertyName == PropertyNames.Extras)
+            else if (propertyName == nameof(extras))
             {
                 extras = ExtrasSerialization.Read(ref jsonReader, context);
             }

@@ -33,31 +33,31 @@ internal static class MeshPrimitiveSerialization
                 break;
             }
             var propertyName = jsonReader.GetString();
-            if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(MeshPrimitive.Attributes)))
+            if (propertyName == nameof(attributes))
             {
                 attributes = IntegerMapSerialization.Read(ref jsonReader, context);
             }
-            else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(MeshPrimitive.Indices)))
+            else if (propertyName == nameof(indices))
             {
                 indices = ReadInteger(ref jsonReader);
             }
-            else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(MeshPrimitive.Material)))
+            else if (propertyName == nameof(material))
             {
                 material = ReadInteger(ref jsonReader);
             }
-            else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(MeshPrimitive.Mode)))
+            else if (propertyName == nameof(mode))
             {
                 mode = ReadInteger(ref jsonReader);
             }
-            else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(MeshPrimitive.Indices)))
+            else if (propertyName == nameof(targets))
             {
                 targets = ReadList(ref jsonReader, context, JsonTokenType.StartObject, (ref Utf8JsonReader reader, GltfReaderContext ctx) => IntegerMapSerialization.Read(ref reader, ctx)!);
             }
-            else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(MeshPrimitive.Extensions)))
+            else if (propertyName == nameof(extensions))
             {
                 extensions = ExtensionsSerialization.Read<MeshPrimitive>(ref jsonReader, context);
             }
-            else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(MeshPrimitive.Extras)))
+            else if (propertyName == nameof(extras))
             {
                 extras = ExtrasSerialization.Read(ref jsonReader, context);
             }

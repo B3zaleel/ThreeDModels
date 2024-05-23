@@ -31,23 +31,23 @@ internal static class MaterialNormalTextureInfoSerialization
                 break;
             }
             var propertyName = jsonReader.GetString();
-            if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(MaterialNormalTextureInfo.Index)))
+            if (propertyName == nameof(index))
             {
                 index = ReadInteger(ref jsonReader);
             }
-            else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(MaterialNormalTextureInfo.TexCoord)))
+            else if (propertyName == nameof(texCoord))
             {
                 texCoord = ReadInteger(ref jsonReader);
             }
-            else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(MaterialNormalTextureInfo.Scale)))
+            else if (propertyName == nameof(scale))
             {
                 scale = ReadFloat(ref jsonReader);
             }
-            else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(MaterialNormalTextureInfo.Extensions)))
+            else if (propertyName == nameof(extensions))
             {
                 extensions = ExtensionsSerialization.Read<MaterialNormalTextureInfo>(ref jsonReader, context);
             }
-            else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(MaterialNormalTextureInfo.Extras)))
+            else if (propertyName == nameof(extras))
             {
                 extras = ExtrasSerialization.Read(ref jsonReader, context);
             }

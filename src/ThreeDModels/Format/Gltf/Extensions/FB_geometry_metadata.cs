@@ -73,23 +73,23 @@ public class FbGeometryMetadataExtension : IGltfExtension
                 break;
             }
             var propertyName = jsonReader.GetString();
-            if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(FB_geometry_metadata.VertexCount)))
+            if (propertyName == nameof(vertexCount))
             {
                 vertexCount = ReadFloat(ref jsonReader);
             }
-            else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(FB_geometry_metadata.PrimitiveCount)))
+            else if (propertyName == nameof(primitiveCount))
             {
                 primitiveCount = ReadFloat(ref jsonReader);
             }
-            else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(FB_geometry_metadata.SceneBounds)))
+            else if (propertyName == nameof(sceneBounds))
             {
                 sceneBounds = SceneBoundsSerialization.Read(ref jsonReader, context);
             }
-            else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(FB_geometry_metadata.Extensions)))
+            else if (propertyName == nameof(extensions))
             {
                 extensions = ExtensionsSerialization.Read<FB_geometry_metadata>(ref jsonReader, context);
             }
-            else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(FB_geometry_metadata.Extras)))
+            else if (propertyName == nameof(extras))
             {
                 extras = ExtrasSerialization.Read(ref jsonReader, context);
             }
@@ -135,19 +135,19 @@ public class SceneBoundsSerialization
                 break;
             }
             var propertyName = jsonReader.GetString();
-            if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(SceneBounds.Min)))
+            if (propertyName == nameof(min))
             {
                 min = ReadFloatList(ref jsonReader, context)?.ToArray();
             }
-            else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(SceneBounds.Max)))
+            else if (propertyName == nameof(max))
             {
                 max = ReadFloatList(ref jsonReader, context)?.ToArray();
             }
-            else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(SceneBounds.Extensions)))
+            else if (propertyName == nameof(extensions))
             {
                 extensions = ExtensionsSerialization.Read<AccessorSparse>(ref jsonReader, context);
             }
-            else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(SceneBounds.Extras)))
+            else if (propertyName == nameof(extras))
             {
                 extras = ExtrasSerialization.Read(ref jsonReader, context);
             }

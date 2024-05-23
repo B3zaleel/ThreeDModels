@@ -31,31 +31,31 @@ internal static class SamplerSerialization
                 break;
             }
             var propertyName = jsonReader.GetString();
-            if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(Sampler.MagFilter)))
+            if (propertyName == nameof(magFilter))
             {
                 magFilter = ReadInteger(ref jsonReader);
             }
-            else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(Sampler.MinFilter)))
+            else if (propertyName == nameof(minFilter))
             {
                 minFilter = ReadInteger(ref jsonReader);
             }
-            else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(Sampler.WrapS)))
+            else if (propertyName == nameof(wrapS))
             {
                 wrapS = ReadInteger(ref jsonReader);
             }
-            else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(Sampler.WrapT)))
+            else if (propertyName == nameof(wrapT))
             {
                 wrapT = ReadInteger(ref jsonReader);
             }
-            else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(Sampler.WrapT)))
+            else if (propertyName == nameof(name))
             {
                 name = ReadString(ref jsonReader);
             }
-            else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(Sampler.Extensions)))
+            else if (propertyName == nameof(extensions))
             {
                 extensions = ExtensionsSerialization.Read<Sampler>(ref jsonReader, context);
             }
-            else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(Sampler.Extras)))
+            else if (propertyName == nameof(extras))
             {
                 extras = ExtrasSerialization.Read(ref jsonReader, context);
             }

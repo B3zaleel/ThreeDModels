@@ -29,11 +29,11 @@ public static class IntegerMapSerialization
                 break;
             }
             var propertyName = jsonReader.GetString();
-            if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(IntegerMap.Extensions)))
+            if (propertyName == nameof(extensions))
             {
                 extensions = ExtensionsSerialization.Read<IntegerMap>(ref jsonReader, context);
             }
-            else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(IntegerMap.Extras)))
+            else if (propertyName == nameof(extras))
             {
                 extras = ExtrasSerialization.Read(ref jsonReader, context);
             }

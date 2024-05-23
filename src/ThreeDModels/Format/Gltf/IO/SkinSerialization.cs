@@ -32,27 +32,27 @@ internal static class SkinSerialization
                 break;
             }
             var propertyName = jsonReader.GetString();
-            if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(Skin.InverseBindMatrices)))
+            if (propertyName == nameof(inverseBindMatrices))
             {
                 inverseBindMatrices = ReadInteger(ref jsonReader);
             }
-            else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(Skin.Skeleton)))
+            else if (propertyName == nameof(skeleton))
             {
                 skeleton = ReadInteger(ref jsonReader);
             }
-            else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(Skin.Joints)))
+            else if (propertyName == nameof(joints))
             {
                 joints = ReadIntegerList(ref jsonReader, context);
             }
-            else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(Skin.Name)))
+            else if (propertyName == nameof(name))
             {
                 name = ReadString(ref jsonReader);
             }
-            else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(Skin.Extensions)))
+            else if (propertyName == nameof(extensions))
             {
                 extensions = ExtensionsSerialization.Read<Skin>(ref jsonReader, context);
             }
-            else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(Skin.Extras)))
+            else if (propertyName == nameof(extras))
             {
                 extras = ExtrasSerialization.Read(ref jsonReader, context);
             }

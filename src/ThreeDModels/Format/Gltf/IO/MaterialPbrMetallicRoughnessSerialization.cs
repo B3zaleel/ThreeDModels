@@ -33,31 +33,31 @@ internal static class MaterialPbrMetallicRoughnessSerialization
                 break;
             }
             var propertyName = jsonReader.GetString();
-            if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(MaterialPbrMetallicRoughness.BaseColorFactor)))
+            if (propertyName == nameof(baseColorFactor))
             {
                 baseColorFactor = ReadFloatList(ref jsonReader, context)?.ToArray();
             }
-            else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(MaterialPbrMetallicRoughness.BaseColorTexture)))
+            else if (propertyName == nameof(baseColorTexture))
             {
                 baseColorTexture = TextureInfoSerialization.Read(ref jsonReader, context);
             }
-            else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(MaterialPbrMetallicRoughness.MetallicFactor)))
+            else if (propertyName == nameof(metallicFactor))
             {
                 metallicFactor = ReadFloat(ref jsonReader);
             }
-            else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(MaterialPbrMetallicRoughness.RoughnessFactor)))
+            else if (propertyName == nameof(roughnessFactor))
             {
                 roughnessFactor = ReadFloat(ref jsonReader);
             }
-            else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(MaterialPbrMetallicRoughness.MetallicRoughnessTexture)))
+            else if (propertyName == nameof(metallicRoughnessTexture))
             {
                 metallicRoughnessTexture = TextureInfoSerialization.Read(ref jsonReader, context);
             }
-            else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(MaterialPbrMetallicRoughness.Extensions)))
+            else if (propertyName == nameof(extensions))
             {
                 extensions = ExtensionsSerialization.Read<MaterialPbrMetallicRoughness>(ref jsonReader, context);
             }
-            else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(MaterialPbrMetallicRoughness.Extras)))
+            else if (propertyName == nameof(extras))
             {
                 extras = ExtrasSerialization.Read(ref jsonReader, context);
             }

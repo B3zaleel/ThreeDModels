@@ -34,35 +34,35 @@ internal static class BufferViewSerialization
                 break;
             }
             var propertyName = jsonReader.GetString();
-            if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(BufferView.Buffer)))
+            if (propertyName == nameof(buffer))
             {
                 buffer = ReadInteger(ref jsonReader);
             }
-            else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(BufferView.ByteOffset)))
+            else if (propertyName == nameof(byteOffset))
             {
                 byteOffset = ReadInteger(ref jsonReader);
             }
-            else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(BufferView.ByteLength)))
+            else if (propertyName == nameof(byteLength))
             {
                 byteLength = ReadInteger(ref jsonReader);
             }
-            else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(BufferView.ByteStride)))
+            else if (propertyName == nameof(byteStride))
             {
                 byteStride = ReadInteger(ref jsonReader);
             }
-            else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(BufferView.Target)))
+            else if (propertyName == nameof(target))
             {
                 target = ReadInteger(ref jsonReader);
             }
-            else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(BufferView.Name)))
+            else if (propertyName == nameof(name))
             {
                 name = ReadString(ref jsonReader);
             }
-            else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(BufferView.Extensions)))
+            else if (propertyName == nameof(extensions))
             {
                 extensions = ExtensionsSerialization.Read<BufferView>(ref jsonReader, context);
             }
-            else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(BufferView.Extras)))
+            else if (propertyName == nameof(extras))
             {
                 extras = ExtrasSerialization.Read(ref jsonReader, context);
             }

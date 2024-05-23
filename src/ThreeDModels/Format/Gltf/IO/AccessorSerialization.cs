@@ -38,51 +38,51 @@ internal static class AccessorSerialization
                 break;
             }
             var propertyName = jsonReader.GetString();
-            if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(Accessor.BufferView)))
+            if (propertyName == nameof(bufferView))
             {
                 bufferView = ReadInteger(ref jsonReader);
             }
-            else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(Accessor.ByteOffset)))
+            else if (propertyName == nameof(byteOffset))
             {
                 byteOffset = ReadInteger(ref jsonReader);
             }
-            else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(Accessor.ComponentType)))
+            else if (propertyName == nameof(componentType))
             {
                 componentType = ReadInteger(ref jsonReader);
             }
-            else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(Accessor.Normalized)))
+            else if (propertyName == nameof(normalized))
             {
                 normalized = ReadBoolean(ref jsonReader);
             }
-            else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(Accessor.Count)))
+            else if (propertyName == nameof(count))
             {
                 count = ReadInteger(ref jsonReader);
             }
-            else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(Accessor.Type)))
+            else if (propertyName == nameof(type))
             {
                 type = ReadString(ref jsonReader);
             }
-            else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(Accessor.Max)))
+            else if (propertyName == nameof(max))
             {
                 max = ReadFloatList(ref jsonReader, context);
             }
-            else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(Accessor.Min)))
+            else if (propertyName == nameof(min))
             {
                 min = ReadFloatList(ref jsonReader, context);
             }
-            else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(Accessor.Sparse)))
+            else if (propertyName == nameof(sparse))
             {
                 sparse = AccessorSparseSerialization.Read(ref jsonReader, context);
             }
-            else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(Accessor.Name)))
+            else if (propertyName == nameof(name))
             {
                 name = ReadString(ref jsonReader);
             }
-            else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(Accessor.Extensions)))
+            else if (propertyName == nameof(extensions))
             {
                 extensions = ExtensionsSerialization.Read<Accessor>(ref jsonReader, context);
             }
-            else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(Accessor.Extras)))
+            else if (propertyName == nameof(extras))
             {
                 extras = ExtrasSerialization.Read(ref jsonReader, context);
             }

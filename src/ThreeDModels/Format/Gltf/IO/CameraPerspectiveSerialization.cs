@@ -32,27 +32,27 @@ internal static class CameraPerspectiveSerialization
                 break;
             }
             var propertyName = jsonReader.GetString();
-            if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(aspectRatio)))
+            if (propertyName == nameof(aspectRatio))
             {
                 aspectRatio = ReadFloat(ref jsonReader);
             }
-            else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(yfov)))
+            else if (propertyName == nameof(yfov))
             {
                 yfov = ReadFloat(ref jsonReader);
             }
-            else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(zfar)))
+            else if (propertyName == nameof(zfar))
             {
                 zfar = ReadFloat(ref jsonReader);
             }
-            else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(znear)))
+            else if (propertyName == nameof(znear))
             {
                 znear = ReadFloat(ref jsonReader);
             }
-            else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(CameraPerspective.Extensions)))
+            else if (propertyName == nameof(extensions))
             {
                 extensions = ExtensionsSerialization.Read<CameraPerspective>(ref jsonReader, context);
             }
-            else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(CameraPerspective.Extras)))
+            else if (propertyName == nameof(extras))
             {
                 extras = ExtrasSerialization.Read(ref jsonReader, context);
             }

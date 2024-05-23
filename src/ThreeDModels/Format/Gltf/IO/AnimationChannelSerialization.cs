@@ -30,19 +30,19 @@ internal static class AnimationChannelSerialization
                 break;
             }
             var propertyName = jsonReader.GetString();
-            if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(AnimationChannel.Sampler)))
+            if (propertyName == nameof(sampler))
             {
                 sampler = ReadInteger(ref jsonReader);
             }
-            else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(AnimationChannel.Target)))
+            else if (propertyName == nameof(target))
             {
                 target = AnimationChannelTargetSerialization.Read(ref jsonReader, context);
             }
-            else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(AnimationChannel.Extensions)))
+            else if (propertyName == nameof(extensions))
             {
                 extensions = ExtensionsSerialization.Read<AnimationChannel>(ref jsonReader, context);
             }
-            else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(AnimationChannel.Extras)))
+            else if (propertyName == nameof(extras))
             {
                 extras = ExtrasSerialization.Read(ref jsonReader, context);
             }

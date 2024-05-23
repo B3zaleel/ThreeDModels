@@ -31,23 +31,23 @@ internal static class MeshSerialization
                 break;
             }
             var propertyName = jsonReader.GetString();
-            if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(Mesh.Primitives)))
+            if (propertyName == nameof(primitives))
             {
                 primitives = ReadList(ref jsonReader, context, JsonTokenType.StartObject, (ref Utf8JsonReader reader, GltfReaderContext ctx) => MeshPrimitiveSerialization.Read(ref reader, ctx)!);
             }
-            else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(Mesh.Weights)))
+            else if (propertyName == nameof(weights))
             {
                 weights = ReadFloatList(ref jsonReader, context);
             }
-            else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(Mesh.Name)))
+            else if (propertyName == nameof(name))
             {
                 name = ReadString(ref jsonReader);
             }
-            else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(Mesh.Extensions)))
+            else if (propertyName == nameof(extensions))
             {
                 extensions = ExtensionsSerialization.Read<Mesh>(ref jsonReader, context);
             }
-            else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(Mesh.Extras)))
+            else if (propertyName == nameof(extras))
             {
                 extras = ExtrasSerialization.Read(ref jsonReader, context);
             }

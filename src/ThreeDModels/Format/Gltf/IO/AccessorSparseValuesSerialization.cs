@@ -30,19 +30,19 @@ internal static class AccessorSparseValuesSerialization
                 break;
             }
             var propertyName = jsonReader.GetString();
-            if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(AccessorSparseValues.BufferView)))
+            if (propertyName == nameof(bufferView))
             {
                 bufferView = ReadInteger(ref jsonReader);
             }
-            else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(AccessorSparseValues.ByteOffset)))
+            else if (propertyName == nameof(byteOffset))
             {
                 byteOffset = ReadInteger(ref jsonReader);
             }
-            else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(AccessorSparseValues.Extensions)))
+            else if (propertyName == nameof(extensions))
             {
                 extensions = ExtensionsSerialization.Read<AccessorSparseValues>(ref jsonReader, context);
             }
-            else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(AccessorSparseValues.Extras)))
+            else if (propertyName == nameof(extras))
             {
                 extras = ExtrasSerialization.Read(ref jsonReader, context);
             }

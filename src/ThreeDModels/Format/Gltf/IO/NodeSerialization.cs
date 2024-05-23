@@ -38,51 +38,51 @@ internal static class NodeSerialization
                 break;
             }
             var propertyName = jsonReader.GetString();
-            if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(Node.Camera)))
+            if (propertyName == nameof(camera))
             {
                 camera = ReadInteger(ref jsonReader);
             }
-            else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(Node.Children)))
+            else if (propertyName == nameof(children))
             {
                 children = ReadIntegerList(ref jsonReader, context);
             }
-            else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(Node.Skin)))
+            else if (propertyName == nameof(skin))
             {
                 skin = ReadInteger(ref jsonReader);
             }
-            else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(Node.Matrix)))
+            else if (propertyName == nameof(matrix))
             {
                 matrix = ReadFloatList(ref jsonReader, context)?.ToArray();
             }
-            else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(Node.Mesh)))
+            else if (propertyName == nameof(mesh))
             {
                 mesh = ReadInteger(ref jsonReader);
             }
-            else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(Node.Rotation)))
+            else if (propertyName == nameof(rotation))
             {
                 rotation = ReadFloatList(ref jsonReader, context)?.ToArray();
             }
-            else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(Node.Scale)))
+            else if (propertyName == nameof(scale))
             {
                 scale = ReadFloatList(ref jsonReader, context)?.ToArray();
             }
-            else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(Node.Translation)))
+            else if (propertyName == nameof(translation))
             {
                 translation = ReadFloatList(ref jsonReader, context)?.ToArray();
             }
-            else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(Node.Weights)))
+            else if (propertyName == nameof(weights))
             {
                 weights = ReadFloatList(ref jsonReader, context);
             }
-            else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(Node.Name)))
+            else if (propertyName == nameof(name))
             {
                 name = ReadString(ref jsonReader);
             }
-            else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(Node.Extensions)))
+            else if (propertyName == nameof(extensions))
             {
                 extensions = ExtensionsSerialization.Read<Node>(ref jsonReader, context);
             }
-            else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(Node.Extras)))
+            else if (propertyName == nameof(extras))
             {
                 extras = ExtrasSerialization.Read(ref jsonReader, context);
             }

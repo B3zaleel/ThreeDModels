@@ -32,27 +32,27 @@ internal static class CameraOrthographicSerialization
                 break;
             }
             var propertyName = jsonReader.GetString();
-            if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(xmag)))
+            if (propertyName == nameof(xmag))
             {
                 xmag = ReadFloat(ref jsonReader);
             }
-            else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(ymag)))
+            else if (propertyName == nameof(ymag))
             {
                 ymag = ReadFloat(ref jsonReader);
             }
-            else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(zfar)))
+            else if (propertyName == nameof(zfar))
             {
                 zfar = ReadFloat(ref jsonReader);
             }
-            else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(znear)))
+            else if (propertyName == nameof(znear))
             {
                 znear = ReadFloat(ref jsonReader);
             }
-            else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(CameraOrthographic.Extensions)))
+            else if (propertyName == nameof(extensions))
             {
                 extensions = ExtensionsSerialization.Read<CameraOrthographic>(ref jsonReader, context);
             }
-            else if (propertyName == JsonNamingPolicy.CamelCase.ConvertName(nameof(CameraOrthographic.Extras)))
+            else if (propertyName == nameof(extras))
             {
                 extras = ExtrasSerialization.Read(ref jsonReader, context);
             }

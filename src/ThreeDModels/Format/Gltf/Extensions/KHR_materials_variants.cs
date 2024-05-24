@@ -65,7 +65,7 @@ public class KhrMaterialsVariantsExtension : IGltfExtension
 
     public object? Read(ref Utf8JsonReader jsonReader, GltfReaderContext context, Type parentType)
     {
-        if (parentType != typeof(Gltf))
+        if (parentType == typeof(Gltf))
         {
             List<KhrMaterialsVariantsVariant>? variants = null;
             Dictionary<string, object?>? extensions = null;
@@ -94,7 +94,7 @@ public class KhrMaterialsVariantsExtension : IGltfExtension
                 }
                 else if (propertyName == nameof(extensions))
                 {
-                    extensions = ExtensionsSerialization.Read<KHR_draco_mesh_compression>(ref jsonReader, context);
+                    extensions = ExtensionsSerialization.Read<KHR_materials_variants>(ref jsonReader, context);
                 }
                 else if (propertyName == nameof(extras))
                 {
@@ -145,7 +145,7 @@ public class KhrMaterialsVariantsExtension : IGltfExtension
                 }
                 else if (propertyName == nameof(extensions))
                 {
-                    extensions = ExtensionsSerialization.Read<KHR_draco_mesh_compression>(ref jsonReader, context);
+                    extensions = ExtensionsSerialization.Read<KHR_materials_variants>(ref jsonReader, context);
                 }
                 else if (propertyName == nameof(extras))
                 {
@@ -202,7 +202,7 @@ public class KhrMaterialsVariantsVariantSerialization
             }
             else if (propertyName == nameof(extensions))
             {
-                extensions = ExtensionsSerialization.Read<AccessorSparse>(ref jsonReader, context);
+                extensions = ExtensionsSerialization.Read<KhrMaterialsVariantsVariant>(ref jsonReader, context);
             }
             else if (propertyName == nameof(extras))
             {
@@ -267,7 +267,7 @@ public class KhrMaterialsVariantsMappingSerialization
             }
             else if (propertyName == nameof(extensions))
             {
-                extensions = ExtensionsSerialization.Read<AccessorSparse>(ref jsonReader, context);
+                extensions = ExtensionsSerialization.Read<KhrMaterialsVariantsMapping>(ref jsonReader, context);
             }
             else if (propertyName == nameof(extras))
             {

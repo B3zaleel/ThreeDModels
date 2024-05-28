@@ -79,7 +79,7 @@ internal static class MaterialSerialization
             }
             else if (propertyName == nameof(extras))
             {
-                extras = ExtrasSerialization.Read(ref jsonReader, context);
+                extras = JsonSerialization.Read(ref jsonReader, context);
             }
             else
             {

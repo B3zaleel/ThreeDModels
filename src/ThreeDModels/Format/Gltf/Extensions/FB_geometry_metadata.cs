@@ -91,7 +91,7 @@ public class FbGeometryMetadataExtension : IGltfExtension
             }
             else if (propertyName == nameof(extras))
             {
-                extras = ExtrasSerialization.Read(ref jsonReader, context);
+                extras = JsonSerialization.Read(ref jsonReader, context);
             }
             else
             {
@@ -149,7 +149,7 @@ public class SceneBoundsSerialization
             }
             else if (propertyName == nameof(extras))
             {
-                extras = ExtrasSerialization.Read(ref jsonReader, context);
+                extras = JsonSerialization.Read(ref jsonReader, context);
             }
             else
             {

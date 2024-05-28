@@ -26,7 +26,7 @@ public class MPEG_accessor_timed : IGltfProperty
     public object? Extras { get; set; }
 }
 
-public class Extension : IGltfExtension
+public class MpegAccessorTimedExtension : IGltfExtension
 {
     public string Name => nameof(MPEG_accessor_timed);
     public const bool Default_Immutable = true;

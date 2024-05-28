@@ -96,4 +96,9 @@ public static class Utf8JsonReaderHelpers
     {
         return ReadList(ref jsonReader, context, JsonTokenType.StartObject, elementReader);
     }
+
+    public static List<T>? ReadListList<T>(ref Utf8JsonReader jsonReader, GltfReaderContext context, ArrayElementReader<T> elementReader)
+    {
+        return ReadList(ref jsonReader, context, JsonTokenType.StartArray, elementReader);
+    }
 }

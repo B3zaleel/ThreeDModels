@@ -1,4 +1,4 @@
-namespace ThreeDModels.Format.Ctm.IO;
+namespace ThreeDModels.Format.Ctm.Elements;
 
 public enum CompressionMethod
 {

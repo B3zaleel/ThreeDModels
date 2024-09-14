@@ -1,13 +1,15 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
+    <OutputType>Library</OutputType>
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <PackageId>B3zaleel.ThreeDModels.Format.Ctm</PackageId>
     <Version>0.1.0</Version>
-    <Authors>B3zaleel</Authors>
+    <Authors>Bezaleel Olakunori</Authors>
     <Description>Load and Export .ctm files.</Description>
+    <Copyright>Copyright © Bezaleel Olakunori 2024</Copyright>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <RepositoryUrl>https://github.com/B3zaleel/ThreeDModels/tree/main/src/ThreeDModels/Format/Ctm</RepositoryUrl>
     <PackageTags>3d models ctm</PackageTags>
@@ -28,7 +30,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="./README.md">
+    <None Include="./README.md" Pack="True" PackagePath="/README.md">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>

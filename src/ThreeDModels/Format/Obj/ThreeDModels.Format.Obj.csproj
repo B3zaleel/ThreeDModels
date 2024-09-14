@@ -4,7 +4,7 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <PackageId>ThreeDModels.Format.Obj</PackageId>
+    <PackageId>B3zaleel.ThreeDModels.Format.Obj</PackageId>
     <Version>0.1.0</Version>
     <Authors>B3zaleel</Authors>
     <Description>Load and Export .obj files.</Description>

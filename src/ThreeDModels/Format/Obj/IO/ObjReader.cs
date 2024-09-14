@@ -3,7 +3,7 @@ using ThreeDModels.Format.Obj.Elements;
 using ThreeDModels.Format.Obj.Grouping;
 using ThreeDModels.Format.Obj.Vertex;
 
-namespace ThreeDModels.Format.Obj;
+namespace ThreeDModels.Format.Obj.IO;
 
 public class ObjReader
 {

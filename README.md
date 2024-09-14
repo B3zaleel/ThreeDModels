@@ -6,7 +6,7 @@ ThreeDModels is a collection of libraries for loading 3D files.
 
 ## Contributing
 
-We welcome contributions to SqlDataExtractor!
+We welcome contributions to ThreeDModels!
 
 To get started contributing, you could raise an issue and provide enough details for us to investigate the issue.
 

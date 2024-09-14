@@ -1,7 +1,7 @@
 using SevenZip.Compression.LZMA;
 using ThreeDModels.Format.Ctm.Elements;
 
-namespace ThreeDModels.Format.Ctm;
+namespace ThreeDModels.Format.Ctm.IO;
 
 public class CtmReader
 {

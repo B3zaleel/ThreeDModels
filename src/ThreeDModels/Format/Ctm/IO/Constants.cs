@@ -1,4 +1,4 @@
-namespace ThreeDModels.Format.Ctm;
+namespace ThreeDModels.Format.Ctm.IO;
 
 public static class Constants
 {

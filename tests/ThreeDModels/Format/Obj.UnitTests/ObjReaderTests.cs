@@ -1,5 +1,6 @@
 using System.IO;
 using FluentAssertions;
+using ThreeDModels.Format.Obj.IO;
 using Xunit;
 
 namespace ThreeDModels.Format.Obj.UnitTests;

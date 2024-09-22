@@ -11,7 +11,7 @@ internal static class AnimationChannelTargetSerialization
         int? node = null;
         string? path = null;
         Dictionary<string, object?>? extensions = null;
-        object? extras = null;
+        Elements.JsonElement? extras = null;
         if (jsonReader.TokenType == JsonTokenType.PropertyName && jsonReader.Read())
         {
         }

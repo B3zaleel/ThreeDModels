@@ -14,7 +14,7 @@ internal static class SamplerSerialization
         int? wrapT = null;
         string? name = null;
         Dictionary<string, object?>? extensions = null;
-        object? extras = null;
+        Elements.JsonElement? extras = null;
         jsonReader.Read();
         if (jsonReader.TokenType == JsonTokenType.Null)
         {

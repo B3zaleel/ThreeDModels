@@ -11,7 +11,7 @@ internal static class TextureInfoSerialization
         int? index = null;
         int? texCoord = null;
         Dictionary<string, object?>? extensions = null;
-        object? extras = null;
+        Elements.JsonElement? extras = null;
         if (jsonReader.TokenType == JsonTokenType.PropertyName && jsonReader.Read())
         {
         }

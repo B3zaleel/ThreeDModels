@@ -15,7 +15,7 @@ public class MPEG_animation_timing : IGltfProperty
     /// </summary>
     public required int Accessor { get; set; }
     public Dictionary<string, object?>? Extensions { get; set; }
-    public object? Extras { get; set; }
+    public Elements.JsonElement? Extras { get; set; }
 }
 
 public class MpegAnimationTimingExtension : IGltfExtension
@@ -26,7 +26,7 @@ public class MpegAnimationTimingExtension : IGltfExtension
     {
         int? accessor = null;
         Dictionary<string, object?>? extensions = null;
-        object? extras = null;
+        Elements.JsonElement? extras = null;
         if (jsonReader.TokenType == JsonTokenType.PropertyName && jsonReader.Read())
         {
         }

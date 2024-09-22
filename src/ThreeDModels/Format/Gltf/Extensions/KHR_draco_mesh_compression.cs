@@ -16,7 +16,7 @@ public class KHR_draco_mesh_compression : IGltfProperty
     /// </summary>
     public required IntegerMap Attributes { get; set; }
     public Dictionary<string, object?>? Extensions { get; set; }
-    public object? Extras { get; set; }
+    public Elements.JsonElement? Extras { get; set; }
 }
 
 public class KhrDracoMeshCompressionExtension : IGltfExtension
@@ -32,7 +32,7 @@ public class KhrDracoMeshCompressionExtension : IGltfExtension
         int? bufferView = null;
         IntegerMap? attributes = null;
         Dictionary<string, object?>? extensions = null;
-        object? extras = null;
+        Elements.JsonElement? extras = null;
         if (jsonReader.TokenType == JsonTokenType.PropertyName && jsonReader.Read())
         {
         }

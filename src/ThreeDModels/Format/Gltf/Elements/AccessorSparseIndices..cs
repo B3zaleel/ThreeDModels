@@ -18,5 +18,5 @@ public class AccessorSparseIndices : IGltfProperty
     /// </summary>
     public required int ComponentType { get; set; }
     public Dictionary<string, object?>? Extensions { get; set; }
-    public object? Extras { get; set; }
+    public JsonElement? Extras { get; set; }
 }

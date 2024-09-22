@@ -9,5 +9,5 @@ public interface IGltfProperty
     /// <summary>
     /// Application-specific object.
     /// </summary>
-    public object? Extras { get; set; }
+    public JsonElement? Extras { get; set; }
 }

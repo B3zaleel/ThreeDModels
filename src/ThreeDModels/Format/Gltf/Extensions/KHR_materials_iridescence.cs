@@ -37,7 +37,7 @@ public class KHR_materials_iridescence : IGltfProperty
     /// </summary>
     public TextureInfo? IridescenceThicknessTexture { get; set; }
     public Dictionary<string, object?>? Extensions { get; set; }
-    public object? Extras { get; set; }
+    public Elements.JsonElement? Extras { get; set; }
 }
 
 public class KhrMaterialsIridescenceExtension : IGltfExtension
@@ -61,7 +61,7 @@ public class KhrMaterialsIridescenceExtension : IGltfExtension
         float? iridescenceThicknessMaximum = null;
         TextureInfo? iridescenceThicknessTexture = null;
         Dictionary<string, object?>? extensions = null;
-        object? extras = null;
+        Elements.JsonElement? extras = null;
         if (jsonReader.TokenType == JsonTokenType.PropertyName && jsonReader.Read())
         {
         }

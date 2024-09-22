@@ -15,7 +15,7 @@ public class AGI_stk_metadata : IGltfProperty
     /// </summary>
     public List<AgiStkSolarPanelGroup>? SolarPanelGroups { get; set; }
     public Dictionary<string, object?>? Extensions { get; set; }
-    public object? Extras { get; set; }
+    public Elements.JsonElement? Extras { get; set; }
 }
 
 public class AgiStkSolarPanelGroup : IGltfProperty
@@ -29,7 +29,7 @@ public class AgiStkSolarPanelGroup : IGltfProperty
     /// </summary>
     public required float Efficiency { get; set; }
     public Dictionary<string, object?>? Extensions { get; set; }
-    public object? Extras { get; set; }
+    public Elements.JsonElement? Extras { get; set; }
 }
 
 /// <summary>
@@ -46,7 +46,7 @@ public class AgiStkMetadataNode : IGltfProperty
     /// </summary>
     public bool? NoObscuration { get; set; }
     public Dictionary<string, object?>? Extensions { get; set; }
-    public object? Extras { get; set; }
+    public Elements.JsonElement? Extras { get; set; }
 }
 
 public class AgiStkMetadataExtension : IGltfExtension
@@ -59,7 +59,7 @@ public class AgiStkMetadataExtension : IGltfExtension
         {
             List<AgiStkSolarPanelGroup>? solarPanelGroups = null;
             Dictionary<string, object?>? extensions = null;
-            object? extras = null;
+            Elements.JsonElement? extras = null;
             if (jsonReader.TokenType == JsonTokenType.PropertyName && jsonReader.Read())
             {
             }
@@ -111,7 +111,7 @@ public class AgiStkMetadataExtension : IGltfExtension
             string? solarPanelGroupName = null;
             bool? noObscuration = null;
             Dictionary<string, object?>? extensions = null;
-            object? extras = null;
+            Elements.JsonElement? extras = null;
             if (jsonReader.TokenType == JsonTokenType.PropertyName && jsonReader.Read())
             {
             }
@@ -170,7 +170,7 @@ public class AgiStkSolarPanelGroupSerialization
         string? name = null;
         float? efficiency = null;
         Dictionary<string, object?>? extensions = null;
-        object? extras = null;
+        Elements.JsonElement? extras = null;
         if (jsonReader.TokenType == JsonTokenType.PropertyName && jsonReader.Read())
         {
         }

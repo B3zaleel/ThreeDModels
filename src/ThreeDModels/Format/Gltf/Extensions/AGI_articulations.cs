@@ -12,7 +12,7 @@ public class AGI_articulations : IGltfProperty
     /// </summary>
     public List<AgiArticulation>? Articulations { get; set; }
     public Dictionary<string, object?>? Extensions { get; set; }
-    public object? Extras { get; set; }
+    public Elements.JsonElement? Extras { get; set; }
 }
 
 /// <summary>
@@ -33,7 +33,7 @@ public class AgiArticulation : IGltfProperty
     /// </summary>
     public float[]? PointingVector { get; set; }
     public Dictionary<string, object?>? Extensions { get; set; }
-    public object? Extras { get; set; }
+    public Elements.JsonElement? Extras { get; set; }
 }
 
 /// <summary>
@@ -62,7 +62,7 @@ public class AgiArticulationStage : IGltfProperty
     /// </summary>
     public required float InitialValue { get; set; }
     public Dictionary<string, object?>? Extensions { get; set; }
-    public object? Extras { get; set; }
+    public Elements.JsonElement? Extras { get; set; }
 }
 
 /// <summary>
@@ -79,7 +79,7 @@ public class AgiArticulationNode
     /// </summary>
     public string? ArticulationName { get; set; }
     public Dictionary<string, object?>? Extensions { get; set; }
-    public object? Extras { get; set; }
+    public Elements.JsonElement? Extras { get; set; }
 }
 
 public class AgiArticulationsExtension : IGltfExtension
@@ -92,7 +92,7 @@ public class AgiArticulationsExtension : IGltfExtension
         {
             List<AgiArticulation>? articulations = null;
             Dictionary<string, object?>? extensions = null;
-            object? extras = null;
+            Elements.JsonElement? extras = null;
             if (jsonReader.TokenType == JsonTokenType.PropertyName && jsonReader.Read())
             {
             }
@@ -144,7 +144,7 @@ public class AgiArticulationsExtension : IGltfExtension
             bool? isAttachPoint = null;
             string? articulationName = null;
             Dictionary<string, object?>? extensions = null;
-            object? extras = null;
+            Elements.JsonElement? extras = null;
             if (jsonReader.TokenType == JsonTokenType.PropertyName && jsonReader.Read())
             {
             }
@@ -204,7 +204,7 @@ public class AgiArticulationSerialization
         List<AgiArticulationStage>? stages = null;
         float[]? pointingVector = null;
         Dictionary<string, object?>? extensions = null;
-        object? extras = null;
+        Elements.JsonElement? extras = null;
         if (jsonReader.TokenType == JsonTokenType.PropertyName && jsonReader.Read())
         {
         }
@@ -273,7 +273,7 @@ public class AgiArticulationStageSerialization
         float? maximumValue = null;
         float? initialValue = null;
         Dictionary<string, object?>? extensions = null;
-        object? extras = null;
+        Elements.JsonElement? extras = null;
         if (jsonReader.TokenType == JsonTokenType.PropertyName && jsonReader.Read())
         {
         }

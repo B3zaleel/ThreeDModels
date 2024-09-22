@@ -33,5 +33,5 @@ public class MeshPrimitive : IGltfProperty
     /// </summary>
     public List<IntegerMap>? Targets { get; set; } = [];
     public Dictionary<string, object?>? Extensions { get; set; }
-    public object? Extras { get; set; }
+    public JsonElement? Extras { get; set; }
 }

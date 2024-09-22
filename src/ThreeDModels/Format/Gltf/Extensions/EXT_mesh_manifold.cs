@@ -20,7 +20,7 @@ public class EXT_mesh_manifold : IGltfProperty
     /// </summary>
     public int? MergeValues { get; set; }
     public Dictionary<string, object?>? Extensions { get; set; }
-    public object? Extras { get; set; }
+    public Elements.JsonElement? Extras { get; set; }
 }
 
 public class ExtMeshManifoldExtension : IGltfExtension
@@ -37,7 +37,7 @@ public class ExtMeshManifoldExtension : IGltfExtension
         int? mergeIndices = null;
         int? mergeValues = null;
         Dictionary<string, object?>? extensions = null;
-        object? extras = null;
+        Elements.JsonElement? extras = null;
         if (jsonReader.TokenType == JsonTokenType.PropertyName && jsonReader.Read())
         {
         }

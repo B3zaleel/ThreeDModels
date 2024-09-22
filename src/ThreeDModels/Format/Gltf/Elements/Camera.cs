@@ -19,5 +19,5 @@ public class Camera : IGltfRootProperty
     public required string Type { get; set; }
     public string? Name { get; set; } = string.Empty;
     public Dictionary<string, object?>? Extensions { get; set; }
-    public object? Extras { get; set; }
+    public JsonElement? Extras { get; set; }
 }

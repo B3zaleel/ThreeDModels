@@ -11,7 +11,7 @@ public class ADOBE_materials_thin_transparency : IGltfProperty
     public TextureInfo? TransmissionTexture { get; set; }
     public float Ior { get; set; }
     public Dictionary<string, object?>? Extensions { get; set; }
-    public object? Extras { get; set; }
+    public Elements.JsonElement? Extras { get; set; }
 }
 
 public class AdobeMaterialsThinTransparencyExtension : IGltfExtension
@@ -30,7 +30,7 @@ public class AdobeMaterialsThinTransparencyExtension : IGltfExtension
         TextureInfo? transmissionTexture = null;
         float? ior = null;
         Dictionary<string, object?>? extensions = null;
-        object? extras = null;
+        Elements.JsonElement? extras = null;
         if (jsonReader.TokenType == JsonTokenType.PropertyName && jsonReader.Read())
         {
         }

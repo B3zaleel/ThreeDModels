@@ -18,5 +18,5 @@ public class AccessorSparse : IGltfProperty
     /// </summary>
     public required AccessorSparseValues Values { get; set; }
     public Dictionary<string, object?>? Extensions { get; set; }
-    public object? Extras { get; set; }
+    public JsonElement? Extras { get; set; }
 }

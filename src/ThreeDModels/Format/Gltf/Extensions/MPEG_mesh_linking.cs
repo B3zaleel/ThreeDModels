@@ -27,7 +27,7 @@ public class MPEG_mesh_linking : IGltfProperty
     /// </summary>
     public int? Weights { get; set; }
     public Dictionary<string, object?>? Extensions { get; set; }
-    public object? Extras { get; set; }
+    public Elements.JsonElement? Extras { get; set; }
 }
 
 public class MpegMeshLinkingExtension : IGltfExtension
@@ -41,7 +41,7 @@ public class MpegMeshLinkingExtension : IGltfExtension
         int? pose = null;
         int? weights = null;
         Dictionary<string, object?>? extensions = null;
-        object? extras = null;
+        Elements.JsonElement? extras = null;
         if (jsonReader.TokenType == JsonTokenType.PropertyName && jsonReader.Read())
         {
         }

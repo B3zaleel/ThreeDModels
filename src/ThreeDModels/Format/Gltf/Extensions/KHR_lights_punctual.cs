@@ -9,7 +9,7 @@ public class KHR_lights_punctual : IGltfProperty
 {
     public required List<KhrLightsPunctualLight> Lights { get; set; }
     public Dictionary<string, object?>? Extensions { get; set; }
-    public object? Extras { get; set; }
+    public Elements.JsonElement? Extras { get; set; }
 }
 
 /// <summary>
@@ -36,7 +36,7 @@ public class KhrLightsPunctualLight : IGltfRootProperty
     public float Range { get; set; }
     public string? Name { get; set; }
     public Dictionary<string, object?>? Extensions { get; set; }
-    public object? Extras { get; set; }
+    public Elements.JsonElement? Extras { get; set; }
 }
 
 public class KhrLightsPunctualLightSpot : IGltfProperty
@@ -50,7 +50,7 @@ public class KhrLightsPunctualLightSpot : IGltfProperty
     /// </summary>
     public float OuterConeAngle { get; set; }
     public Dictionary<string, object?>? Extensions { get; set; }
-    public object? Extras { get; set; }
+    public Elements.JsonElement? Extras { get; set; }
 }
 
 public class KhrLightsPunctualNode : IGltfProperty
@@ -60,7 +60,7 @@ public class KhrLightsPunctualNode : IGltfProperty
     /// </summary>
     public required int Light { get; set; }
     public Dictionary<string, object?>? Extensions { get; set; }
-    public object? Extras { get; set; }
+    public Elements.JsonElement? Extras { get; set; }
 }
 
 public class KhrLightsPunctualExtension : IGltfExtension
@@ -73,7 +73,7 @@ public class KhrLightsPunctualExtension : IGltfExtension
         {
             List<KhrLightsPunctualLight>? lights = null;
             Dictionary<string, object?>? extensions = null;
-            object? extras = null;
+            Elements.JsonElement? extras = null;
             if (jsonReader.TokenType == JsonTokenType.PropertyName && jsonReader.Read())
             {
             }
@@ -124,7 +124,7 @@ public class KhrLightsPunctualExtension : IGltfExtension
         {
             int? light = null;
             Dictionary<string, object?>? extensions = null;
-            object? extras = null;
+            Elements.JsonElement? extras = null;
             if (jsonReader.TokenType == JsonTokenType.PropertyName && jsonReader.Read())
             {
             }
@@ -189,7 +189,7 @@ public class KhrLightsPunctualLightSerialization
         float? range = null;
         string? name = null;
         Dictionary<string, object?>? extensions = null;
-        object? extras = null;
+        Elements.JsonElement? extras = null;
         if (jsonReader.TokenType == JsonTokenType.PropertyName && jsonReader.Read())
         {
         }
@@ -273,7 +273,7 @@ public class KhrLightsPunctualLightSpotSerialization
         float? innerConeAngle = null;
         float? outerConeAngle = null;
         Dictionary<string, object?>? extensions = null;
-        object? extras = null;
+        Elements.JsonElement? extras = null;
         if (jsonReader.TokenType == JsonTokenType.PropertyName && jsonReader.Read())
         {
         }

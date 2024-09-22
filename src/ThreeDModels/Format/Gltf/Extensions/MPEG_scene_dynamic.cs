@@ -19,7 +19,7 @@ public class MPEG_scene_dynamic : IGltfProperty
     /// </summary>
     public int? Track { get; set; }
     public Dictionary<string, object?>? Extensions { get; set; }
-    public object? Extras { get; set; }
+    public Elements.JsonElement? Extras { get; set; }
 }
 
 public class MpegSceneDynamicExtension : IGltfExtension
@@ -31,7 +31,7 @@ public class MpegSceneDynamicExtension : IGltfExtension
         int? media = null;
         int? track = null;
         Dictionary<string, object?>? extensions = null;
-        object? extras = null;
+        Elements.JsonElement? extras = null;
         if (jsonReader.TokenType == JsonTokenType.PropertyName && jsonReader.Read())
         {
         }

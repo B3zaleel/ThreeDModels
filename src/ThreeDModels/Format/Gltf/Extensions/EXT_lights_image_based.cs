@@ -12,7 +12,7 @@ public class EXT_lights_image_based : IGltfProperty
 {
     public required List<ExtIightsImageBasedLight> Lights { get; set; }
     public Dictionary<string, object?>? Extensions { get; set; }
-    public object? Extras { get; set; }
+    public Elements.JsonElement? Extras { get; set; }
 }
 
 /// <summary>
@@ -42,7 +42,7 @@ public class ExtIightsImageBasedLight : IGltfRootProperty
     public required int SpecularImageSize { get; set; }
     public string? Name { get; set; }
     public Dictionary<string, object?>? Extensions { get; set; }
-    public object? Extras { get; set; }
+    public Elements.JsonElement? Extras { get; set; }
 }
 
 public class ExtIightsImageBasedScene : IGltfProperty
@@ -52,7 +52,7 @@ public class ExtIightsImageBasedScene : IGltfProperty
     /// </summary>
     public required int Light { get; set; }
     public Dictionary<string, object?>? Extensions { get; set; }
-    public object? Extras { get; set; }
+    public Elements.JsonElement? Extras { get; set; }
 }
 
 public class ExtIightsImageBasedExtension : IGltfExtension
@@ -65,7 +65,7 @@ public class ExtIightsImageBasedExtension : IGltfExtension
         {
             List<ExtIightsImageBasedLight>? lights = null;
             Dictionary<string, object?>? extensions = null;
-            object? extras = null;
+            Elements.JsonElement? extras = null;
             if (jsonReader.TokenType == JsonTokenType.PropertyName && jsonReader.Read())
             {
             }
@@ -116,7 +116,7 @@ public class ExtIightsImageBasedExtension : IGltfExtension
         {
             int? light = null;
             Dictionary<string, object?>? extensions = null;
-            object? extras = null;
+            Elements.JsonElement? extras = null;
             if (jsonReader.TokenType == JsonTokenType.PropertyName && jsonReader.Read())
             {
             }
@@ -181,7 +181,7 @@ public class ExtIightsImageBasedLightSerialization
         int? specularImageSize = null;
         string? name = null;
         Dictionary<string, object?>? extensions = null;
-        object? extras = null;
+        Elements.JsonElement? extras = null;
         if (jsonReader.TokenType == JsonTokenType.PropertyName && jsonReader.Read())
         {
         }

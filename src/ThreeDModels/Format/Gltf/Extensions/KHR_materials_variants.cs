@@ -12,7 +12,7 @@ public class KHR_materials_variants : IGltfProperty
     /// </summary>
     public required List<KhrMaterialsVariantsVariant> Variants { get; set; }
     public Dictionary<string, object?>? Extensions { get; set; }
-    public object? Extras { get; set; }
+    public Elements.JsonElement? Extras { get; set; }
 }
 
 /// <summary>
@@ -25,7 +25,7 @@ public class KhrMaterialsVariantsVariant : IGltfRootProperty
     /// </summary>
     public string? Name { get; set; }
     public Dictionary<string, object?>? Extensions { get; set; }
-    public object? Extras { get; set; }
+    public Elements.JsonElement? Extras { get; set; }
 }
 
 public class KHR_materials_variants_mesh_primitive : IGltfProperty
@@ -35,7 +35,7 @@ public class KHR_materials_variants_mesh_primitive : IGltfProperty
     /// </summary>
     public required List<KhrMaterialsVariantsMapping>? Mappings { get; set; }
     public Dictionary<string, object?>? Extensions { get; set; }
-    public object? Extras { get; set; }
+    public Elements.JsonElement? Extras { get; set; }
 }
 
 /// <summary>
@@ -56,7 +56,7 @@ public class KhrMaterialsVariantsMapping : IGltfProperty
     /// </summary>
     public string? Name { get; set; }
     public Dictionary<string, object?>? Extensions { get; set; }
-    public object? Extras { get; set; }
+    public Elements.JsonElement? Extras { get; set; }
 }
 
 public class KhrMaterialsVariantsExtension : IGltfExtension
@@ -69,7 +69,7 @@ public class KhrMaterialsVariantsExtension : IGltfExtension
         {
             List<KhrMaterialsVariantsVariant>? variants = null;
             Dictionary<string, object?>? extensions = null;
-            object? extras = null;
+            Elements.JsonElement? extras = null;
             if (jsonReader.TokenType == JsonTokenType.PropertyName && jsonReader.Read())
             {
             }
@@ -120,7 +120,7 @@ public class KhrMaterialsVariantsExtension : IGltfExtension
         {
             List<KhrMaterialsVariantsMapping>? mappings = null;
             Dictionary<string, object?>? extensions = null;
-            object? extras = null;
+            Elements.JsonElement? extras = null;
             if (jsonReader.TokenType == JsonTokenType.PropertyName && jsonReader.Read())
             {
             }
@@ -177,7 +177,7 @@ public class KhrMaterialsVariantsVariantSerialization
     {
         string? name = null;
         Dictionary<string, object?>? extensions = null;
-        object? extras = null;
+        Elements.JsonElement? extras = null;
         if (jsonReader.TokenType == JsonTokenType.PropertyName && jsonReader.Read())
         {
         }
@@ -234,7 +234,7 @@ public class KhrMaterialsVariantsMappingSerialization
         int? material = null;
         string? name = null;
         Dictionary<string, object?>? extensions = null;
-        object? extras = null;
+        Elements.JsonElement? extras = null;
         if (jsonReader.TokenType == JsonTokenType.PropertyName && jsonReader.Read())
         {
         }

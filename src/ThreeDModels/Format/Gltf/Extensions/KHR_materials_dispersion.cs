@@ -15,7 +15,7 @@ public class KHR_materials_dispersion : IGltfProperty
     /// </summary>
     public float Dispersion { get; set; }
     public Dictionary<string, object?>? Extensions { get; set; }
-    public object? Extras { get; set; }
+    public Elements.JsonElement? Extras { get; set; }
 }
 
 public class KhrMaterialsDispersionExtension : IGltfExtension
@@ -31,7 +31,7 @@ public class KhrMaterialsDispersionExtension : IGltfExtension
         }
         float? dispersion = null;
         Dictionary<string, object?>? extensions = null;
-        object? extras = null;
+        Elements.JsonElement? extras = null;
         if (jsonReader.TokenType == JsonTokenType.PropertyName && jsonReader.Read())
         {
         }

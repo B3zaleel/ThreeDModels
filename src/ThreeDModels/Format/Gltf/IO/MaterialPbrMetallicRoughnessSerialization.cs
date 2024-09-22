@@ -14,7 +14,7 @@ internal static class MaterialPbrMetallicRoughnessSerialization
         float? roughnessFactor = null;
         TextureInfo? metallicRoughnessTexture = null;
         Dictionary<string, object?>? extensions = null;
-        object? extras = null;
+        Elements.JsonElement? extras = null;
         if (jsonReader.TokenType == JsonTokenType.PropertyName && jsonReader.Read())
         {
         }

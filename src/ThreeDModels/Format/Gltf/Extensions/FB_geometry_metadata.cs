@@ -20,7 +20,7 @@ public class FB_geometry_metadata : IGltfProperty
     /// </summary>
     public SceneBounds? SceneBounds { get; set; }
     public Dictionary<string, object?>? Extensions { get; set; }
-    public object? Extras { get; set; }
+    public Elements.JsonElement? Extras { get; set; }
 }
 
 /// <summary>
@@ -37,7 +37,7 @@ public class SceneBounds : IGltfProperty
     /// </summary>
     public required float[]? Max { get; set; }
     public Dictionary<string, object?>? Extensions { get; set; }
-    public object? Extras { get; set; }
+    public Elements.JsonElement? Extras { get; set; }
 }
 
 public class FbGeometryMetadataExtension : IGltfExtension
@@ -54,7 +54,7 @@ public class FbGeometryMetadataExtension : IGltfExtension
         float? primitiveCount = null;
         SceneBounds? sceneBounds = null;
         Dictionary<string, object?>? extensions = null;
-        object? extras = null;
+        Elements.JsonElement? extras = null;
         if (jsonReader.TokenType == JsonTokenType.PropertyName && jsonReader.Read())
         {
         }
@@ -116,7 +116,7 @@ public class SceneBoundsSerialization
         float[]? min = null;
         float[]? max = null;
         Dictionary<string, object?>? extensions = null;
-        object? extras = null;
+        Elements.JsonElement? extras = null;
         if (jsonReader.TokenType == JsonTokenType.PropertyName && jsonReader.Read())
         {
         }

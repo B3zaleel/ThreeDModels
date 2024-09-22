@@ -22,5 +22,5 @@ public class Asset : IGltfProperty
     /// </summary>
     public string? MinVersion { get; set; } = string.Empty;
     public Dictionary<string, object?>? Extensions { get; set; }
-    public object? Extras { get; set; }
+    public JsonElement? Extras { get; set; }
 }

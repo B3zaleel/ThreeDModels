@@ -12,7 +12,7 @@ internal static class AccessorSparseSerialization
         AccessorSparseIndices? indices = null;
         AccessorSparseValues? values = null;
         Dictionary<string, object?>? extensions = null;
-        object? extras = null;
+        Elements.JsonElement? extras = null;
         if (jsonReader.TokenType == JsonTokenType.PropertyName && jsonReader.Read())
         {
         }

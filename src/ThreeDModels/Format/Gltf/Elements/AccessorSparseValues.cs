@@ -14,5 +14,5 @@ public class AccessorSparseValues : IGltfProperty
     /// </summary>
     public int ByteOffset { get; set; } = 0;
     public Dictionary<string, object?>? Extensions { get; set; }
-    public object? Extras { get; set; }
+    public JsonElement? Extras { get; set; }
 }

@@ -12,7 +12,7 @@ public class MPEG_viewport_recommended : IGltfProperty
 {
     public required List<MpegViewportRecommended> Viewports { get; set; }
     public Dictionary<string, object?>? Extensions { get; set; }
-    public object? Extras { get; set; }
+    public Elements.JsonElement? Extras { get; set; }
 }
 
 /// <summary>
@@ -41,7 +41,7 @@ public class MpegViewportRecommended
     /// </summary>
     public string? Name { get; set; }
     public Dictionary<string, object?>? Extensions { get; set; }
-    public object? Extras { get; set; }
+    public Elements.JsonElement? Extras { get; set; }
 }
 
 public class MpegViewportRecommendedExtension : IGltfExtension
@@ -52,7 +52,7 @@ public class MpegViewportRecommendedExtension : IGltfExtension
     {
         List<MpegViewportRecommended>? viewports = null;
         Dictionary<string, object?>? extensions = null;
-        object? extras = null;
+        Elements.JsonElement? extras = null;
         if (jsonReader.TokenType == JsonTokenType.PropertyName && jsonReader.Read())
         {
         }
@@ -113,7 +113,7 @@ public class MpegViewportRecommendedSerialization
         int? parameters = null;
         string? name = null;
         Dictionary<string, object?>? extensions = null;
-        object? extras = null;
+        Elements.JsonElement? extras = null;
         if (jsonReader.TokenType == JsonTokenType.PropertyName && jsonReader.Read())
         {
         }

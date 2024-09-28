@@ -23,7 +23,7 @@ public class NV_materials_mdl : IGltfProperty
     /// </summary>
     public List<NvMaterialsMdlBsdfMeasurement>? BsdfMeasurements { get; set; }
     public Dictionary<string, object?>? Extensions { get; set; }
-    public object? Extras { get; set; }
+    public Elements.JsonElement? Extras { get; set; }
 }
 
 /// <summary>
@@ -49,7 +49,7 @@ public class NvMaterialsMdlModule : IGltfRootProperty
     public string? ModulePath { get; set; }
     public string? Name { get; set; }
     public Dictionary<string, object?>? Extensions { get; set; }
-    public object? Extras { get; set; }
+    public Elements.JsonElement? Extras { get; set; }
 }
 
 /// <summary>
@@ -75,7 +75,7 @@ public class NvMaterialsMdlFunctionCall : IGltfRootProperty
     public List<NvMaterialsMdlFunctionCallArgument>? Arguments { get; set; }
     public string? Name { get; set; }
     public Dictionary<string, object?>? Extensions { get; set; }
-    public object? Extras { get; set; }
+    public Elements.JsonElement? Extras { get; set; }
 }
 
 /// <summary>
@@ -100,7 +100,7 @@ public class NvMaterialsMdlType : IGltfProperty
     /// </summary>
     public string? Modifier { get; set; }
     public Dictionary<string, object?>? Extensions { get; set; }
-    public object? Extras { get; set; }
+    public Elements.JsonElement? Extras { get; set; }
 }
 
 /// <summary>
@@ -125,7 +125,7 @@ public class NvMaterialsMdlFunctionCallArgument : IGltfProperty
     /// </summary>
     public object? Value { get; set; }
     public Dictionary<string, object?>? Extensions { get; set; }
-    public object? Extras { get; set; }
+    public Elements.JsonElement? Extras { get; set; }
 }
 
 /// <summary>
@@ -147,7 +147,7 @@ public class NvMaterialsMdlBsdfMeasurement : IGltfRootProperty
     public string? MimeType { get; set; }
     public string? Name { get; set; }
     public Dictionary<string, object?>? Extensions { get; set; }
-    public object? Extras { get; set; }
+    public Elements.JsonElement? Extras { get; set; }
 }
 
 /// <summary>
@@ -160,7 +160,7 @@ public class NvMaterialsMdlMaterial : IGltfProperty
     /// </summary>
     public required int FunctionCall { get; set; }
     public Dictionary<string, object?>? Extensions { get; set; }
-    public object? Extras { get; set; }
+    public Elements.JsonElement? Extras { get; set; }
 }
 
 public class NvMaterialsMdlExtension : IGltfExtension
@@ -175,7 +175,7 @@ public class NvMaterialsMdlExtension : IGltfExtension
             List<NvMaterialsMdlFunctionCall>? functionCalls = null;
             List<NvMaterialsMdlBsdfMeasurement>? bsdfMeasurements = null;
             Dictionary<string, object?>? extensions = null;
-            object? extras = null;
+            Elements.JsonElement? extras = null;
             if (jsonReader.TokenType == JsonTokenType.PropertyName && jsonReader.Read())
             {
             }
@@ -244,7 +244,7 @@ public class NvMaterialsMdlExtension : IGltfExtension
         {
             int? functionCall = null;
             Dictionary<string, object?>? extensions = null;
-            object? extras = null;
+            Elements.JsonElement? extras = null;
             if (jsonReader.TokenType == JsonTokenType.PropertyName && jsonReader.Read())
             {
             }
@@ -293,6 +293,11 @@ public class NvMaterialsMdlExtension : IGltfExtension
         }
         throw new InvalidDataException("NV_materials_mdl must be used in a Gltf root or a Material.");
     }
+
+    public void Write(ref Utf8JsonWriter jsonWriter, GltfWriterContext context, Type parentType, object? element)
+    {
+        throw new NotImplementedException(/* TODO: Implement this*/);
+    }
 }
 
 public class NvMaterialsMdlModuleSerialization
@@ -305,7 +310,7 @@ public class NvMaterialsMdlModuleSerialization
         string? modulePath = null;
         string? name = null;
         Dictionary<string, object?>? extensions = null;
-        object? extras = null;
+        Elements.JsonElement? extras = null;
         if (jsonReader.TokenType == JsonTokenType.PropertyName && jsonReader.Read())
         {
         }
@@ -392,7 +397,7 @@ public class NvMaterialsMdlFunctionCallSerialization
         List<NvMaterialsMdlFunctionCallArgument>? arguments = null;
         string? name = null;
         Dictionary<string, object?>? extensions = null;
-        object? extras = null;
+        Elements.JsonElement? extras = null;
         if (jsonReader.TokenType == JsonTokenType.PropertyName && jsonReader.Read())
         {
         }
@@ -474,7 +479,7 @@ public class NvMaterialsMdlTypeSerialization
         int? arraySize = null;
         string? modifier = null;
         Dictionary<string, object?>? extensions = null;
-        object? extras = null;
+        Elements.JsonElement? extras = null;
         if (jsonReader.TokenType == JsonTokenType.PropertyName && jsonReader.Read())
         {
         }
@@ -547,7 +552,7 @@ public class NvMaterialsMdlFunctionCallArgumentSerialization
         int? functionCall = null;
         object? value = null;
         Dictionary<string, object?>? extensions = null;
-        object? extras = null;
+        Elements.JsonElement? extras = null;
         if (jsonReader.TokenType == JsonTokenType.PropertyName && jsonReader.Read())
         {
         }
@@ -620,7 +625,7 @@ public class NvMaterialsMdlBsdfMeasurementSerialization
         string? mimeType = null;
         string? name = null;
         Dictionary<string, object?>? extensions = null;
-        object? extras = null;
+        Elements.JsonElement? extras = null;
         if (jsonReader.TokenType == JsonTokenType.PropertyName && jsonReader.Read())
         {
         }

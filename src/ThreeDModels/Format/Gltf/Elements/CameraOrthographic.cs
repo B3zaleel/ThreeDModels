@@ -22,5 +22,5 @@ public class CameraOrthographic : IGltfProperty
     /// </summary>
     public required float ZNear { get; set; }
     public Dictionary<string, object?>? Extensions { get; set; }
-    public object? Extras { get; set; }
+    public JsonElement? Extras { get; set; }
 }

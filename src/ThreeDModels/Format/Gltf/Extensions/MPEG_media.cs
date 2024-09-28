@@ -10,7 +10,7 @@ public class MPEG_media : IGltfRootProperty
     public required List<MpegMedia> Media { get; set; }
     public string? Name { get; set; }
     public Dictionary<string, object?>? Extensions { get; set; }
-    public object? Extras { get; set; }
+    public Elements.JsonElement? Extras { get; set; }
 }
 
 /// <summary>
@@ -55,7 +55,7 @@ public class MpegMedia : IGltfProperty
     /// </summary>
     public string? Name { get; set; }
     public Dictionary<string, object?>? Extensions { get; set; }
-    public object? Extras { get; set; }
+    public Elements.JsonElement? Extras { get; set; }
 }
 
 public class MpegMediaAlternative : IGltfProperty
@@ -77,7 +77,7 @@ public class MpegMediaAlternative : IGltfProperty
     /// </summary>
     public object? ExtraParams { get; set; }
     public Dictionary<string, object?>? Extensions { get; set; }
-    public object? Extras { get; set; }
+    public Elements.JsonElement? Extras { get; set; }
 }
 
 public class MpegMediaAlternativeTrack : IGltfProperty
@@ -91,7 +91,7 @@ public class MpegMediaAlternativeTrack : IGltfProperty
     /// </summary>
     public required string Codecs { get; set; }
     public Dictionary<string, object?>? Extensions { get; set; }
-    public object? Extras { get; set; }
+    public Elements.JsonElement? Extras { get; set; }
 }
 
 public class MpegMediaExtension : IGltfExtension
@@ -106,7 +106,7 @@ public class MpegMediaExtension : IGltfExtension
         }
         List<MpegMedia>? media = null;
         Dictionary<string, object?>? extensions = null;
-        object? extras = null;
+        Elements.JsonElement? extras = null;
         if (jsonReader.TokenType == JsonTokenType.PropertyName && jsonReader.Read())
         {
         }
@@ -153,6 +153,11 @@ public class MpegMediaExtension : IGltfExtension
             Extras = extras,
         };
     }
+
+    public void Write(ref Utf8JsonWriter jsonWriter, GltfWriterContext context, Type parentType, object? element)
+    {
+        throw new NotImplementedException(/* TODO: Implement this*/);
+    }
 }
 
 public class MpegMediaSerialization
@@ -176,7 +181,7 @@ public class MpegMediaSerialization
         List<MpegMediaAlternative>? alternatives = null;
         string? name = null;
         Dictionary<string, object?>? extensions = null;
-        object? extras = null;
+        Elements.JsonElement? extras = null;
         if (jsonReader.TokenType == JsonTokenType.PropertyName && jsonReader.Read())
         {
         }
@@ -278,7 +283,7 @@ public class MpegMediaAlternativeSerialization
         List<MpegMediaAlternativeTrack>? tracks = null;
         object? extraParams = null;
         Dictionary<string, object?>? extensions = null;
-        object? extras = null;
+        Elements.JsonElement? extras = null;
         if (jsonReader.TokenType == JsonTokenType.PropertyName && jsonReader.Read())
         {
         }
@@ -349,7 +354,7 @@ public class MpegMediaAlternativeTrackSerialization
         string? track = null;
         string? codecs = null;
         Dictionary<string, object?>? extensions = null;
-        object? extras = null;
+        Elements.JsonElement? extras = null;
         if (jsonReader.TokenType == JsonTokenType.PropertyName && jsonReader.Read())
         {
         }

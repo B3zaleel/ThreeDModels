@@ -20,7 +20,7 @@ public class ADOBE_materials_clearcoat_specular : IGltfProperty
     /// </summary>
     public TextureInfo? ClearcoatSpecularTexture { get; set; }
     public Dictionary<string, object?>? Extensions { get; set; }
-    public object? Extras { get; set; }
+    public Elements.JsonElement? Extras { get; set; }
 }
 
 public class AdobeMaterialsClearcoatSpecularExtension : IGltfExtension
@@ -39,7 +39,7 @@ public class AdobeMaterialsClearcoatSpecularExtension : IGltfExtension
         float? clearcoatSpecularFactor = null;
         TextureInfo? clearcoatSpecularTexture = null;
         Dictionary<string, object?>? extensions = null;
-        object? extras = null;
+        Elements.JsonElement? extras = null;
         if (jsonReader.TokenType == JsonTokenType.PropertyName && jsonReader.Read())
         {
         }
@@ -91,5 +91,10 @@ public class AdobeMaterialsClearcoatSpecularExtension : IGltfExtension
             Extensions = extensions,
             Extras = extras,
         };
+    }
+
+    public void Write(ref Utf8JsonWriter jsonWriter, GltfWriterContext context, Type parentType, object? element)
+    {
+        throw new NotImplementedException(/* TODO: Implement this*/);
     }
 }

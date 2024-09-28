@@ -12,7 +12,7 @@ internal static class AccessorSparseIndicesSerialization
         int? byteOffset = 0;
         int? componentType = 0;
         Dictionary<string, object?>? extensions = null;
-        object? extras = null;
+        Elements.JsonElement? extras = null;
         if (jsonReader.TokenType == JsonTokenType.PropertyName && jsonReader.Read())
         {
         }
@@ -68,5 +68,29 @@ internal static class AccessorSparseIndicesSerialization
             Extensions = extensions,
             Extras = extras,
         };
+    }
+
+    public static void Write(ref Utf8JsonWriter jsonWriter, GltfWriterContext context, AccessorSparseIndices? accessorSparseIndices)
+    {
+        if (accessorSparseIndices == null)
+        {
+            jsonWriter.WriteNullValue();
+            return;
+        }
+        jsonWriter.WriteStartObject();
+        jsonWriter.WriteNumber(ElementName.Accessor.BufferView, accessorSparseIndices.BufferView);
+        jsonWriter.WriteNumber(ElementName.Accessor.ByteOffset, accessorSparseIndices.ByteOffset);
+        jsonWriter.WriteNumber(ElementName.Accessor.ComponentType, accessorSparseIndices.ComponentType);
+        if (accessorSparseIndices.Extensions != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extensions);
+            ExtensionsSerialization.Write<AccessorSparseIndices>(ref jsonWriter, context, accessorSparseIndices.Extensions);
+        }
+        if (accessorSparseIndices.Extras != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extras);
+            JsonSerialization.Write(ref jsonWriter, context, accessorSparseIndices.Extras);
+        }
+        jsonWriter.WriteEndObject();
     }
 }

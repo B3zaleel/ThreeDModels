@@ -12,7 +12,7 @@ public class EXT_lights_ies : IGltfProperty
 {
     public List<ExtLightsIesLightProfile>? Lights { get; set; }
     public Dictionary<string, object?>? Extensions { get; set; }
-    public object? Extras { get; set; }
+    public Elements.JsonElement? Extras { get; set; }
 }
 
 /// <summary>
@@ -34,7 +34,7 @@ public class ExtLightsIesLightProfile : IGltfRootProperty
     public int? BufferView { get; set; }
     public string? Name { get; set; }
     public Dictionary<string, object?>? Extensions { get; set; }
-    public object? Extras { get; set; }
+    public Elements.JsonElement? Extras { get; set; }
 }
 
 public class ExtLightsIesNode : IGltfProperty
@@ -52,7 +52,7 @@ public class ExtLightsIesNode : IGltfProperty
     /// </summary>
     public float[]? Color { get; set; }
     public Dictionary<string, object?>? Extensions { get; set; }
-    public object? Extras { get; set; }
+    public Elements.JsonElement? Extras { get; set; }
 }
 
 public class ExtLightsIesExtension : IGltfExtension
@@ -67,7 +67,7 @@ public class ExtLightsIesExtension : IGltfExtension
         {
             List<ExtLightsIesLightProfile>? lights = null;
             Dictionary<string, object?>? extensions = null;
-            object? extras = null;
+            Elements.JsonElement? extras = null;
             if (jsonReader.TokenType == JsonTokenType.PropertyName && jsonReader.Read())
             {
             }
@@ -120,7 +120,7 @@ public class ExtLightsIesExtension : IGltfExtension
             float? multiplier = null;
             float[]? color = null;
             Dictionary<string, object?>? extensions = null;
-            object? extras = null;
+            Elements.JsonElement? extras = null;
             if (jsonReader.TokenType == JsonTokenType.PropertyName && jsonReader.Read())
             {
             }
@@ -183,6 +183,11 @@ public class ExtLightsIesExtension : IGltfExtension
         }
         throw new InvalidDataException("EXT_lights_ies must be used in either a Gltf root or a Node.");
     }
+
+    public void Write(ref Utf8JsonWriter jsonWriter, GltfWriterContext context, Type parentType, object? element)
+    {
+        throw new NotImplementedException(/* TODO: Implement this*/);
+    }
 }
 
 public class ExtLightsIesLightProfileSerialization
@@ -194,7 +199,7 @@ public class ExtLightsIesLightProfileSerialization
         int? bufferView = null;
         string? name = null;
         Dictionary<string, object?>? extensions = null;
-        object? extras = null;
+        Elements.JsonElement? extras = null;
         if (jsonReader.TokenType == JsonTokenType.PropertyName && jsonReader.Read())
         {
         }
@@ -263,5 +268,10 @@ public class ExtLightsIesLightProfileSerialization
             Extensions = extensions,
             Extras = extras,
         };
+    }
+
+    public void Write(ref Utf8JsonWriter jsonWriter, GltfWriterContext context, Type parentType, object? element)
+    {
+        throw new NotImplementedException(/* TODO: Implement this*/);
     }
 }

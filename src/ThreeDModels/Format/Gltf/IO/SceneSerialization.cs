@@ -1,6 +1,7 @@
 using System.Text.Json;
 using ThreeDModels.Format.Gltf.Elements;
 using static ThreeDModels.Format.Gltf.IO.Utf8JsonReaderHelpers;
+using static ThreeDModels.Format.Gltf.IO.Utf8JsonWriterHelpers;
 
 namespace ThreeDModels.Format.Gltf.IO;
 
@@ -11,7 +12,7 @@ internal static class SceneSerialization
         List<int>? nodes = null;
         string? name = null;
         Dictionary<string, object?>? extensions = null;
-        object? extras = null;
+        Elements.JsonElement? extras = null;
         if (jsonReader.TokenType == JsonTokenType.PropertyName && jsonReader.Read())
         {
         }
@@ -58,5 +59,33 @@ internal static class SceneSerialization
             Extensions = extensions,
             Extras = extras,
         };
+    }
+
+    public static void Write(ref Utf8JsonWriter jsonWriter, GltfWriterContext context, Scene? scene)
+    {
+        if (scene == null)
+        {
+            jsonWriter.WriteNullValue();
+            return;
+        }
+        jsonWriter.WriteStartObject();
+        if (scene.Nodes != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Nodes);
+            WriteIntegerList(ref jsonWriter, context, scene.Nodes);
+        }
+        if (scene.Name != null)
+        {
+            jsonWriter.WriteString(ElementName.Accessor.Name, scene.Name);
+        }
+        if (scene.Extensions != null)
+        {
+            ExtensionsSerialization.Write<Scene>(ref jsonWriter, context, scene.Extensions);
+        }
+        if (scene.Extras != null)
+        {
+            JsonSerialization.Write(ref jsonWriter, context, scene.Extras);
+        }
+        jsonWriter.WriteEndObject();
     }
 }

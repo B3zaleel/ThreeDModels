@@ -14,5 +14,5 @@ public class AnimationChannel : IGltfProperty
     /// </summary>
     public required AnimationChannelTarget Target { get; set; }
     public Dictionary<string, object?>? Extensions { get; set; }
-    public object? Extras { get; set; }
+    public JsonElement? Extras { get; set; }
 }

@@ -14,7 +14,7 @@ public class MSFT_packing_normalRoughnessMetallic : IGltfProperty
     /// </summary>
     public MsftTextureIndex? NormalRoughnessMetallicTexture { get; set; }
     public Dictionary<string, object?>? Extensions { get; set; }
-    public object? Extras { get; set; }
+    public Elements.JsonElement? Extras { get; set; }
 }
 
 public class MsftPackingNormalRoughnessMetallicExtension : IGltfExtension
@@ -29,7 +29,7 @@ public class MsftPackingNormalRoughnessMetallicExtension : IGltfExtension
         }
         MsftTextureIndex? normalRoughnessMetallicTexture = null;
         Dictionary<string, object?>? extensions = null;
-        object? extras = null;
+        Elements.JsonElement? extras = null;
         if (jsonReader.TokenType == JsonTokenType.PropertyName && jsonReader.Read())
         {
         }
@@ -71,5 +71,10 @@ public class MsftPackingNormalRoughnessMetallicExtension : IGltfExtension
             Extensions = extensions,
             Extras = extras,
         };
+    }
+
+    public void Write(ref Utf8JsonWriter jsonWriter, GltfWriterContext context, Type parentType, object? element)
+    {
+        throw new NotImplementedException(/* TODO: Implement this*/);
     }
 }

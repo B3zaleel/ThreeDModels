@@ -23,7 +23,7 @@ public class MPEG_accessor_timed : IGltfProperty
     /// </summary>
     public float SuggestedUpdateRate { get; set; }
     public Dictionary<string, object?>? Extensions { get; set; }
-    public object? Extras { get; set; }
+    public Elements.JsonElement? Extras { get; set; }
 }
 
 public class MpegAccessorTimedExtension : IGltfExtension
@@ -38,7 +38,7 @@ public class MpegAccessorTimedExtension : IGltfExtension
         int? bufferView = null;
         float? suggestedUpdateRate = null;
         Dictionary<string, object?>? extensions = null;
-        object? extras = null;
+        Elements.JsonElement? extras = null;
         if (jsonReader.TokenType == JsonTokenType.PropertyName && jsonReader.Read())
         {
         }
@@ -94,5 +94,10 @@ public class MpegAccessorTimedExtension : IGltfExtension
             Extensions = extensions,
             Extras = extras,
         };
+    }
+
+    public void Write(ref Utf8JsonWriter jsonWriter, GltfWriterContext context, Type parentType, object? element)
+    {
+        throw new NotImplementedException(/* TODO: Implement this*/);
     }
 }

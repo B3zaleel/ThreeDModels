@@ -15,7 +15,7 @@ internal static class BufferViewSerialization
         int? target = null;
         string? name = null;
         Dictionary<string, object?>? extensions = null;
-        object? extras = null;
+        Elements.JsonElement? extras = null;
         if (jsonReader.TokenType == JsonTokenType.PropertyName && jsonReader.Read())
         {
         }
@@ -86,5 +86,44 @@ internal static class BufferViewSerialization
             Extensions = extensions,
             Extras = extras,
         };
+    }
+
+    public static void Write(ref Utf8JsonWriter jsonWriter, GltfWriterContext context, BufferView? bufferView)
+    {
+        if (bufferView == null)
+        {
+            jsonWriter.WriteNullValue();
+            return;
+        }
+        jsonWriter.WriteStartObject();
+        jsonWriter.WriteNumber(ElementName.BufferView.Buffer, bufferView.Buffer);
+        if (bufferView.ByteOffset != Default.ByteOffset)
+        {
+            jsonWriter.WriteNumber(ElementName.Accessor.ByteOffset, bufferView.ByteOffset);
+        }
+        jsonWriter.WriteNumber(ElementName.Buffer.ByteLength, bufferView.ByteLength);
+        if (bufferView.ByteStride != null)
+        {
+            jsonWriter.WriteNumber(ElementName.BufferView.ByteStride, bufferView.ByteStride.Value);
+        }
+        if (bufferView.Target != null)
+        {
+            jsonWriter.WriteNumber(ElementName.AnimationChannel.Target, bufferView.Target.Value);
+        }
+        if (bufferView.Name != null)
+        {
+            jsonWriter.WriteString(ElementName.Accessor.Name, bufferView.Name);
+        }
+        if (bufferView.Extensions != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extensions);
+            ExtensionsSerialization.Write<BufferView>(ref jsonWriter, context, bufferView.Extensions);
+        }
+        if (bufferView.Extras != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extras);
+            JsonSerialization.Write(ref jsonWriter, context, bufferView.Extras);
+        }
+        jsonWriter.WriteEndObject();
     }
 }

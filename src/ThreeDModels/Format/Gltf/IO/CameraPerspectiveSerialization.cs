@@ -13,7 +13,7 @@ internal static class CameraPerspectiveSerialization
         float? zfar = null;
         float? znear = null;
         Dictionary<string, object?>? extensions = null;
-        object? extras = null;
+        Elements.JsonElement? extras = null;
         if (jsonReader.TokenType == JsonTokenType.PropertyName && jsonReader.Read())
         {
         }
@@ -91,5 +91,36 @@ internal static class CameraPerspectiveSerialization
             Extensions = extensions,
             Extras = extras,
         };
+    }
+
+    public static void Write(ref Utf8JsonWriter jsonWriter, GltfWriterContext context, CameraPerspective? cameraPerspective)
+    {
+        if (cameraPerspective == null)
+        {
+            jsonWriter.WriteNullValue();
+            return;
+        }
+        jsonWriter.WriteStartObject();
+        if (cameraPerspective.AspectRatio != null)
+        {
+            jsonWriter.WriteNumber(ElementName.CameraPerspective.AspectRatio, (float)cameraPerspective.AspectRatio);
+        }
+        jsonWriter.WriteNumber(ElementName.CameraPerspective.YFov, cameraPerspective.YFov);
+        if (cameraPerspective.ZFar != null)
+        {
+            jsonWriter.WriteNumber(ElementName.CameraOrthographic.ZFar, (float)cameraPerspective.ZFar);
+        }
+        jsonWriter.WriteNumber(ElementName.CameraOrthographic.ZNear, cameraPerspective.ZNear);
+        if (cameraPerspective.Extensions != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extensions);
+            ExtensionsSerialization.Write<CameraPerspective>(ref jsonWriter, context, cameraPerspective.Extensions);
+        }
+        if (cameraPerspective.Extras != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extras);
+            JsonSerialization.Write(ref jsonWriter, context, cameraPerspective.Extras);
+        }
+        jsonWriter.WriteEndObject();
     }
 }

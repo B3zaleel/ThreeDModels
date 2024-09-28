@@ -13,7 +13,7 @@ internal static class ImageSerialization
         int? bufferView = null;
         string? name = null;
         Dictionary<string, object?>? extensions = null;
-        object? extras = null;
+        Elements.JsonElement? extras = null;
         if (jsonReader.TokenType == JsonTokenType.PropertyName && jsonReader.Read())
         {
         }
@@ -78,5 +78,50 @@ internal static class ImageSerialization
             Extensions = extensions,
             Extras = extras,
         };
+    }
+
+    public static void Write(ref Utf8JsonWriter jsonWriter, GltfWriterContext context, Image? image)
+    {
+        if (image == null)
+        {
+            jsonWriter.WriteNullValue();
+            return;
+        }
+        if (image.BufferView != null && image.Uri != null)
+        {
+            throw new InvalidDataException("Image.uri must not be defined if Image.bufferView has been defined.");
+        }
+        if (image.BufferView != null && image.MimeType == null)
+        {
+            throw new InvalidDataException("Image.mimeType must be defined if Image.bufferView has been defined.");
+        }
+        jsonWriter.WriteStartObject();
+        if (image.Uri != null)
+        {
+            jsonWriter.WriteString(ElementName.Buffer.Uri, image.Uri);
+        }
+        if (image.MimeType != null)
+        {
+            jsonWriter.WriteString(ElementName.Image.MimeType, image.MimeType);
+        }
+        if (image.BufferView != null)
+        {
+            jsonWriter.WriteNumber(ElementName.Accessor.BufferView, image.BufferView.Value);
+        }
+        if (image.Name != null)
+        {
+            jsonWriter.WriteString(ElementName.Accessor.Name, image.Name);
+        }
+        if (image.Extensions != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extensions);
+            ExtensionsSerialization.Write<Image>(ref jsonWriter, context, image.Extensions);
+        }
+        if (image.Extras != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extras);
+            JsonSerialization.Write(ref jsonWriter, context, image.Extras);
+        }
+        jsonWriter.WriteEndObject();
     }
 }

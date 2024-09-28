@@ -1,6 +1,7 @@
 using System.Text.Json;
 using ThreeDModels.Format.Gltf.Elements;
 using static ThreeDModels.Format.Gltf.IO.Utf8JsonReaderHelpers;
+using static ThreeDModels.Format.Gltf.IO.Utf8JsonWriterHelpers;
 
 namespace ThreeDModels.Format.Gltf.IO;
 
@@ -13,7 +14,7 @@ internal static class SkinSerialization
         List<int>? joints = null;
         string? name = null;
         Dictionary<string, object?>? extensions = null;
-        object? extras = null;
+        Elements.JsonElement? extras = null;
         if (jsonReader.TokenType == JsonTokenType.PropertyName && jsonReader.Read())
         {
         }
@@ -70,5 +71,40 @@ internal static class SkinSerialization
             Extensions = extensions,
             Extras = extras,
         };
+    }
+
+    public static void Write(ref Utf8JsonWriter jsonWriter, GltfWriterContext context, Skin? skin)
+    {
+        if (skin == null)
+        {
+            jsonWriter.WriteNullValue();
+            return;
+        }
+        jsonWriter.WriteStartObject();
+        if (skin.InverseBindMatrices is not null)
+        {
+            jsonWriter.WriteNumber(ElementName.Skin.InverseBindMatrices, (int)skin.InverseBindMatrices);
+        }
+        if (skin.Skeleton is not null)
+        {
+            jsonWriter.WriteNumber(ElementName.Skin.Skeleton, (int)skin.Skeleton);
+        }
+        jsonWriter.WritePropertyName(ElementName.Skin.Joints);
+        WriteIntegerList(ref jsonWriter, context, skin.Joints);
+        if (skin.Name is not null)
+        {
+            jsonWriter.WriteString(ElementName.Accessor.Name, skin.Name);
+        }
+        if (skin.Extensions is not null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extensions);
+            ExtensionsSerialization.Write<Skin>(ref jsonWriter, context, skin.Extensions);
+        }
+        if (skin.Extras is not null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extras);
+            JsonSerialization.Write(ref jsonWriter, context, skin.Extras);
+        }
+        jsonWriter.WriteEndObject();
     }
 }

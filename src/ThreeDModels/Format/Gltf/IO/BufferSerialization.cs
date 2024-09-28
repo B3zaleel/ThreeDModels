@@ -1,5 +1,4 @@
 using System.Text.Json;
-using ThreeDModels.Format.Gltf.Elements;
 using static ThreeDModels.Format.Gltf.IO.Utf8JsonReaderHelpers;
 
 namespace ThreeDModels.Format.Gltf.IO;
@@ -12,7 +11,7 @@ internal static class BufferSerialization
         int? byteLength = null;
         string? name = null;
         Dictionary<string, object?>? extensions = null;
-        object? extras = null;
+        Elements.JsonElement? extras = null;
         if (jsonReader.TokenType == JsonTokenType.PropertyName && jsonReader.Read())
         {
         }
@@ -68,5 +67,35 @@ internal static class BufferSerialization
             Extensions = extensions,
             Extras = extras,
         };
+    }
+
+    public static void Write(ref Utf8JsonWriter jsonWriter, GltfWriterContext context, Elements.Buffer? buffer)
+    {
+        if (buffer == null)
+        {
+            jsonWriter.WriteNullValue();
+            return;
+        }
+        jsonWriter.WriteStartObject();
+        if (buffer.Uri != null)
+        {
+            jsonWriter.WriteString(ElementName.Buffer.Uri, buffer.Uri);
+        }
+        jsonWriter.WriteNumber(ElementName.Buffer.ByteLength, buffer.ByteLength);
+        if (buffer.Name != null)
+        {
+            jsonWriter.WriteString(ElementName.Accessor.Name, buffer.Name);
+        }
+        if (buffer.Extensions != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extensions);
+            ExtensionsSerialization.Write<Elements.Buffer>(ref jsonWriter, context, buffer.Extensions);
+        }
+        if (buffer.Extras != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extras);
+            JsonSerialization.Write(ref jsonWriter, context, buffer.Extras);
+        }
+        jsonWriter.WriteEndObject();
     }
 }

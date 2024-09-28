@@ -13,7 +13,7 @@ internal static class CameraOrthographicSerialization
         float? zfar = null;
         float? znear = null;
         Dictionary<string, object?>? extensions = null;
-        object? extras = null;
+        Elements.JsonElement? extras = null;
         if (jsonReader.TokenType == JsonTokenType.PropertyName && jsonReader.Read())
         {
         }
@@ -71,5 +71,30 @@ internal static class CameraOrthographicSerialization
             Extensions = extensions,
             Extras = extras,
         };
+    }
+
+    public static void Write(ref Utf8JsonWriter jsonWriter, GltfWriterContext context, CameraOrthographic? cameraOrthographic)
+    {
+        if (cameraOrthographic is null)
+        {
+            jsonWriter.WriteNullValue();
+            return;
+        }
+        jsonWriter.WriteStartObject();
+        jsonWriter.WriteNumber(ElementName.CameraOrthographic.XMag, cameraOrthographic.XMag);
+        jsonWriter.WriteNumber(ElementName.CameraOrthographic.YMag, cameraOrthographic.YMag);
+        jsonWriter.WriteNumber(ElementName.CameraOrthographic.ZFar, cameraOrthographic.ZFar);
+        jsonWriter.WriteNumber(ElementName.CameraOrthographic.ZNear, cameraOrthographic.ZNear);
+        if (cameraOrthographic.Extensions != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extensions);
+            ExtensionsSerialization.Write<CameraOrthographic>(ref jsonWriter, context, cameraOrthographic.Extensions);
+        }
+        if (cameraOrthographic.Extras != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extras);
+            JsonSerialization.Write(ref jsonWriter, context, cameraOrthographic.Extras);
+        }
+        jsonWriter.WriteEndObject();
     }
 }

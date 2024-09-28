@@ -15,7 +15,7 @@ public class KHR_materials_emissive_strength : IGltfProperty
     /// </summary>
     public float EmissiveStrength { get; set; }
     public Dictionary<string, object?>? Extensions { get; set; }
-    public object? Extras { get; set; }
+    public Elements.JsonElement? Extras { get; set; }
 }
 
 public class KhrMaterialsEmissiveStrengthExtension : IGltfExtension
@@ -31,7 +31,7 @@ public class KhrMaterialsEmissiveStrengthExtension : IGltfExtension
         }
         float? emissiveStrength = null;
         Dictionary<string, object?>? extensions = null;
-        object? extras = null;
+        Elements.JsonElement? extras = null;
         if (jsonReader.TokenType == JsonTokenType.PropertyName && jsonReader.Read())
         {
         }
@@ -77,5 +77,10 @@ public class KhrMaterialsEmissiveStrengthExtension : IGltfExtension
             Extensions = extensions,
             Extras = extras,
         };
+    }
+
+    public void Write(ref Utf8JsonWriter jsonWriter, GltfWriterContext context, Type parentType, object? element)
+    {
+        throw new NotImplementedException(/* TODO: Implement this*/);
     }
 }

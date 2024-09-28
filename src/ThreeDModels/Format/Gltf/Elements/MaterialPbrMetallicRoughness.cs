@@ -28,5 +28,5 @@ public class MaterialPbrMetallicRoughness : IGltfProperty
     /// </summary>
     public TextureInfo? MetallicRoughnessTexture { get; set; }
     public Dictionary<string, object?>? Extensions { get; set; }
-    public object? Extras { get; set; }
+    public JsonElement? Extras { get; set; }
 }

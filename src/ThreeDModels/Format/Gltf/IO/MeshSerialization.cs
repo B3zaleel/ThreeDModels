@@ -1,6 +1,7 @@
 using System.Text.Json;
 using ThreeDModels.Format.Gltf.Elements;
 using static ThreeDModels.Format.Gltf.IO.Utf8JsonReaderHelpers;
+using static ThreeDModels.Format.Gltf.IO.Utf8JsonWriterHelpers;
 
 namespace ThreeDModels.Format.Gltf.IO;
 
@@ -12,7 +13,7 @@ internal static class MeshSerialization
         List<float>? weights = null;
         string? name = null;
         Dictionary<string, object?>? extensions = null;
-        object? extras = null;
+        Elements.JsonElement? extras = null;
         if (jsonReader.TokenType == JsonTokenType.PropertyName && jsonReader.Read())
         {
         }
@@ -64,5 +65,34 @@ internal static class MeshSerialization
             Extensions = extensions,
             Extras = extras,
         };
+    }
+
+    public static void Write(ref Utf8JsonWriter jsonWriter, GltfWriterContext context, Mesh? mesh)
+    {
+        if (mesh == null)
+        {
+            jsonWriter.WriteNullValue();
+            return;
+        }
+        jsonWriter.WriteStartObject();
+        jsonWriter.WritePropertyName(ElementName.Mesh.Primitives);
+        WriteList(ref jsonWriter, context, mesh.Primitives, MeshPrimitiveSerialization.Write);
+        jsonWriter.WritePropertyName(ElementName.Mesh.Weights);
+        WriteFloatList(ref jsonWriter, context, mesh.Weights);
+        if (mesh.Name != null)
+        {
+            jsonWriter.WriteString(ElementName.Accessor.Name, mesh.Name);
+        }
+        if (mesh.Extensions != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extensions);
+            ExtensionsSerialization.Write<Mesh>(ref jsonWriter, context, mesh.Extensions);
+        }
+        if (mesh.Extras != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extras);
+            JsonSerialization.Write(ref jsonWriter, context, mesh.Extras);
+        }
+        jsonWriter.WriteEndObject();
     }
 }

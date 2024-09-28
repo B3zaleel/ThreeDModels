@@ -20,7 +20,7 @@ public class MPEG_buffer_circular : IGltfProperty
     /// </summary>
     public List<int>? Tracks { get; set; }
     public Dictionary<string, object?>? Extensions { get; set; }
-    public object? Extras { get; set; }
+    public Elements.JsonElement? Extras { get; set; }
 }
 
 public class MpegBufferCircularExtension : IGltfExtension
@@ -38,7 +38,7 @@ public class MpegBufferCircularExtension : IGltfExtension
         int? media = null;
         List<int>? tracks = null;
         Dictionary<string, object?>? extensions = null;
-        object? extras = null;
+        Elements.JsonElement? extras = null;
         if (jsonReader.TokenType == JsonTokenType.PropertyName && jsonReader.Read())
         {
         }
@@ -102,5 +102,21 @@ public class MpegBufferCircularExtension : IGltfExtension
             Extensions = extensions,
             Extras = extras,
         };
+    }
+
+    public void Write(ref Utf8JsonWriter jsonWriter, GltfWriterContext context, Type parentType, object? element)
+    {
+        if (parentType != typeof(MeshPrimitive))
+        {
+            throw new InvalidDataException("MPEG_buffer_circular must be used in a MeshPrimitive.");
+        }
+        if (element == null)
+        {
+            jsonWriter.WriteNullValue();
+            return;
+        }
+        var mpegBufferCircular = (MPEG_buffer_circular)element;
+        jsonWriter.WriteStartObject();
+        throw new NotImplementedException(/* TODO: Implement this*/);
     }
 }

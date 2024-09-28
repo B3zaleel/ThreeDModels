@@ -13,7 +13,7 @@ internal static class CameraSerialization
         string? type = null;
         string? name = null;
         Dictionary<string, object?>? extensions = null;
-        object? extras = null;
+        Elements.JsonElement? extras = null;
         if (jsonReader.TokenType == JsonTokenType.PropertyName && jsonReader.Read())
         {
         }
@@ -78,5 +78,45 @@ internal static class CameraSerialization
             Extensions = extensions,
             Extras = extras,
         };
+    }
+
+    public static void Write(ref Utf8JsonWriter jsonWriter, GltfWriterContext context, Camera? camera)
+    {
+        if (camera is null)
+        {
+            jsonWriter.WriteNullValue();
+            return;
+        }
+        jsonWriter.WriteStartObject();
+        if (camera.Orthographic is not null && camera.Perspective is not null)
+        {
+            throw new InvalidDataException("Only one of Camera.orthographic and Camera.perspective can be defined.");
+        }
+        if (camera.Orthographic is not null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Camera.Orthographic);
+            CameraOrthographicSerialization.Write(ref jsonWriter, context, camera.Orthographic);
+        }
+        if (camera.Perspective is not null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Camera.Perspective);
+            CameraPerspectiveSerialization.Write(ref jsonWriter, context, camera.Perspective);
+        }
+        jsonWriter.WriteString(ElementName.Accessor.Type, camera.Type);
+        if (camera.Name is not null)
+        {
+            jsonWriter.WriteString(ElementName.Accessor.Name, camera.Name);
+        }
+        if (camera.Extensions is not null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extensions);
+            ExtensionsSerialization.Write<Camera>(ref jsonWriter, context, camera.Extensions);
+        }
+        if (camera.Extras is not null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extras);
+            JsonSerialization.Write(ref jsonWriter, context, camera.Extras);
+        }
+        jsonWriter.WriteEndObject();
     }
 }

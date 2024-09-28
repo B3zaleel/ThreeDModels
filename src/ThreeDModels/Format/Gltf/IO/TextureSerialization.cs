@@ -12,7 +12,7 @@ internal static class TextureSerialization
         int? source = null;
         string? name = null;
         Dictionary<string, object?>? extensions = null;
-        object? extras = null;
+        Elements.JsonElement? extras = null;
 
         if (jsonReader.TokenType == JsonTokenType.PropertyName && jsonReader.Read())
         {
@@ -65,5 +65,37 @@ internal static class TextureSerialization
             Extensions = extensions,
             Extras = extras,
         };
+    }
+
+    public static void Write(ref Utf8JsonWriter jsonWriter, GltfWriterContext context, Texture? texture)
+    {
+        if (texture is null)
+        {
+            jsonWriter.WriteNullValue();
+            return;
+        }
+        jsonWriter.WriteStartObject();
+        if (texture.Sampler is not null)
+        {
+            jsonWriter.WriteNumber(ElementName.AnimationChannel.Sampler, (int)texture.Sampler);
+        }
+        if (texture.Source is not null)
+        {
+            jsonWriter.WriteNumber(ElementName.Texture.Source, (int)texture.Source);
+        }
+        if (texture.Name is not null)
+        {
+            jsonWriter.WriteString(nameof(texture.Name), texture.Name);
+        }
+        if (texture.Extensions is not null)
+        {
+            ExtensionsSerialization.Write<Texture>(ref jsonWriter, context, texture.Extensions);
+        }
+        if (texture.Extras is not null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extras);
+            JsonSerialization.Write(ref jsonWriter, context, texture.Extras);
+        }
+        jsonWriter.WriteEndObject();
     }
 }

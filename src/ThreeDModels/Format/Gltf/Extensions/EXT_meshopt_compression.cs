@@ -12,7 +12,7 @@ public class ExtMeshoptCompressionBuffer : IGltfProperty
     /// </summary>
     public bool Fallback { get; set; }
     public Dictionary<string, object?>? Extensions { get; set; }
-    public object? Extras { get; set; }
+    public Elements.JsonElement? Extras { get; set; }
 }
 
 public class ExtMeshoptCompressionBufferView : IGltfProperty
@@ -46,7 +46,7 @@ public class ExtMeshoptCompressionBufferView : IGltfProperty
     /// </summary>
     public required string Filter { get; set; }
     public Dictionary<string, object?>? Extensions { get; set; }
-    public object? Extras { get; set; }
+    public Elements.JsonElement? Extras { get; set; }
 }
 
 public class EXT_meshopt_compressionExtension : IGltfExtension
@@ -64,7 +64,7 @@ public class EXT_meshopt_compressionExtension : IGltfExtension
         {
             bool? fallback = null;
             Dictionary<string, object?>? extensions = null;
-            object? extras = null;
+            Elements.JsonElement? extras = null;
             if (jsonReader.TokenType == JsonTokenType.PropertyName && jsonReader.Read())
             {
             }
@@ -117,7 +117,7 @@ public class EXT_meshopt_compressionExtension : IGltfExtension
             string? mode = null;
             string? filter = null;
             Dictionary<string, object?>? extensions = null;
-            object? extras = null;
+            Elements.JsonElement? extras = null;
             if (jsonReader.TokenType == JsonTokenType.PropertyName && jsonReader.Read())
             {
             }
@@ -203,5 +203,10 @@ public class EXT_meshopt_compressionExtension : IGltfExtension
             };
         }
         throw new InvalidDataException("EXT_meshopt_compression must be used in either a Buffer or a BufferView.");
+    }
+
+    public void Write(ref Utf8JsonWriter jsonWriter, GltfWriterContext context, Type parentType, object? element)
+    {
+        throw new NotImplementedException(/* TODO: Implement this*/);
     }
 }

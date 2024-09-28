@@ -20,5 +20,5 @@ public class AnimationSampler : IGltfProperty
     /// </summary>
     public required int Output { get; set; }
     public Dictionary<string, object?>? Extensions { get; set; }
-    public object? Extras { get; set; }
+    public JsonElement? Extras { get; set; }
 }

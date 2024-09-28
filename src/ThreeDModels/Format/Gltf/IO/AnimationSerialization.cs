@@ -1,6 +1,7 @@
 using System.Text.Json;
 using ThreeDModels.Format.Gltf.Elements;
 using static ThreeDModels.Format.Gltf.IO.Utf8JsonReaderHelpers;
+using static ThreeDModels.Format.Gltf.IO.Utf8JsonWriterHelpers;
 
 namespace ThreeDModels.Format.Gltf.IO;
 
@@ -12,7 +13,7 @@ internal static class AnimationSerialization
         List<AnimationSampler>? samplers = null;
         string? name = null;
         Dictionary<string, object?>? extensions = null;
-        object? extras = null;
+        Elements.JsonElement? extras = null;
         if (jsonReader.TokenType == JsonTokenType.PropertyName && jsonReader.Read())
         {
         }
@@ -68,5 +69,32 @@ internal static class AnimationSerialization
             Extensions = extensions,
             Extras = extras,
         };
+    }
+
+    public static void Write(ref Utf8JsonWriter jsonWriter, GltfWriterContext context, Animation? animation)
+    {
+        if (animation is null)
+        {
+            jsonWriter.WriteNullValue();
+            return;
+        }
+        jsonWriter.WriteStartObject();
+        jsonWriter.WritePropertyName(ElementName.Animation.Channels);
+        WriteList(ref jsonWriter, context, animation.Channels, AnimationChannelSerialization.Write);
+        jsonWriter.WritePropertyName(ElementName.Animation.Samplers);
+        WriteList(ref jsonWriter, context, animation.Samplers, AnimationSamplerSerialization.Write);
+        if (animation.Name is not null)
+        {
+            jsonWriter.WriteString(nameof(animation.Name), animation.Name);
+        }
+        if (animation.Extensions is not null)
+        {
+            ExtensionsSerialization.Write<Animation>(ref jsonWriter, context, animation.Extensions);
+        }
+        if (animation.Extras is not null)
+        {
+            JsonSerialization.Write(ref jsonWriter, context, animation.Extras);
+        }
+        jsonWriter.WriteEndObject();
     }
 }

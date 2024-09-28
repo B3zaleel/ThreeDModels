@@ -22,6 +22,6 @@ public class Gltf : IGltfProperty
     public List<Skin>? Skins { get; set; }
     public List<Texture>? Textures { get; set; }
     public Dictionary<string, object?>? Extensions { get; set; }
-    public object? Extras { get; set; }
+    public JsonElement? Extras { get; set; }
     public List<Chunk> AdditionalChunks { get; set; } = [];
 }

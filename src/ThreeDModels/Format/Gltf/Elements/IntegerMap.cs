@@ -12,7 +12,7 @@ public class IntegerMap : IEnumerable, IGltfProperty
     /// </summary>
     private readonly Dictionary<string, int>? _map = [];
     public Dictionary<string, object?>? Extensions { get; set; }
-    public object? Extras { get; set; }
+    public JsonElement? Extras { get; set; }
 
     public void Add(string key, int value)
     {

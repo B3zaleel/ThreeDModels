@@ -1,6 +1,7 @@
 using System.Text.Json;
 using ThreeDModels.Format.Gltf.Elements;
 using static ThreeDModels.Format.Gltf.IO.Utf8JsonReaderHelpers;
+using static ThreeDModels.Format.Gltf.IO.Utf8JsonWriterHelpers;
 
 namespace ThreeDModels.Format.Gltf.IO;
 
@@ -14,7 +15,7 @@ internal static class MeshPrimitiveSerialization
         int? mode = null;
         List<IntegerMap>? targets = null;
         Dictionary<string, object?>? extensions = null;
-        object? extras = null;
+        Elements.JsonElement? extras = null;
         if (jsonReader.TokenType == JsonTokenType.PropertyName && jsonReader.Read())
         {
         }
@@ -76,5 +77,48 @@ internal static class MeshPrimitiveSerialization
             Extensions = extensions,
             Extras = extras,
         };
+    }
+
+    public static void Write(ref Utf8JsonWriter jsonWriter, GltfWriterContext context, MeshPrimitive? meshPrimitive)
+    {
+        if (meshPrimitive == null)
+        {
+            jsonWriter.WriteNullValue();
+            return;
+        }
+        jsonWriter.WriteStartObject();
+        if (meshPrimitive.Attributes != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.MeshPrimitive.Targets);
+            IntegerMapSerialization.Write(ref jsonWriter, context, meshPrimitive.Attributes);
+        }
+        if (meshPrimitive.Indices != null)
+        {
+            jsonWriter.WriteNumber(ElementName.MeshPrimitive.Indices, (int)meshPrimitive.Indices);
+        }
+        if (meshPrimitive.Material != null)
+        {
+            jsonWriter.WriteNumber(ElementName.MeshPrimitive.Material, (int)meshPrimitive.Material);
+        }
+        if (meshPrimitive.Mode != Default.MeshPrimitive_Mode)
+        {
+            jsonWriter.WriteNumber(ElementName.MeshPrimitive.Mode, meshPrimitive.Mode);
+        }
+        if (meshPrimitive.Targets != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.MeshPrimitive.Targets);
+            WriteList(ref jsonWriter, context, meshPrimitive.Targets, IntegerMapSerialization.Write);
+        }
+        if (meshPrimitive.Extensions != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extensions);
+            ExtensionsSerialization.Write<MeshPrimitive>(ref jsonWriter, context, meshPrimitive.Extensions);
+        }
+        if (meshPrimitive.Extras != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extras);
+            JsonSerialization.Write(ref jsonWriter, context, meshPrimitive.Extras);
+        }
+        jsonWriter.WriteEndObject();
     }
 }

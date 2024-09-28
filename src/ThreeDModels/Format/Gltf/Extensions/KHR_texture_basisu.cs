@@ -15,7 +15,7 @@ public class KHR_texture_basisu : IGltfProperty
     /// </summary>
     public int? Source { get; set; }
     public Dictionary<string, object?>? Extensions { get; set; }
-    public object? Extras { get; set; }
+    public Elements.JsonElement? Extras { get; set; }
 }
 
 public class KhrTextureBasisuExtension : IGltfExtension
@@ -30,7 +30,7 @@ public class KhrTextureBasisuExtension : IGltfExtension
         }
         int? source = null;
         Dictionary<string, object?>? extensions = null;
-        object? extras = null;
+        Elements.JsonElement? extras = null;
         if (jsonReader.TokenType == JsonTokenType.PropertyName && jsonReader.Read())
         {
         }
@@ -72,5 +72,10 @@ public class KhrTextureBasisuExtension : IGltfExtension
             Extensions = extensions,
             Extras = extras,
         };
+    }
+
+    public void Write(ref Utf8JsonWriter jsonWriter, GltfWriterContext context, Type parentType, object? element)
+    {
+        throw new NotImplementedException(/* TODO: Implement this*/);
     }
 }

@@ -11,7 +11,7 @@ internal static class AnimationChannelTargetSerialization
         int? node = null;
         string? path = null;
         Dictionary<string, object?>? extensions = null;
-        object? extras = null;
+        Elements.JsonElement? extras = null;
         if (jsonReader.TokenType == JsonTokenType.PropertyName && jsonReader.Read())
         {
         }
@@ -62,5 +62,30 @@ internal static class AnimationChannelTargetSerialization
             Extensions = extensions,
             Extras = extras,
         };
+    }
+
+    public static void Write(ref Utf8JsonWriter jsonWriter, GltfWriterContext context, AnimationChannelTarget? animationChannelTarget)
+    {
+        if (animationChannelTarget is null)
+        {
+            return;
+        }
+        jsonWriter.WriteStartObject();
+        if (animationChannelTarget.Node is not null)
+        {
+            jsonWriter.WriteNumber(ElementName.AnimationChannelTarget.Node, (int)animationChannelTarget.Node);
+        }
+        jsonWriter.WriteString(ElementName.AnimationChannelTarget.Path, animationChannelTarget.Path);
+        if (animationChannelTarget.Extensions is not null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extensions);
+            ExtensionsSerialization.Write<AnimationChannelTarget>(ref jsonWriter, context, animationChannelTarget.Extensions);
+        }
+        if (animationChannelTarget.Extras is not null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extras);
+            JsonSerialization.Write(ref jsonWriter, context, animationChannelTarget.Extras);
+        }
+        jsonWriter.WriteEndObject();
     }
 }

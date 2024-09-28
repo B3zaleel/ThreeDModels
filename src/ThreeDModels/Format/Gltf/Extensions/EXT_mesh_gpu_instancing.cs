@@ -14,7 +14,7 @@ public class EXT_mesh_gpu_instancing : IGltfProperty
     /// </summary>
     public IntegerMap? Attributes { get; set; }
     public Dictionary<string, object?>? Extensions { get; set; }
-    public object? Extras { get; set; }
+    public Elements.JsonElement? Extras { get; set; }
 }
 
 public class ExtMeshGpuInstancingExtension : IGltfExtension
@@ -29,7 +29,7 @@ public class ExtMeshGpuInstancingExtension : IGltfExtension
         }
         IntegerMap? attributes = null;
         Dictionary<string, object?>? extensions = null;
-        object? extras = null;
+        Elements.JsonElement? extras = null;
         if (jsonReader.TokenType == JsonTokenType.PropertyName && jsonReader.Read())
         {
         }
@@ -71,5 +71,10 @@ public class ExtMeshGpuInstancingExtension : IGltfExtension
             Extensions = extensions,
             Extras = extras,
         };
+    }
+
+    public void Write(ref Utf8JsonWriter jsonWriter, GltfWriterContext context, Type parentType, object? element)
+    {
+        throw new NotImplementedException(/* TODO: Implement this*/);
     }
 }

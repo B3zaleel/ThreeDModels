@@ -99,7 +99,7 @@ public class GltfReader
         List<Skin>? skins = null;
         List<Texture>? textures = null;
         Dictionary<string, object?>? extensions = null;
-        object? extras = null;
+        Elements.JsonElement? extras = null;
         while (jsonReader.Read())
         {
             if (jsonReader.TokenType == JsonTokenType.EndObject)

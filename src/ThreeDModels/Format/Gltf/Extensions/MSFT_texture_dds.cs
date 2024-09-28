@@ -15,7 +15,7 @@ public class MSFT_texture_dds : IGltfProperty
     /// </summary>
     public required int Source { get; set; }
     public Dictionary<string, object?>? Extensions { get; set; }
-    public object? Extras { get; set; }
+    public Elements.JsonElement? Extras { get; set; }
 }
 
 public class MsftTextureDdsExtension : IGltfExtension
@@ -30,7 +30,7 @@ public class MsftTextureDdsExtension : IGltfExtension
         }
         int? source = null;
         Dictionary<string, object?>? extensions = null;
-        object? extras = null;
+        Elements.JsonElement? extras = null;
         if (jsonReader.TokenType == JsonTokenType.PropertyName && jsonReader.Read())
         {
         }
@@ -76,5 +76,10 @@ public class MsftTextureDdsExtension : IGltfExtension
             Extensions = extensions,
             Extras = extras,
         };
+    }
+
+    public void Write(ref Utf8JsonWriter jsonWriter, GltfWriterContext context, Type parentType, object? element)
+    {
+        throw new NotImplementedException(/* TODO: Implement this*/);
     }
 }

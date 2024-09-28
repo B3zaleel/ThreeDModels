@@ -23,7 +23,7 @@ public class MPEG_audio_spatial : IGltfProperty
     /// </summary>
     public List<MpegAudioSpatialReverb>? Reverbs { get; set; }
     public Dictionary<string, object?>? Extensions { get; set; }
-    public object? Extras { get; set; }
+    public Elements.JsonElement? Extras { get; set; }
 }
 
 public class MpegAudioSpatialSource : IGltfProperty
@@ -69,7 +69,7 @@ public class MpegAudioSpatialSource : IGltfProperty
     /// </summary>
     public List<float>? ReverbFeedGain { get; set; }
     public Dictionary<string, object?>? Extensions { get; set; }
-    public object? Extras { get; set; }
+    public Elements.JsonElement? Extras { get; set; }
 }
 
 public class MpegAudioSpatialListener : IGltfProperty
@@ -79,7 +79,7 @@ public class MpegAudioSpatialListener : IGltfProperty
     /// </summary>
     public required int Id { get; set; }
     public Dictionary<string, object?>? Extensions { get; set; }
-    public object? Extras { get; set; }
+    public Elements.JsonElement? Extras { get; set; }
 }
 
 public class MpegAudioSpatialReverb : IGltfProperty
@@ -101,7 +101,7 @@ public class MpegAudioSpatialReverb : IGltfProperty
     /// </summary>
     public float Predelay { get; set; }
     public Dictionary<string, object?>? Extensions { get; set; }
-    public object? Extras { get; set; }
+    public Elements.JsonElement? Extras { get; set; }
 }
 
 /// <summary>
@@ -122,7 +122,7 @@ public class MpegAudioSpatialReverbProperty : IGltfProperty
     /// </summary>
     public required float DSR { get; set; }
     public Dictionary<string, object?>? Extensions { get; set; }
-    public object? Extras { get; set; }
+    public Elements.JsonElement? Extras { get; set; }
 }
 
 public class MpegAudioSpatialExtension : IGltfExtension
@@ -135,7 +135,7 @@ public class MpegAudioSpatialExtension : IGltfExtension
         MpegAudioSpatialListener? listener = null;
         List<MpegAudioSpatialReverb>? reverbs = null;
         Dictionary<string, object?>? extensions = null;
-        object? extras = null;
+        Elements.JsonElement? extras = null;
         if (jsonReader.TokenType == JsonTokenType.PropertyName && jsonReader.Read())
         {
         }
@@ -196,6 +196,11 @@ public class MpegAudioSpatialExtension : IGltfExtension
             Extras = extras,
         };
     }
+
+    public void Write(ref Utf8JsonWriter jsonWriter, GltfWriterContext context, Type parentType, object? element)
+    {
+        throw new NotImplementedException(/* TODO: Implement this*/);
+    }
 }
 
 public class MpegAudioSpatialSourceSerialization
@@ -217,7 +222,7 @@ public class MpegAudioSpatialSourceSerialization
         List<int>? reverbFeed = null;
         List<float>? reverbFeedGain = null;
         Dictionary<string, object?>? extensions = null;
-        object? extras = null;
+        Elements.JsonElement? extras = null;
         if (jsonReader.TokenType == JsonTokenType.PropertyName && jsonReader.Read())
         {
         }
@@ -329,7 +334,7 @@ public class MpegAudioSpatialListenerSerialization
     {
         int? id = null;
         Dictionary<string, object?>? extensions = null;
-        object? extras = null;
+        Elements.JsonElement? extras = null;
         if (jsonReader.TokenType == JsonTokenType.PropertyName && jsonReader.Read())
         {
         }
@@ -390,7 +395,7 @@ public class MpegAudioSpatialReverbSerialization
         List<MpegAudioSpatialReverbProperty>? properties = null;
         float? predelay = null;
         Dictionary<string, object?>? extensions = null;
-        object? extras = null;
+        Elements.JsonElement? extras = null;
         if (jsonReader.TokenType == JsonTokenType.PropertyName && jsonReader.Read())
         {
         }
@@ -462,7 +467,7 @@ public class MpegAudioSpatialReverbPropertySerialization
         float? RT60 = null;
         float? DSR = null;
         Dictionary<string, object?>? extensions = null;
-        object? extras = null;
+        Elements.JsonElement? extras = null;
         if (jsonReader.TokenType == JsonTokenType.PropertyName && jsonReader.Read())
         {
         }

@@ -7,7 +7,7 @@ namespace ThreeDModels.Format.Gltf.Extensions;
 public class KHR_materials_unlit : IGltfProperty
 {
     public Dictionary<string, object?>? Extensions { get; set; }
-    public object? Extras { get; set; }
+    public Elements.JsonElement? Extras { get; set; }
 }
 
 public class KhrMaterialsUnlitExtension : IGltfExtension
@@ -21,7 +21,7 @@ public class KhrMaterialsUnlitExtension : IGltfExtension
             throw new InvalidDataException("KHR_materials_unlit must be used in a Material.");
         }
         Dictionary<string, object?>? extensions = null;
-        object? extras = null;
+        Elements.JsonElement? extras = null;
         if (jsonReader.TokenType == JsonTokenType.PropertyName && jsonReader.Read())
         {
         }
@@ -58,5 +58,10 @@ public class KhrMaterialsUnlitExtension : IGltfExtension
             Extensions = extensions,
             Extras = extras,
         };
+    }
+
+    public void Write(ref Utf8JsonWriter jsonWriter, GltfWriterContext context, Type parentType, object? element)
+    {
+        throw new NotImplementedException(/* TODO: Implement this*/);
     }
 }

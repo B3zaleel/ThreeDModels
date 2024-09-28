@@ -63,4 +63,27 @@ internal static class TextureInfoSerialization
             Extras = extras,
         };
     }
+
+    public static void Write(ref Utf8JsonWriter jsonWriter, GltfWriterContext context, TextureInfo? textureInfo)
+    {
+        if (textureInfo == null)
+        {
+            jsonWriter.WriteNullValue();
+            return;
+        }
+        jsonWriter.WriteStartObject();
+        jsonWriter.WriteNumber(ElementName.TextureInfo.Index, textureInfo.Index);
+        jsonWriter.WriteNumber(ElementName.TextureInfo.TexCoord, (int)textureInfo.TexCoord!);
+        if (textureInfo.Extensions != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extensions);
+            ExtensionsSerialization.Write<AccessorSparseIndices>(ref jsonWriter, context, textureInfo.Extensions);
+        }
+        if (textureInfo.Extras != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extras);
+            JsonSerialization.Write(ref jsonWriter, context, textureInfo.Extras);
+        }
+        jsonWriter.WriteEndObject();
+    }
 }

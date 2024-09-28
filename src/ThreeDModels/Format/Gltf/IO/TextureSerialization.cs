@@ -66,4 +66,36 @@ internal static class TextureSerialization
             Extras = extras,
         };
     }
+
+    public static void Write(ref Utf8JsonWriter jsonWriter, GltfWriterContext context, Texture? texture)
+    {
+        if (texture is null)
+        {
+            jsonWriter.WriteNullValue();
+            return;
+        }
+        jsonWriter.WriteStartObject();
+        if (texture.Sampler is not null)
+        {
+            jsonWriter.WriteNumber(ElementName.AnimationChannel.Sampler, (int)texture.Sampler);
+        }
+        if (texture.Source is not null)
+        {
+            jsonWriter.WriteNumber(ElementName.Texture.Source, (int)texture.Source);
+        }
+        if (texture.Name is not null)
+        {
+            jsonWriter.WriteString(nameof(texture.Name), texture.Name);
+        }
+        if (texture.Extensions is not null)
+        {
+            ExtensionsSerialization.Write<Texture>(ref jsonWriter, context, texture.Extensions);
+        }
+        if (texture.Extras is not null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extras);
+            JsonSerialization.Write(ref jsonWriter, context, texture.Extras);
+        }
+        jsonWriter.WriteEndObject();
+    }
 }

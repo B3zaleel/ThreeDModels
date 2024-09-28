@@ -1,6 +1,7 @@
 using System.Text.Json;
 using ThreeDModels.Format.Gltf.Elements;
 using static ThreeDModels.Format.Gltf.IO.Utf8JsonReaderHelpers;
+using static ThreeDModels.Format.Gltf.IO.Utf8JsonWriterHelpers;
 
 namespace ThreeDModels.Format.Gltf.IO;
 
@@ -139,5 +140,104 @@ internal static class NodeSerialization
             Extensions = extensions,
             Extras = extras,
         };
+    }
+
+    public static void Write(ref Utf8JsonWriter jsonWriter, GltfWriterContext context, Node? node)
+    {
+        if (node == null)
+        {
+            jsonWriter.WriteNullValue();
+            return;
+        }
+        if (node.Matrix != null && (node.Rotation != null || node.Scale != null || node.Translation != null))
+        {
+            throw new InvalidDataException("Node.matrix should not be defined if any one of Node.rotation, Node.scale, and Node.translation have been defined.");
+        }
+        if (node.Matrix != null && node.Matrix.Length != Default.Node_Matrix.Length)
+        {
+            throw new InvalidDataException($"Node.matrix must have {Default.Node_Matrix.Length} elements.");
+        }
+        if (node.Translation != null && node.Translation.Length != Default.Node_Translation.Length)
+        {
+            throw new InvalidDataException($"Node.translation must have {Default.Node_Translation.Length} elements.");
+        }
+        if (node.Rotation != null && node.Rotation.Length != Default.Node_Rotation.Length)
+        {
+            throw new InvalidDataException($"Node.rotation must have {Default.Node_Rotation.Length} elements.");
+        }
+        if (node.Scale != null && node.Scale.Length != Default.Node_Scale.Length)
+        {
+            throw new InvalidDataException($"Node.scale must have {Default.Node_Scale.Length} elements.");
+        }
+        if (node.Skin != null && node.Mesh == null)
+        {
+            throw new InvalidDataException("Node.mesh must be defined if Node.skin has been defined.");
+        }
+        if (node.Weights != null && node.Mesh == null)
+        {
+            throw new InvalidDataException("Node.mesh must be defined if Node.weights has been defined.");
+        }
+        if (node.Children != null && node.Children.Count == 0)
+        {
+            throw new InvalidDataException("Node.children must have at least one element.");
+        }
+        jsonWriter.WriteStartObject();
+        if (node.Camera != null)
+        {
+            jsonWriter.WriteNumber(ElementName.Node.Camera, node.Camera.Value);
+        }
+        if (node.Children != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Node.Children);
+            WriteIntegerList(ref jsonWriter, context, node.Children);
+        }
+        if (node.Skin != null)
+        {
+            jsonWriter.WriteNumber(ElementName.Node.Skin, node.Skin.Value);
+        }
+        if (node.Matrix != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Node.Matrix);
+            WriteFloatList(ref jsonWriter, context, node.Matrix.ToList());
+        }
+        if (node.Mesh != null)
+        {
+            jsonWriter.WriteNumber(ElementName.Node.Mesh, node.Mesh.Value);
+        }
+        if (node.Rotation != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Node.Rotation);
+            WriteFloatList(ref jsonWriter, context, node.Rotation.ToList());
+        }
+        if (node.Scale != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Node.Scale);
+            WriteFloatList(ref jsonWriter, context, node.Scale.ToList());
+        }
+        if (node.Translation != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Node.Translation);
+            WriteFloatList(ref jsonWriter, context, node.Translation.ToList());
+        }
+        if (node.Weights != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Node.Weights);
+            WriteFloatList(ref jsonWriter, context, node.Weights);
+        }
+        if (node.Name != null)
+        {
+            jsonWriter.WriteString(ElementName.Accessor.Name, node.Name);
+        }
+        if (node.Extensions != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extensions);
+            ExtensionsSerialization.Write<Node>(ref jsonWriter, context, node.Extensions);
+        }
+        if (node.Extras != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extras);
+            JsonSerialization.Write(ref jsonWriter, context, node.Extras);
+        }
+        jsonWriter.WriteEndObject();
     }
 }

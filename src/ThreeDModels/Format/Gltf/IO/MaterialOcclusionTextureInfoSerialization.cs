@@ -69,4 +69,34 @@ internal static class MaterialOcclusionTextureInfoSerialization
             Extras = extras,
         };
     }
+
+    public static void Write(ref Utf8JsonWriter jsonWriter, GltfWriterContext context, MaterialOcclusionTextureInfo? materialOcclusionTextureInfo)
+    {
+        if (materialOcclusionTextureInfo == null)
+        {
+            jsonWriter.WriteNullValue();
+            return;
+        }
+        jsonWriter.WriteStartObject();
+        jsonWriter.WriteNumber(ElementName.TextureInfo.Index, materialOcclusionTextureInfo.Index);
+        if (materialOcclusionTextureInfo.TexCoord != null && materialOcclusionTextureInfo.TexCoord != Default.Material_TexCoord)
+        {
+            jsonWriter.WriteNumber(ElementName.TextureInfo.TexCoord, (int)materialOcclusionTextureInfo.TexCoord);
+        }
+        if (materialOcclusionTextureInfo.Strength != Default.Material_Factor)
+        {
+            jsonWriter.WriteNumber(ElementName.MaterialOcclusionTextureInfo.Strength, materialOcclusionTextureInfo.Strength);
+        }
+        if (materialOcclusionTextureInfo.Extensions != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extensions);
+            ExtensionsSerialization.Write<MaterialOcclusionTextureInfo>(ref jsonWriter, context, materialOcclusionTextureInfo.Extensions);
+        }
+        if (materialOcclusionTextureInfo.Extras != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extras);
+            JsonSerialization.Write(ref jsonWriter, context, materialOcclusionTextureInfo.Extras);
+        }
+        jsonWriter.WriteEndObject();
+    }
 }

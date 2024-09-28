@@ -73,4 +73,30 @@ internal static class AccessorSparseSerialization
             Extras = extras,
         };
     }
+
+    public static void Write(ref Utf8JsonWriter jsonWriter, GltfWriterContext context, AccessorSparse? accessorSparse)
+    {
+        if (accessorSparse == null)
+        {
+            jsonWriter.WriteNullValue();
+            return;
+        }
+        jsonWriter.WriteStartObject();
+        jsonWriter.WriteNumber(ElementName.Accessor.Count, accessorSparse.Count);
+        jsonWriter.WritePropertyName(ElementName.AccessorSparse.Indices);
+        AccessorSparseIndicesSerialization.Write(ref jsonWriter, context, accessorSparse.Indices);
+        jsonWriter.WritePropertyName(ElementName.AccessorSparse.Values);
+        AccessorSparseValuesSerialization.Write(ref jsonWriter, context, accessorSparse.Values);
+        if (accessorSparse.Extensions != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extensions);
+            ExtensionsSerialization.Write<AccessorSparse>(ref jsonWriter, context, accessorSparse.Extensions);
+        }
+        if (accessorSparse.Extras != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extras);
+            JsonSerialization.Write(ref jsonWriter, context, accessorSparse.Extras);
+        }
+        jsonWriter.WriteEndObject();
+    }
 }

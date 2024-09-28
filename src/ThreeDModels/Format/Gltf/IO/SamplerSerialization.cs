@@ -75,4 +75,42 @@ internal static class SamplerSerialization
             Extras = extras,
         };
     }
+
+    public static void Write(ref Utf8JsonWriter jsonWriter, GltfWriterContext context, Sampler? sampler)
+    {
+        if (sampler == null)
+        {
+            jsonWriter.WriteNullValue();
+            return;
+        }
+        jsonWriter.WriteStartObject();
+        if (sampler.MagFilter != null)
+        {
+            jsonWriter.WriteNumber(ElementName.Sampler.MagFilter, sampler.MagFilter.Value);
+        }
+        if (sampler.MinFilter != null)
+        {
+            jsonWriter.WriteNumber(ElementName.Sampler.MinFilter, sampler.MinFilter.Value);
+        }
+        if (sampler.WrapS != null)
+        {
+            jsonWriter.WriteNumber(ElementName.Sampler.WrapS, (int)sampler.WrapS);
+        }
+        if (sampler.WrapT != null)
+        {
+            jsonWriter.WriteNumber(ElementName.Sampler.WrapT, (int)sampler.WrapT);
+        }
+        jsonWriter.WriteString(ElementName.Accessor.Name, sampler.Name);
+        if (sampler.Extensions != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extensions);
+            ExtensionsSerialization.Write<Sampler>(ref jsonWriter, context, sampler.Extensions);
+        }
+        if (sampler.Extras != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extras);
+            JsonSerialization.Write(ref jsonWriter, context, sampler.Extras);
+        }
+        jsonWriter.WriteEndObject();
+    }
 }

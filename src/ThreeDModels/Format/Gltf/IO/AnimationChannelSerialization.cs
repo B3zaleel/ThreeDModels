@@ -63,4 +63,27 @@ internal static class AnimationChannelSerialization
             Extras = extras,
         };
     }
+
+    public static void Write(ref Utf8JsonWriter jsonWriter, GltfWriterContext context, AnimationChannel? animationChannel)
+    {
+        if (animationChannel is null)
+        {
+            return;
+        }
+        jsonWriter.WriteStartObject();
+        jsonWriter.WriteNumber(ElementName.AnimationChannel.Sampler, animationChannel.Sampler);
+        jsonWriter.WritePropertyName(ElementName.AnimationChannel.Target);
+        AnimationChannelTargetSerialization.Write(ref jsonWriter, context, animationChannel.Target);
+        if (animationChannel.Extensions is not null)
+        {
+            jsonWriter.WritePropertyName(nameof(animationChannel.Extensions));
+            ExtensionsSerialization.Write<AnimationChannel>(ref jsonWriter, context, animationChannel.Extensions);
+        }
+        if (animationChannel.Extras is not null)
+        {
+            jsonWriter.WritePropertyName(nameof(animationChannel.Extras));
+            JsonSerialization.Write(ref jsonWriter, context, animationChannel.Extras);
+        }
+        jsonWriter.WriteEndObject();
+    }
 }

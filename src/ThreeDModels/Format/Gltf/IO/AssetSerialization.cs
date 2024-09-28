@@ -71,4 +71,36 @@ internal static class AssetSerialization
             Extras = extras,
         };
     }
+
+    public static void Write(ref Utf8JsonWriter jsonWriter, GltfWriterContext context, Asset? asset)
+    {
+        if (asset == null)
+        {
+            jsonWriter.WriteNullValue();
+            return;
+        }
+        jsonWriter.WriteStartObject();
+        if (asset.Copyright != null)
+        {
+            jsonWriter.WriteString(ElementName.Asset.Copyright, asset.Copyright);
+        }
+        if (asset.Generator != null)
+        {
+            jsonWriter.WriteString(ElementName.Asset.Generator, asset.Generator);
+        }
+        jsonWriter.WriteString(ElementName.Asset.Version, asset.Version);
+        if (asset.MinVersion != null)
+        {
+            jsonWriter.WriteString(ElementName.Asset.MinVersion, asset.MinVersion);
+        }
+        if (asset.Extensions != null)
+        {
+            ExtensionsSerialization.Write<Asset>(ref jsonWriter, context, asset.Extensions);
+        }
+        if (asset.Extras != null)
+        {
+            JsonSerialization.Write(ref jsonWriter, context, asset.Extras);
+        }
+        jsonWriter.WriteEndObject();
+    }
 }

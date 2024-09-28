@@ -198,4 +198,52 @@ public static class JsonSerialization
         }
         return element;
     }
+
+    public static void Write(ref Utf8JsonWriter jsonWriter, GltfWriterContext context, Elements.JsonElement? element)
+    {
+        if (element == null)
+        {
+            jsonWriter.WriteNullValue();
+            return;
+        }
+        if (element is JsonObject jsonObject)
+        {
+            jsonWriter.WriteStartObject();
+            foreach (var (key, value) in jsonObject.Value)
+            {
+                jsonWriter.WritePropertyName(key);
+                Write(ref jsonWriter, context, value);
+            }
+            jsonWriter.WriteEndObject();
+        }
+        else if (element is JsonArray jsonArray)
+        {
+            jsonWriter.WriteStartArray();
+            foreach (var value in jsonArray.Value)
+            {
+                Write(ref jsonWriter, context, value);
+            }
+            jsonWriter.WriteEndArray();
+        }
+        else if (element is JsonString jsonString)
+        {
+            jsonWriter.WriteStringValue(jsonString.Value);
+        }
+        else if (element is JsonNumber jsonNumber)
+        {
+            jsonWriter.WriteNumberValue(jsonNumber.Value);
+        }
+        else if (element is JsonBoolean jsonBoolean)
+        {
+            jsonWriter.WriteBooleanValue(jsonBoolean.Value);
+        }
+        else if (element is JsonNull)
+        {
+            jsonWriter.WriteNullValue();
+        }
+        else
+        {
+            throw new InvalidDataException($"Unknown element type: {element.GetType()}");
+        }
+    }
 }

@@ -1,4 +1,5 @@
 using System.Text.Json;
+using ThreeDModels.Format.Gltf.Elements;
 
 namespace ThreeDModels.Format.Gltf.IO;
 
@@ -40,5 +41,28 @@ public static class ExtensionsSerialization
             }
         }
         return extensions;
+    }
+
+    public static void Write<TParent>(ref Utf8JsonWriter jsonWriter, GltfWriterContext context, Dictionary<string, object?>? extensions)
+    {
+        if (extensions == null)
+        {
+            jsonWriter.WriteNullValue();
+            return;
+        }
+        jsonWriter.WriteStartObject();
+        foreach (var extension in extensions)
+        {
+            jsonWriter.WritePropertyName(extension.Key);
+            if (context.Extensions.TryGetValue(extension.Key, out var extensionWriter))
+            {
+                extensionWriter(ref jsonWriter, context, typeof(TParent), extension.Value);
+            }
+            else
+            {
+                throw new InvalidDataException($"Failed to find writer for extension `{extension.Key}`");
+            }
+        }
+        jsonWriter.WriteEndObject();
     }
 }

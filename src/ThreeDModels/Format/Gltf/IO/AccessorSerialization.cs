@@ -1,6 +1,7 @@
 using System.Text.Json;
 using ThreeDModels.Format.Gltf.Elements;
 using static ThreeDModels.Format.Gltf.IO.Utf8JsonReaderHelpers;
+using static ThreeDModels.Format.Gltf.IO.Utf8JsonWriterHelpers;
 
 namespace ThreeDModels.Format.Gltf.IO;
 
@@ -123,5 +124,63 @@ internal static class AccessorSerialization
             Extensions = extensions,
             Extras = extras,
         };
+    }
+
+    public static void Write(ref Utf8JsonWriter jsonWriter, GltfWriterContext context, Accessor? accessor)
+    {
+        if (accessor == null)
+        {
+            jsonWriter.WriteNullValue();
+            return;
+        }
+        if (accessor.BufferView == null && accessor.ByteOffset != null)
+        {
+            throw new InvalidDataException("Accessor.byteOffset is only valid when Accessor.bufferView is defined.");
+        }
+        if (accessor.Max.Count != accessor.Min.Count)
+        {
+            throw new InvalidDataException("Accessor.max and Accessor.min must have the same number of elements.");
+        }
+        if (accessor.Max.Count < Default.Accessor_ValuesRange_Length_Min || accessor.Max.Count > Default.Accessor_ValuesRange_Length_Max)
+        {
+            throw new InvalidDataException($"Accessor.max and Accessor.min must have between {Default.Accessor_ValuesRange_Length_Min} and {Default.Accessor_ValuesRange_Length_Max} elements.");
+        }
+        jsonWriter.WriteStartObject();
+        if (accessor.BufferView != null)
+        {
+            jsonWriter.WriteNumber(ElementName.Accessor.BufferView, (int)accessor.BufferView);
+        }
+        if (accessor.ByteOffset != null)
+        {
+            jsonWriter.WriteNumber(ElementName.Accessor.ByteOffset, (int)accessor.ByteOffset);
+        }
+        jsonWriter.WriteNumber(ElementName.Accessor.ComponentType, accessor.ComponentType);
+        jsonWriter.WriteBoolean(ElementName.Accessor.Normalized, accessor.Normalized);
+        jsonWriter.WriteNumber(ElementName.Accessor.Count, accessor.Count);
+        jsonWriter.WriteString(ElementName.Accessor.Type, accessor.Type);
+        jsonWriter.WritePropertyName(ElementName.Accessor.Max);
+        WriteFloatList(ref jsonWriter, context, accessor.Max);
+        jsonWriter.WritePropertyName(ElementName.Accessor.Min);
+        WriteFloatList(ref jsonWriter, context, accessor.Min);
+        if (accessor.Sparse != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Accessor.Sparse);
+            AccessorSparseSerialization.Write(ref jsonWriter, context, accessor.Sparse);
+        }
+        if (accessor.Name != null)
+        {
+            jsonWriter.WriteString(ElementName.Accessor.Name, accessor.Name);
+        }
+        if (accessor.Extensions != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extensions);
+            ExtensionsSerialization.Write<Accessor>(ref jsonWriter, context, accessor.Extensions);
+        }
+        if (accessor.Extras != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extras);
+            JsonSerialization.Write(ref jsonWriter, context, accessor.Extras);
+        }
+        jsonWriter.WriteEndObject();
     }
 }

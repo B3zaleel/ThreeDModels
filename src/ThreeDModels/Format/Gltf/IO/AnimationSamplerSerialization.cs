@@ -69,4 +69,28 @@ internal static class AnimationSamplerSerialization
             Extras = extras,
         };
     }
+
+    public static void Write(ref Utf8JsonWriter jsonWriter, GltfWriterContext context, AnimationSampler? animationSampler)
+    {
+        if (animationSampler is null)
+        {
+            jsonWriter.WriteNullValue();
+            return;
+        }
+        jsonWriter.WriteStartObject();
+        jsonWriter.WriteNumber(ElementName.AnimationSampler.Input, animationSampler.Input);
+        jsonWriter.WriteString(ElementName.AnimationSampler.Interpolation, animationSampler.Interpolation);
+        jsonWriter.WriteNumber(ElementName.AnimationSampler.Output, animationSampler.Output);
+        if (animationSampler.Extensions is not null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extensions);
+            ExtensionsSerialization.Write<AnimationSampler>(ref jsonWriter, context, animationSampler.Extensions);
+        }
+        if (animationSampler.Extras is not null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extras);
+            JsonSerialization.Write(ref jsonWriter, context, animationSampler.Extras);
+        }
+        jsonWriter.WriteEndObject();
+    }
 }

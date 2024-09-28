@@ -194,4 +194,8 @@ internal static class ElementName
         public const string Index = "index";
         public const string TexCoord = "texCoord";
     }
+
+    public static class Extensions
+    {
+    }
 }

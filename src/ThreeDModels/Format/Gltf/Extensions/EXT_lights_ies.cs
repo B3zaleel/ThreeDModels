@@ -183,6 +183,11 @@ public class ExtLightsIesExtension : IGltfExtension
         }
         throw new InvalidDataException("EXT_lights_ies must be used in either a Gltf root or a Node.");
     }
+
+    public void Write(ref Utf8JsonWriter jsonWriter, GltfWriterContext context, Type parentType, object? element)
+    {
+        throw new NotImplementedException(/* TODO: Implement this*/);
+    }
 }
 
 public class ExtLightsIesLightProfileSerialization
@@ -263,5 +268,10 @@ public class ExtLightsIesLightProfileSerialization
             Extensions = extensions,
             Extras = extras,
         };
+    }
+
+    public void Write(ref Utf8JsonWriter jsonWriter, GltfWriterContext context, Type parentType, object? element)
+    {
+        throw new NotImplementedException(/* TODO: Implement this*/);
     }
 }

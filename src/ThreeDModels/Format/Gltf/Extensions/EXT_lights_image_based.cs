@@ -165,6 +165,11 @@ public class ExtIightsImageBasedExtension : IGltfExtension
         }
         throw new InvalidDataException("EXT_lights_image_based must be used in either a Gltf root or a Scene.");
     }
+
+    public void Write(ref Utf8JsonWriter jsonWriter, GltfWriterContext context, Type parentType, object? element)
+    {
+        throw new NotImplementedException(/* TODO: Implement this*/);
+    }
 }
 
 public class ExtIightsImageBasedLightSerialization
@@ -252,5 +257,10 @@ public class ExtIightsImageBasedLightSerialization
             Extensions = extensions,
             Extras = extras,
         };
+    }
+
+    public void Write(ref Utf8JsonWriter jsonWriter, GltfWriterContext context, Type parentType, object? element)
+    {
+        throw new NotImplementedException(/* TODO: Implement this*/);
     }
 }

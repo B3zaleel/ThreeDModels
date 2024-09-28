@@ -173,6 +173,11 @@ public class KhrLightsPunctualExtension : IGltfExtension
         }
         throw new InvalidDataException("KHR_lights_punctual must be used in a either a Node or the Gltf root.");
     }
+
+    public void Write(ref Utf8JsonWriter jsonWriter, GltfWriterContext context, Type parentType, object? element)
+    {
+        throw new NotImplementedException(/* TODO: Implement this*/);
+    }
 }
 
 public class KhrLightsPunctualLightSerialization
@@ -260,6 +265,11 @@ public class KhrLightsPunctualLightSerialization
             Extras = extras,
         };
     }
+
+    public void Write(ref Utf8JsonWriter jsonWriter, GltfWriterContext context, Type parentType, object? element)
+    {
+        throw new NotImplementedException(/* TODO: Implement this*/);
+    }
 }
 
 public class KhrLightsPunctualLightSpotSerialization
@@ -328,5 +338,10 @@ public class KhrLightsPunctualLightSpotSerialization
             Extensions = extensions,
             Extras = extras,
         };
+    }
+
+    public void Write(ref Utf8JsonWriter jsonWriter, GltfWriterContext context, Type parentType, object? element)
+    {
+        throw new NotImplementedException(/* TODO: Implement this*/);
     }
 }

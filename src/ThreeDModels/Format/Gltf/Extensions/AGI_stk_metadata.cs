@@ -161,6 +161,11 @@ public class AgiStkMetadataExtension : IGltfExtension
         }
         throw new InvalidDataException("AGI_stk_metadata must be used in either a Gltf root or a Node.");
     }
+
+    public void Write(ref Utf8JsonWriter jsonWriter, GltfWriterContext context, Type parentType, object? element)
+    {
+        throw new NotImplementedException(/* TODO: Implement this*/);
+    }
 }
 
 public class AgiStkSolarPanelGroupSerialization
@@ -221,5 +226,10 @@ public class AgiStkSolarPanelGroupSerialization
             Extensions = extensions,
             Extras = extras,
         };
+    }
+
+    public void Write(ref Utf8JsonWriter jsonWriter, GltfWriterContext context, Type parentType, object? element)
+    {
+        throw new NotImplementedException(/* TODO: Implement this*/);
     }
 }

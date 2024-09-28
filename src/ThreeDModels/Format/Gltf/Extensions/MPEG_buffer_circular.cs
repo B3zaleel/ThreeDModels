@@ -103,4 +103,20 @@ public class MpegBufferCircularExtension : IGltfExtension
             Extras = extras,
         };
     }
+
+    public void Write(ref Utf8JsonWriter jsonWriter, GltfWriterContext context, Type parentType, object? element)
+    {
+        if (parentType != typeof(MeshPrimitive))
+        {
+            throw new InvalidDataException("MPEG_buffer_circular must be used in a MeshPrimitive.");
+        }
+        if (element == null)
+        {
+            jsonWriter.WriteNullValue();
+            return;
+        }
+        var mpegBufferCircular = (MPEG_buffer_circular)element;
+        jsonWriter.WriteStartObject();
+        throw new NotImplementedException(/* TODO: Implement this*/);
+    }
 }

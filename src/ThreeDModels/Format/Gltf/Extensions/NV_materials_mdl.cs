@@ -293,6 +293,11 @@ public class NvMaterialsMdlExtension : IGltfExtension
         }
         throw new InvalidDataException("NV_materials_mdl must be used in a Gltf root or a Material.");
     }
+
+    public void Write(ref Utf8JsonWriter jsonWriter, GltfWriterContext context, Type parentType, object? element)
+    {
+        throw new NotImplementedException(/* TODO: Implement this*/);
+    }
 }
 
 public class NvMaterialsMdlModuleSerialization

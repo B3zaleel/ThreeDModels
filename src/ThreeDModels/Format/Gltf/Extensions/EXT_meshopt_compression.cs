@@ -204,4 +204,9 @@ public class EXT_meshopt_compressionExtension : IGltfExtension
         }
         throw new InvalidDataException("EXT_meshopt_compression must be used in either a Buffer or a BufferView.");
     }
+
+    public void Write(ref Utf8JsonWriter jsonWriter, GltfWriterContext context, Type parentType, object? element)
+    {
+        throw new NotImplementedException(/* TODO: Implement this*/);
+    }
 }

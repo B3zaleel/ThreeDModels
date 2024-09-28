@@ -169,6 +169,11 @@ public class KhrMaterialsVariantsExtension : IGltfExtension
         }
         throw new InvalidDataException("KHR_materials_variants must be used in a either the Gltf root or a MeshPrimitive.");
     }
+
+    public void Write(ref Utf8JsonWriter jsonWriter, GltfWriterContext context, Type parentType, object? element)
+    {
+        throw new NotImplementedException(/* TODO: Implement this*/);
+    }
 }
 
 public class KhrMaterialsVariantsVariantSerialization
@@ -223,6 +228,11 @@ public class KhrMaterialsVariantsVariantSerialization
             Extensions = extensions,
             Extras = extras,
         };
+    }
+
+    public void Write(ref Utf8JsonWriter jsonWriter, GltfWriterContext context, Type parentType, object? element)
+    {
+        throw new NotImplementedException(/* TODO: Implement this*/);
     }
 }
 
@@ -294,5 +304,10 @@ public class KhrMaterialsVariantsMappingSerialization
             Extensions = extensions,
             Extras = extras,
         };
+    }
+
+    public void Write(ref Utf8JsonWriter jsonWriter, GltfWriterContext context, Type parentType, object? element)
+    {
+        throw new NotImplementedException(/* TODO: Implement this*/);
     }
 }

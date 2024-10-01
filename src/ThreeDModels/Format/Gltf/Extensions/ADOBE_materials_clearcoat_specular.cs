@@ -95,6 +95,34 @@ public class AdobeMaterialsClearcoatSpecularExtension : IGltfExtension
 
     public void Write(ref Utf8JsonWriter jsonWriter, GltfWriterContext context, Type parentType, object? element)
     {
-        throw new NotImplementedException(/* TODO: Implement this*/);
+        if (parentType != typeof(Gltf))
+        {
+            throw new InvalidDataException("ADOBE_materials_clearcoat_specular must be used in a Gltf root.");
+        }
+        var adobeMaterialsClearcoatSpecular = (ADOBE_materials_clearcoat_specular?)element;
+        if (adobeMaterialsClearcoatSpecular == null)
+        {
+            jsonWriter.WriteNullValue();
+            return;
+        }
+        jsonWriter.WriteStartObject();
+        jsonWriter.WriteNumber(ElementName.Extensions.ADOBE_materials_clearcoat_specular.ClearcoatIor, adobeMaterialsClearcoatSpecular.ClearcoatIor);
+        jsonWriter.WriteNumber(ElementName.Extensions.ADOBE_materials_clearcoat_specular.ClearcoatSpecularFactor, adobeMaterialsClearcoatSpecular.ClearcoatSpecularFactor);
+        if (adobeMaterialsClearcoatSpecular.ClearcoatSpecularTexture != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Extensions.ADOBE_materials_clearcoat_specular.ClearcoatSpecularTexture);
+            TextureInfoSerialization.Write(ref jsonWriter, context, adobeMaterialsClearcoatSpecular.ClearcoatSpecularTexture);
+        }
+        if (adobeMaterialsClearcoatSpecular.Extensions != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extensions);
+            ExtensionsSerialization.Write<ADOBE_materials_clearcoat_specular>(ref jsonWriter, context, adobeMaterialsClearcoatSpecular.Extensions);
+        }
+        if (adobeMaterialsClearcoatSpecular.Extras != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extras);
+            JsonSerialization.Write(ref jsonWriter, context, adobeMaterialsClearcoatSpecular.Extras);
+        }
+        jsonWriter.WriteEndObject();
     }
 }

@@ -197,5 +197,11 @@ internal static class ElementName
 
     public static class Extensions
     {
+        public static class ADOBE_materials_clearcoat_specular
+        {
+            public const string ClearcoatIor = "clearcoatIor";
+            public const string ClearcoatSpecularFactor = "clearcoatSpecularFactor";
+            public const string ClearcoatSpecularTexture = "clearcoatSpecularTexture";
+        }
     }
 }

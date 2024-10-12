@@ -439,5 +439,33 @@ internal static class ElementName
             public const string Media = "media";
             public const string Tracks = "tracks";
         }
+
+        public static class MPEG_media
+        {
+            public const string Media = "media";
+
+            public static class MpegMedia
+            {
+                public const string StartTime = "startTime";
+                public const string StartTimeOffset = "startTimeOffset";
+                public const string EndTimeOffset = "endTimeOffset";
+                public const string Autoplay = "autoplay";
+                public const string AutoplayGroup = "autoplayGroup";
+                public const string Loop = "loop";
+                public const string Controls = "controls";
+                public const string Alternatives = "alternatives";
+            }
+
+            public static class MpegMediaAlternative
+            {
+                public const string ExtraParams = "extraParams";
+            }
+
+            public static class MpegMediaAlternativeTrack
+            {
+                public const string Track = "track";
+                public const string Codecs = "codecs";
+            }
+        }
     }
 }

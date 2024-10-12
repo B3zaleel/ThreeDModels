@@ -2,6 +2,7 @@ using System.Text.Json;
 using ThreeDModels.Format.Gltf.Elements;
 using ThreeDModels.Format.Gltf.IO;
 using static ThreeDModels.Format.Gltf.IO.Utf8JsonReaderHelpers;
+using static ThreeDModels.Format.Gltf.IO.Utf8JsonWriterHelpers;
 
 namespace ThreeDModels.Format.Gltf.Extensions;
 
@@ -156,7 +157,34 @@ public class MpegMediaExtension : IGltfExtension
 
     public void Write(ref Utf8JsonWriter jsonWriter, GltfWriterContext context, Type parentType, object? element)
     {
-        throw new NotImplementedException(/* TODO: Implement this*/);
+        if (parentType != typeof(Gltf))
+        {
+            throw new InvalidDataException("MPEG_media must be used in a Gltf root.");
+        }
+        var mpegMedia = (MPEG_media?)element;
+        if (mpegMedia == null)
+        {
+            jsonWriter.WriteNullValue();
+            return;
+        }
+        if (mpegMedia.Media.Count == 0)
+        {
+            throw new InvalidDataException("MPEG_media.media must contain at least 1 item.");
+        }
+        jsonWriter.WriteStartObject();
+        jsonWriter.WritePropertyName(ElementName.Extensions.MPEG_media.Media);
+        WriteList(ref jsonWriter, context, mpegMedia.Media, MpegMediaSerialization.Write);
+        if (mpegMedia.Extensions != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extensions);
+            ExtensionsSerialization.Write<MPEG_media>(ref jsonWriter, context, mpegMedia.Extensions);
+        }
+        if (mpegMedia.Extras != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extras);
+            JsonSerialization.Write(ref jsonWriter, context, mpegMedia.Extras);
+        }
+        jsonWriter.WriteEndObject();
     }
 }
 
@@ -272,6 +300,56 @@ public class MpegMediaSerialization
             Extras = extras,
         };
     }
+
+    public static void Write(ref Utf8JsonWriter jsonWriter, GltfWriterContext context, MpegMedia? mpegMedia)
+    {
+        if (mpegMedia == null)
+        {
+            jsonWriter.WriteNullValue();
+            return;
+        }
+        if (mpegMedia.Alternatives.Count == 0)
+        {
+            throw new InvalidDataException("MPEG_media.media[i].alternatives must have at least 1 item.");
+        }
+        if (mpegMedia.StartTime != Default_StartTime && mpegMedia.Autoplay != Default_Autoplay)
+        {
+            throw new InvalidDataException("Only one of MPEG_media.media[i].startTime and MPEG_media.media[i].autoplay can be defined at any time.");
+        }
+        jsonWriter.WriteStartObject();
+        jsonWriter.WritePropertyName(ElementName.Extensions.MPEG_media.MpegMedia.StartTime);
+        jsonWriter.WriteNumberValue(mpegMedia.StartTime);
+        jsonWriter.WritePropertyName(ElementName.Extensions.MPEG_media.MpegMedia.StartTimeOffset);
+        jsonWriter.WriteNumberValue(mpegMedia.StartTimeOffset);
+        jsonWriter.WritePropertyName(ElementName.Extensions.MPEG_media.MpegMedia.EndTimeOffset);
+        jsonWriter.WriteNumberValue(mpegMedia.EndTimeOffset);
+        jsonWriter.WritePropertyName(ElementName.Extensions.MPEG_media.MpegMedia.Autoplay);
+        jsonWriter.WriteBooleanValue(mpegMedia.Autoplay);
+        if (mpegMedia.AutoplayGroup != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Extensions.MPEG_media.MpegMedia.AutoplayGroup);
+            jsonWriter.WriteNumberValue((int)mpegMedia.AutoplayGroup);
+        }
+        jsonWriter.WritePropertyName(ElementName.Extensions.MPEG_media.MpegMedia.Loop);
+        jsonWriter.WriteBooleanValue(mpegMedia.Loop);
+        jsonWriter.WritePropertyName(ElementName.Extensions.MPEG_media.MpegMedia.Controls);
+        jsonWriter.WriteBooleanValue(mpegMedia.Controls);
+        jsonWriter.WritePropertyName(ElementName.Extensions.MPEG_media.MpegMedia.Alternatives);
+        WriteList(ref jsonWriter, context, mpegMedia.Alternatives, MpegMediaAlternativeSerialization.Write);
+        jsonWriter.WritePropertyName(ElementName.Accessor.Name);
+        jsonWriter.WriteStringValue(mpegMedia.Name);
+        if (mpegMedia.Extensions != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extensions);
+            ExtensionsSerialization.Write<MpegMedia>(ref jsonWriter, context, mpegMedia.Extensions);
+        }
+        if (mpegMedia.Extras != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extras);
+            JsonSerialization.Write(ref jsonWriter, context, mpegMedia.Extras);
+        }
+        jsonWriter.WriteEndObject();
+    }
 }
 
 public class MpegMediaAlternativeSerialization
@@ -345,6 +423,41 @@ public class MpegMediaAlternativeSerialization
             Extras = extras,
         };
     }
+
+    public static void Write(ref Utf8JsonWriter jsonWriter, GltfWriterContext context, MpegMediaAlternative? mpegMediaAlternative)
+    {
+        if (mpegMediaAlternative == null)
+        {
+            jsonWriter.WriteNullValue();
+            return;
+        }
+        jsonWriter.WriteStartObject();
+        jsonWriter.WritePropertyName(ElementName.Buffer.Uri);
+        jsonWriter.WriteStringValue(mpegMediaAlternative.Uri);
+        jsonWriter.WritePropertyName(ElementName.Image.MimeType);
+        jsonWriter.WriteStringValue(mpegMediaAlternative.MimeType);
+        if (mpegMediaAlternative.Tracks != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Extensions.MPEG_buffer_circular.Tracks);
+            WriteList(ref jsonWriter, context, mpegMediaAlternative.Tracks, MpegMediaAlternativeTrackSerialization.Write);
+        }
+        if (mpegMediaAlternative.ExtraParams != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Extensions.MPEG_media.MpegMediaAlternative.ExtraParams);
+            JsonSerialization.Write(ref jsonWriter, context, (Elements.JsonElement?)mpegMediaAlternative.ExtraParams);
+        }
+        if (mpegMediaAlternative.Extensions != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extensions);
+            ExtensionsSerialization.Write<MpegMediaAlternative>(ref jsonWriter, context, mpegMediaAlternative.Extensions);
+        }
+        if (mpegMediaAlternative.Extras != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extras);
+            JsonSerialization.Write(ref jsonWriter, context, mpegMediaAlternative.Extras);
+        }
+        jsonWriter.WriteEndObject();
+    }
 }
 
 public class MpegMediaAlternativeTrackSerialization
@@ -405,5 +518,30 @@ public class MpegMediaAlternativeTrackSerialization
             Extensions = extensions,
             Extras = extras,
         };
+    }
+
+    public static void Write(ref Utf8JsonWriter jsonWriter, GltfWriterContext context, MpegMediaAlternativeTrack? mpegMediaAlternativeTrack)
+    {
+        if (mpegMediaAlternativeTrack == null)
+        {
+            jsonWriter.WriteNullValue();
+            return;
+        }
+        jsonWriter.WriteStartObject();
+        jsonWriter.WritePropertyName(ElementName.Extensions.MPEG_media.MpegMediaAlternativeTrack.Track);
+        jsonWriter.WriteStringValue(mpegMediaAlternativeTrack.Track);
+        jsonWriter.WritePropertyName(ElementName.Extensions.MPEG_media.MpegMediaAlternativeTrack.Codecs);
+        jsonWriter.WriteStringValue(mpegMediaAlternativeTrack.Codecs);
+        if (mpegMediaAlternativeTrack.Extensions != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extensions);
+            ExtensionsSerialization.Write<MpegMediaAlternativeTrack>(ref jsonWriter, context, mpegMediaAlternativeTrack.Extensions);
+        }
+        if (mpegMediaAlternativeTrack.Extras != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extras);
+            JsonSerialization.Write(ref jsonWriter, context, mpegMediaAlternativeTrack.Extras);
+        }
+        jsonWriter.WriteEndObject();
     }
 }

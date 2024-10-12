@@ -86,6 +86,30 @@ public class MpegSceneDynamicExtension : IGltfExtension
 
     public void Write(ref Utf8JsonWriter jsonWriter, GltfWriterContext context, Type parentType, object? element)
     {
-        throw new NotImplementedException(/* TODO: Implement this*/);
+        var mpegSceneDynamic = (MPEG_scene_dynamic?)element;
+        if (mpegSceneDynamic == null)
+        {
+            jsonWriter.WriteNullValue();
+            return;
+        }
+        jsonWriter.WriteStartObject();
+        jsonWriter.WritePropertyName(ElementName.Extensions.MPEG_buffer_circular.Media);
+        jsonWriter.WriteNumberValue(mpegSceneDynamic.Media);
+        if (mpegSceneDynamic.Track != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Extensions.MPEG_media.MpegMediaAlternativeTrack.Track);
+            jsonWriter.WriteNumberValue((int)mpegSceneDynamic.Track);
+        }
+        if (mpegSceneDynamic.Extensions != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extensions);
+            ExtensionsSerialization.Write<MPEG_scene_dynamic>(ref jsonWriter, context, mpegSceneDynamic.Extensions);
+        }
+        if (mpegSceneDynamic.Extras != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extras);
+            JsonSerialization.Write(ref jsonWriter, context, mpegSceneDynamic.Extras);
+        }
+        jsonWriter.WriteEndObject();
     }
 }

@@ -309,5 +309,14 @@ internal static class ElementName
             public const string AnisotropyRotation = "anisotropyRotation";
             public const string AnisotropyTexture = "anisotropyTexture";
         }
+
+        public static class KHR_materials_clearcoat
+        {
+            public const string ClearcoatFactor = "clearcoatFactor";
+            public const string ClearcoatTexture = "clearcoatTexture";
+            public const string ClearcoatRoughnessFactor = "clearcoatRoughnessFactor";
+            public const string ClearcoatRoughnessTexture = "clearcoatRoughnessTexture";
+            public const string ClearcoatNormalTexture = "clearcoatNormalTexture";
+        }
     }
 }

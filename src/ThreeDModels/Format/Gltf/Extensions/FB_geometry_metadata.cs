@@ -36,7 +36,7 @@ public class SceneBounds : IGltfProperty
     /// <summary>
     /// The bounding box corner with the numerically highest scene-space coordinates.
     /// </summary>
-    public required float[]? Max { get; set; }
+    public required float[] Max { get; set; }
     public Dictionary<string, object?>? Extensions { get; set; }
     public Elements.JsonElement? Extras { get; set; }
 }

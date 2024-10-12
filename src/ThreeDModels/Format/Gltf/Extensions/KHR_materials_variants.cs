@@ -34,7 +34,7 @@ public class KHR_materials_variants_mesh_primitive : IGltfProperty
     /// <summary>
     /// A list of material to variant mappings.
     /// </summary>
-    public required List<KhrMaterialsVariantsMapping>? Mappings { get; set; }
+    public required List<KhrMaterialsVariantsMapping> Mappings { get; set; }
     public Dictionary<string, object?>? Extensions { get; set; }
     public Elements.JsonElement? Extras { get; set; }
 }

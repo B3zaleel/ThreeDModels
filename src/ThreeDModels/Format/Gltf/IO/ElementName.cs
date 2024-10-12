@@ -359,5 +359,11 @@ internal static class ElementName
             public const string SpecularColorFactor = "specularColorFactor";
             public const string SpecularColorTexture = "specularColorTexture";
         }
+
+        public static class KHR_materials_transmission
+        {
+            public const string TransmissionFactor = "transmissionFactor";
+            public const string TransmissionTexture = "transmissionTexture";
+        }
     }
 }

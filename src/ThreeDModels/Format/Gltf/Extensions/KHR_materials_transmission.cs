@@ -91,6 +91,38 @@ public class KhrMaterialsTransmissionExtension : IGltfExtension
 
     public void Write(ref Utf8JsonWriter jsonWriter, GltfWriterContext context, Type parentType, object? element)
     {
-        throw new NotImplementedException(/* TODO: Implement this*/);
+        if (parentType != typeof(Material))
+        {
+            throw new InvalidDataException("KHR_materials_transmission must be used in a Material.");
+        }
+        var khrMaterialsTransmission = (KHR_materials_transmission?)element;
+        if (khrMaterialsTransmission == null)
+        {
+            jsonWriter.WriteNullValue();
+            return;
+        }
+        if (khrMaterialsTransmission.TransmissionFactor < 0.0f || khrMaterialsTransmission.TransmissionFactor > 1.0f)
+        {
+            throw new InvalidDataException("KHR_materials_transmission.transmissionFactor must be between 0.0 and 1.0.");
+        }
+        jsonWriter.WriteStartObject();
+        jsonWriter.WritePropertyName(ElementName.Extensions.KHR_materials_transmission.TransmissionFactor);
+        jsonWriter.WriteNumberValue(khrMaterialsTransmission.TransmissionFactor);
+        if (khrMaterialsTransmission.TransmissionTexture != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Extensions.KHR_materials_transmission.TransmissionTexture);
+            TextureInfoSerialization.Write(ref jsonWriter, context, khrMaterialsTransmission.TransmissionTexture);
+        }
+        if (khrMaterialsTransmission.Extensions != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extensions);
+            ExtensionsSerialization.Write<KHR_materials_transmission>(ref jsonWriter, context, khrMaterialsTransmission.Extensions);
+        }
+        if (khrMaterialsTransmission.Extras != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extras);
+            JsonSerialization.Write(ref jsonWriter, context, khrMaterialsTransmission.Extras);
+        }
+        jsonWriter.WriteEndObject();
     }
 }

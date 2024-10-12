@@ -2,6 +2,7 @@ using System.Text.Json;
 using ThreeDModels.Format.Gltf.Elements;
 using ThreeDModels.Format.Gltf.IO;
 using static ThreeDModels.Format.Gltf.IO.Utf8JsonReaderHelpers;
+using static ThreeDModels.Format.Gltf.IO.Utf8JsonWriterHelpers;
 
 namespace ThreeDModels.Format.Gltf.Extensions;
 
@@ -76,6 +77,32 @@ public class MsftLodExtension : IGltfExtension
 
     public void Write(ref Utf8JsonWriter jsonWriter, GltfWriterContext context, Type parentType, object? element)
     {
-        throw new NotImplementedException(/* TODO: Implement this*/);
+        if (parentType != typeof(Gltf))
+        {
+            throw new InvalidDataException("MSFT_lod must be used in a Gltf root.");
+        }
+        var msftLod = (MSFT_lod?)element;
+        if (msftLod == null)
+        {
+            jsonWriter.WriteNullValue();
+            return;
+        }
+        jsonWriter.WriteStartObject();
+        if (msftLod.Ids != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Extensions.MSFT_lod.Ids);
+            WriteIntegerList(ref jsonWriter, context, msftLod.Ids);
+        }
+        if (msftLod.Extensions != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extensions);
+            ExtensionsSerialization.Write<MSFT_lod>(ref jsonWriter, context, msftLod.Extensions);
+        }
+        if (msftLod.Extras != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extras);
+            JsonSerialization.Write(ref jsonWriter, context, msftLod.Extras);
+        }
+        jsonWriter.WriteEndObject();
     }
 }

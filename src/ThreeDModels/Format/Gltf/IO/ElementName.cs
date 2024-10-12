@@ -490,5 +490,10 @@ internal static class ElementName
                 public const string Parameters = "parameters";
             }
         }
+
+        public static class MSFT_lod
+        {
+            public const string Ids = "ids";
+        }
     }
 }

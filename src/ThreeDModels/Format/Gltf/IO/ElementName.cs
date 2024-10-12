@@ -209,5 +209,12 @@ internal static class ElementName
             public const string ClearcoatTintFactor = "clearcoatTintFactor";
             public const string ClearcoatTintTexture = "clearcoatTintTexture";
         }
+
+        public static class ADOBE_materials_thin_transparency
+        {
+            public const string TransmissionFactor = "transmissionFactor";
+            public const string TransmissionTexture = "transmissionTexture";
+            public const string Ior = "ior";
+        }
     }
 }

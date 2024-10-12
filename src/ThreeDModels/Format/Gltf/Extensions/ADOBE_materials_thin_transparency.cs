@@ -86,6 +86,36 @@ public class AdobeMaterialsThinTransparencyExtension : IGltfExtension
 
     public void Write(ref Utf8JsonWriter jsonWriter, GltfWriterContext context, Type parentType, object? element)
     {
-        throw new NotImplementedException(/* TODO: Implement this*/);
+        if (parentType != typeof(Gltf))
+        {
+            throw new InvalidDataException("ADOBE_materials_thin_transparency must be used in a Gltf root.");
+        }
+        var adobeMaterialsThinTransparency = (ADOBE_materials_thin_transparency?)element;
+        if (adobeMaterialsThinTransparency == null)
+        {
+            jsonWriter.WriteNullValue();
+            return;
+        }
+        jsonWriter.WriteStartObject();
+        jsonWriter.WritePropertyName(ElementName.Extensions.ADOBE_materials_thin_transparency.TransmissionFactor);
+        jsonWriter.WriteNumberValue(adobeMaterialsThinTransparency.TransmissionFactor);
+        if (adobeMaterialsThinTransparency.TransmissionTexture != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Extensions.ADOBE_materials_thin_transparency.TransmissionTexture);
+            TextureInfoSerialization.Write(ref jsonWriter, context, adobeMaterialsThinTransparency.TransmissionTexture);
+        }
+        jsonWriter.WritePropertyName(ElementName.Extensions.ADOBE_materials_thin_transparency.Ior);
+        jsonWriter.WriteNumberValue(adobeMaterialsThinTransparency.Ior);
+        if (adobeMaterialsThinTransparency.Extensions != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extensions);
+            ExtensionsSerialization.Write<ADOBE_materials_thin_transparency>(ref jsonWriter, context, adobeMaterialsThinTransparency.Extensions);
+        }
+        if (adobeMaterialsThinTransparency.Extras != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extras);
+            JsonSerialization.Write(ref jsonWriter, context, adobeMaterialsThinTransparency.Extras);
+        }
+        jsonWriter.WriteEndObject();
     }
 }

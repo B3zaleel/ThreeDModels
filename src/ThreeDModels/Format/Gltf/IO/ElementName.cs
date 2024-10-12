@@ -261,5 +261,12 @@ internal static class ElementName
         {
             public const string Intensity = "intensity";
         }
+
+        public static class EXT_mesh_manifold
+        {
+            public const string ManifoldPrimitive = "manifoldPrimitive";
+            public const string MergeIndices = "mergeIndices";
+            public const string MergeValues = "mergeValues";
+        }
     }
 }

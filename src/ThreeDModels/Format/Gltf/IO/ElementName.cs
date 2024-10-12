@@ -371,5 +371,13 @@ internal static class ElementName
             public const string Variants = "variants";
             public const string Mappings = "mappings";
         }
+
+        public static class KHR_materials_volume
+        {
+            public const string ThicknessFactor = "thicknessFactor";
+            public const string ThicknessTexture = "thicknessTexture";
+            public const string AttenuationDistance = "attenuationDistance";
+            public const string AttenuationColor = "attenuationColor";
+        }
     }
 }

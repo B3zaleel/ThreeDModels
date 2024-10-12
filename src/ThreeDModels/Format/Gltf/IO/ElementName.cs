@@ -400,5 +400,38 @@ internal static class ElementName
         {
             public const string Accessor = "accessor";
         }
+
+        public static class MPEG_audio_spatial
+        {
+            public const string Sources = "sources";
+            public const string Listener = "listener";
+            public const string Reverbs = "reverbs";
+
+            public static class MpegAudioSpatialSource
+            {
+                public const string Id = "id";
+                public const string Pregain = "pregain";
+                public const string PlaybackSpeed = "playbackSpeed";
+                public const string Attenuation = "attenuation";
+                public const string AttenuationParameters = "attenuationParameters";
+                public const string ReferenceDistance = "referenceDistance";
+                public const string ReverbFeed = "reverbFeed";
+                public const string ReverbFeedGain = "reverbFeedGain";
+            }
+
+            public static class MpegAudioSpatialReverb
+            {
+                public const string Bypass = "bypass";
+                public const string Properties = "properties";
+                public const string Predelay = "predelay";
+            }
+
+            public static class MpegAudioSpatialReverbProperty
+            {
+                public const string Frequency = "frequency";
+                public const string RT60 = "RT60";
+                public const string DSR = "DSR";
+            }
+        }
     }
 }

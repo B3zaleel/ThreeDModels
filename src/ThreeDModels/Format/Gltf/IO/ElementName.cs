@@ -274,5 +274,12 @@ internal static class ElementName
             public const string Fallback = "fallback";
             public const string Filter = "filter";
         }
+
+        public static class FB_geometry_metadata
+        {
+            public const string VertexCount = "vertexCount";
+            public const string PrimitiveCount = "primitiveCount";
+            public const string SceneBounds = "sceneBounds";
+        }
     }
 }

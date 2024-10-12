@@ -467,5 +467,11 @@ internal static class ElementName
                 public const string Codecs = "codecs";
             }
         }
+
+        public static class MPEG_mesh_linking
+        {
+            public const string Correspondence = "correspondence";
+            public const string Pose = "pose";
+        }
     }
 }

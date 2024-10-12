@@ -203,5 +203,11 @@ internal static class ElementName
             public const string ClearcoatSpecularFactor = "clearcoatSpecularFactor";
             public const string ClearcoatSpecularTexture = "clearcoatSpecularTexture";
         }
+
+        public static class ADOBE_materials_clearcoat_tint
+        {
+            public const string ClearcoatTintFactor = "clearcoatTintFactor";
+            public const string ClearcoatTintTexture = "clearcoatTintTexture";
+        }
     }
 }

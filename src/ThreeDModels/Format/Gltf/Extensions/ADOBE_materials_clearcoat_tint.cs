@@ -2,6 +2,7 @@ using System.Text.Json;
 using ThreeDModels.Format.Gltf.Elements;
 using ThreeDModels.Format.Gltf.IO;
 using static ThreeDModels.Format.Gltf.IO.Utf8JsonReaderHelpers;
+using static ThreeDModels.Format.Gltf.IO.Utf8JsonWriterHelpers;
 
 namespace ThreeDModels.Format.Gltf.Extensions;
 
@@ -88,6 +89,41 @@ public class AdobeMaterialsClearcoatTintExtension : IGltfExtension
 
     public void Write(ref Utf8JsonWriter jsonWriter, GltfWriterContext context, Type parentType, object? element)
     {
-        throw new NotImplementedException(/* TODO: Implement this*/);
+        if (parentType != typeof(Material))
+        {
+            throw new InvalidDataException("ADOBE_materials_clearcoat_tint must be used in a Material.");
+        }
+        var adobeMaterialsClearcoatTint = (ADOBE_materials_clearcoat_tint?)element;
+        if (adobeMaterialsClearcoatTint == null)
+        {
+            jsonWriter.WriteNullValue();
+            return;
+        }
+        if (adobeMaterialsClearcoatTint.ClearcoatTintFactor != null && adobeMaterialsClearcoatTint.ClearcoatTintFactor.Length != 3)
+        {
+            throw new InvalidDataException("ADOBE_materials_clearcoat_tint.clearcoatTintFactor must have 3 items.");
+        }
+        jsonWriter.WriteStartObject();
+        if (adobeMaterialsClearcoatTint.ClearcoatTintFactor != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Extensions.ADOBE_materials_clearcoat_tint.ClearcoatTintFactor);
+            WriteFloatList(ref jsonWriter, context, adobeMaterialsClearcoatTint.ClearcoatTintFactor.ToList());
+        }
+        if (adobeMaterialsClearcoatTint.ClearcoatTintTexture != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Extensions.ADOBE_materials_clearcoat_tint.ClearcoatTintTexture);
+            TextureInfoSerialization.Write(ref jsonWriter, context, adobeMaterialsClearcoatTint.ClearcoatTintTexture);
+        }
+        if (adobeMaterialsClearcoatTint.Extensions != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extensions);
+            ExtensionsSerialization.Write<ADOBE_materials_clearcoat_tint>(ref jsonWriter, context, adobeMaterialsClearcoatTint.Extensions);
+        }
+        if (adobeMaterialsClearcoatTint.Extras != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extras);
+            JsonSerialization.Write(ref jsonWriter, context, adobeMaterialsClearcoatTint.Extras);
+        }
+        jsonWriter.WriteEndObject();
     }
 }

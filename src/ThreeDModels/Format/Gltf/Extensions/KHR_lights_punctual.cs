@@ -2,6 +2,7 @@ using System.Text.Json;
 using ThreeDModels.Format.Gltf.Elements;
 using ThreeDModels.Format.Gltf.IO;
 using static ThreeDModels.Format.Gltf.IO.Utf8JsonReaderHelpers;
+using static ThreeDModels.Format.Gltf.IO.Utf8JsonWriterHelpers;
 
 namespace ThreeDModels.Format.Gltf.Extensions;
 
@@ -33,7 +34,7 @@ public class KhrLightsPunctualLight : IGltfRootProperty
     /// <summary>
     /// A distance cutoff at which the light's intensity may be considered to have reached zero.
     /// </summary>
-    public float Range { get; set; }
+    public float? Range { get; set; }
     public string? Name { get; set; }
     public Dictionary<string, object?>? Extensions { get; set; }
     public Elements.JsonElement? Extras { get; set; }
@@ -176,7 +177,56 @@ public class KhrLightsPunctualExtension : IGltfExtension
 
     public void Write(ref Utf8JsonWriter jsonWriter, GltfWriterContext context, Type parentType, object? element)
     {
-        throw new NotImplementedException(/* TODO: Implement this*/);
+        if (parentType == typeof(Gltf))
+        {
+            var khrLightsPunctual = (KHR_lights_punctual?)element;
+            if (khrLightsPunctual == null)
+            {
+                jsonWriter.WriteNullValue();
+                return;
+            }
+            jsonWriter.WriteStartObject();
+            jsonWriter.WritePropertyName(ElementName.Extensions.EXT_lights_ies.Lights);
+            WriteList(ref jsonWriter, context, khrLightsPunctual.Lights, KhrLightsPunctualLightSerialization.Write);
+            if (khrLightsPunctual.Extensions != null)
+            {
+                jsonWriter.WritePropertyName(ElementName.Gltf.Extensions);
+                ExtensionsSerialization.Write<KHR_lights_punctual>(ref jsonWriter, context, khrLightsPunctual.Extensions);
+            }
+            if (khrLightsPunctual.Extras != null)
+            {
+                jsonWriter.WritePropertyName(ElementName.Gltf.Extras);
+                JsonSerialization.Write(ref jsonWriter, context, khrLightsPunctual.Extras);
+            }
+            jsonWriter.WriteEndObject();
+        }
+        else if (parentType == typeof(Node))
+        {
+            var khrLightsPunctualNode = (KhrLightsPunctualNode?)element;
+            if (khrLightsPunctualNode == null)
+            {
+                jsonWriter.WriteNullValue();
+                return;
+            }
+            jsonWriter.WriteStartObject();
+            jsonWriter.WritePropertyName(ElementName.Extensions.EXT_lights_ies.Light);
+            jsonWriter.WriteNumberValue(khrLightsPunctualNode.Light);
+            if (khrLightsPunctualNode.Extensions != null)
+            {
+                jsonWriter.WritePropertyName(ElementName.Gltf.Extensions);
+                ExtensionsSerialization.Write<KhrLightsPunctualNode>(ref jsonWriter, context, khrLightsPunctualNode.Extensions);
+            }
+            if (khrLightsPunctualNode.Extras != null)
+            {
+                jsonWriter.WritePropertyName(ElementName.Gltf.Extras);
+                JsonSerialization.Write(ref jsonWriter, context, khrLightsPunctualNode.Extras);
+            }
+            jsonWriter.WriteEndObject();
+        }
+        else
+        {
+            throw new InvalidDataException("KHR_lights_punctual must be used in a either a Node or the Gltf root.");
+        }
     }
 }
 
@@ -254,21 +304,66 @@ public class KhrLightsPunctualLightSerialization
         {
             throw new InvalidDataException("KHR_lights_punctual.lights[i].color must have 3 numbers.");
         }
+        if (range != null && range < 0.0f)
+        {
+            throw new InvalidDataException("KHR_lights_punctual.lights[i].range must be at least 0.");
+        }
         return new()
         {
             Color = color ?? Default_Color,
             Intensity = intensity ?? Default_Intensity,
             Spot = spot,
             Type = type,
+            Range = range,
             Name = name,
             Extensions = extensions,
             Extras = extras,
         };
     }
 
-    public void Write(ref Utf8JsonWriter jsonWriter, GltfWriterContext context, Type parentType, object? element)
+    public static void Write(ref Utf8JsonWriter jsonWriter, GltfWriterContext context, KhrLightsPunctualLight? khrLightsPunctualLight)
     {
-        throw new NotImplementedException(/* TODO: Implement this*/);
+        if (khrLightsPunctualLight == null)
+        {
+            jsonWriter.WriteNullValue();
+            return;
+        }
+        jsonWriter.WriteStartObject();
+        jsonWriter.WritePropertyName(ElementName.Extensions.EXT_lights_ies.Color);
+        WriteFloatList(ref jsonWriter, context, khrLightsPunctualLight.Color.ToList());
+        jsonWriter.WritePropertyName(ElementName.Extensions.KHR_lights_punctual.KhrLightsPunctualLight.Intensity);
+        jsonWriter.WriteNumberValue(khrLightsPunctualLight.Intensity);
+        if (khrLightsPunctualLight.Spot != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Extensions.KHR_lights_punctual.KhrLightsPunctualLight.Spot);
+            KhrLightsPunctualLightSpotSerialization.Write(ref jsonWriter, context, khrLightsPunctualLight.Spot);
+        }
+        if (khrLightsPunctualLight.Type != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Accessor.Type);
+            jsonWriter.WriteStringValue(khrLightsPunctualLight.Type);
+        }
+        if (khrLightsPunctualLight.Range != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Extensions.KHR_lights_punctual.KhrLightsPunctualLight.Range);
+            jsonWriter.WriteNumberValue((float)khrLightsPunctualLight.Range);
+        }
+        if (khrLightsPunctualLight.Name != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Accessor.Name);
+            jsonWriter.WriteStringValue(khrLightsPunctualLight.Name);
+        }
+        if (khrLightsPunctualLight.Extensions != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extensions);
+            ExtensionsSerialization.Write<KhrLightsPunctualLight>(ref jsonWriter, context, khrLightsPunctualLight.Extensions);
+        }
+        if (khrLightsPunctualLight.Extras != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extras);
+            JsonSerialization.Write(ref jsonWriter, context, khrLightsPunctualLight.Extras);
+        }
+        jsonWriter.WriteEndObject();
     }
 }
 
@@ -340,8 +435,36 @@ public class KhrLightsPunctualLightSpotSerialization
         };
     }
 
-    public void Write(ref Utf8JsonWriter jsonWriter, GltfWriterContext context, Type parentType, object? element)
+    public static void Write(ref Utf8JsonWriter jsonWriter, GltfWriterContext context, KhrLightsPunctualLightSpot? khrLightsPunctualLightSpot)
     {
-        throw new NotImplementedException(/* TODO: Implement this*/);
+        if (khrLightsPunctualLightSpot == null)
+        {
+            jsonWriter.WriteNullValue();
+            return;
+        }
+        if (khrLightsPunctualLightSpot.InnerConeAngle < 0.0 || khrLightsPunctualLightSpot.InnerConeAngle > Maximum_Angle)
+        {
+            throw new InvalidDataException($"KHR_lights_punctual.lights[i].spot.innerConeAngle must be in the range [0, {Maximum_Angle}].");
+        }
+        if (khrLightsPunctualLightSpot.OuterConeAngle < 0.0 || khrLightsPunctualLightSpot.OuterConeAngle > Maximum_Angle)
+        {
+            throw new InvalidDataException($"KHR_lights_punctual.lights[i].spot.outerConeAngle must be in the range [0, {Maximum_Angle}].");
+        }
+        jsonWriter.WriteStartObject();
+        jsonWriter.WritePropertyName(ElementName.Extensions.KHR_lights_punctual.KhrLightsPunctualLightSpot.InnerConeAngle);
+        jsonWriter.WriteNumberValue(khrLightsPunctualLightSpot.InnerConeAngle);
+        jsonWriter.WritePropertyName(ElementName.Extensions.KHR_lights_punctual.KhrLightsPunctualLightSpot.OuterConeAngle);
+        jsonWriter.WriteNumberValue(khrLightsPunctualLightSpot.OuterConeAngle);
+        if (khrLightsPunctualLightSpot.Extensions != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extensions);
+            ExtensionsSerialization.Write<KhrLightsPunctualLightSpot>(ref jsonWriter, context, khrLightsPunctualLightSpot.Extensions);
+        }
+        if (khrLightsPunctualLightSpot.Extras != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extras);
+            JsonSerialization.Write(ref jsonWriter, context, khrLightsPunctualLightSpot.Extras);
+        }
+        jsonWriter.WriteEndObject();
     }
 }

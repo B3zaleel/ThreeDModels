@@ -286,5 +286,21 @@ internal static class ElementName
         {
             public const string Pointer = "pointer";
         }
+
+        public static class KHR_lights_punctual
+        {
+            public static class KhrLightsPunctualLight
+            {
+                public const string Intensity = "intensity";
+                public const string Range = "range";
+                public const string Spot = "spot";
+            }
+
+            public static class KhrLightsPunctualLightSpot
+            {
+                public const string InnerConeAngle = "innerConeAngle";
+                public const string OuterConeAngle = "outerConeAngle";
+            }
+        }
     }
 }

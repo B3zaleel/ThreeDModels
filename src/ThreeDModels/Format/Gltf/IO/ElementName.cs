@@ -256,5 +256,10 @@ internal static class ElementName
             public const string Multiplier = "multiplier";
             public const string Color = "color";
         }
+
+        public static class EXT_lights_image_based
+        {
+            public const string Intensity = "intensity";
+        }
     }
 }

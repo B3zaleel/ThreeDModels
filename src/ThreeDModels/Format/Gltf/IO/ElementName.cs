@@ -395,5 +395,10 @@ internal static class ElementName
             public const string Immutable = "immutable";
             public const string SuggestedUpdateRate = "suggestedUpdateRate";
         }
+
+        public static class MPEG_animation_timing
+        {
+            public const string Accessor = "accessor";
+        }
     }
 }

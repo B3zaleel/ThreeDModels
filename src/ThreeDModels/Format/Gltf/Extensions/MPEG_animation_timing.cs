@@ -76,6 +76,25 @@ public class MpegAnimationTimingExtension : IGltfExtension
 
     public void Write(ref Utf8JsonWriter jsonWriter, GltfWriterContext context, Type parentType, object? element)
     {
-        throw new NotImplementedException(/* TODO: Implement this*/);
+        var mpegAnimationTiming = (MPEG_animation_timing?)element;
+        if (mpegAnimationTiming == null)
+        {
+            jsonWriter.WriteNullValue();
+            return;
+        }
+        jsonWriter.WriteStartObject();
+        jsonWriter.WritePropertyName(ElementName.Extensions.MPEG_animation_timing.Accessor);
+        jsonWriter.WriteNumberValue(mpegAnimationTiming.Accessor);
+        if (mpegAnimationTiming.Extensions != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extensions);
+            ExtensionsSerialization.Write<MPEG_animation_timing>(ref jsonWriter, context, mpegAnimationTiming.Extensions);
+        }
+        if (mpegAnimationTiming.Extras != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extras);
+            JsonSerialization.Write(ref jsonWriter, context, mpegAnimationTiming.Extras);
+        }
+        jsonWriter.WriteEndObject();
     }
 }

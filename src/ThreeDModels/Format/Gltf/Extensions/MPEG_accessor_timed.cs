@@ -82,7 +82,7 @@ public class MpegAccessorTimedExtension : IGltfExtension
                 throw new InvalidDataException($"Unknown property: {propertyName}");
             }
         }
-        if ((immutable == null || (bool)immutable) && bufferView != null)
+        if ((immutable == null || !(bool)immutable) && bufferView != null)
         {
             throw new InvalidDataException("MPEG_accessor_timed.bufferView shouldn't exist if MPEG_accessor_timed.immutable does not exist or is `false`.");
         }
@@ -98,6 +98,36 @@ public class MpegAccessorTimedExtension : IGltfExtension
 
     public void Write(ref Utf8JsonWriter jsonWriter, GltfWriterContext context, Type parentType, object? element)
     {
-        throw new NotImplementedException(/* TODO: Implement this*/);
+        var mpegAccessorTimed = (MPEG_accessor_timed?)element;
+        if (mpegAccessorTimed == null)
+        {
+            jsonWriter.WriteNullValue();
+            return;
+        }
+        if (!mpegAccessorTimed.Immutable && mpegAccessorTimed.BufferView != null)
+        {
+            throw new InvalidDataException("MPEG_accessor_timed.bufferView shouldn't exist if MPEG_accessor_timed.immutable does not exist or is `false`.");
+        }
+        jsonWriter.WriteStartObject();
+        jsonWriter.WritePropertyName(ElementName.Extensions.MPEG_accessor_timed.Immutable);
+        jsonWriter.WriteBooleanValue(mpegAccessorTimed.Immutable);
+        if (mpegAccessorTimed.BufferView != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Accessor.BufferView);
+            jsonWriter.WriteNumberValue((int)mpegAccessorTimed.BufferView);
+        }
+        jsonWriter.WritePropertyName(ElementName.Extensions.MPEG_accessor_timed.SuggestedUpdateRate);
+        jsonWriter.WriteNumberValue(mpegAccessorTimed.SuggestedUpdateRate);
+        if (mpegAccessorTimed.Extensions != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extensions);
+            ExtensionsSerialization.Write<MPEG_accessor_timed>(ref jsonWriter, context, mpegAccessorTimed.Extensions);
+        }
+        if (mpegAccessorTimed.Extras != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extras);
+            JsonSerialization.Write(ref jsonWriter, context, mpegAccessorTimed.Extras);
+        }
+        jsonWriter.WriteEndObject();
     }
 }

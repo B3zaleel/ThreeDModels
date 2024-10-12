@@ -389,5 +389,11 @@ internal static class ElementName
         {
             public const string Offset = "offset";
         }
+
+        public static class MPEG_accessor_timed
+        {
+            public const string Immutable = "immutable";
+            public const string SuggestedUpdateRate = "suggestedUpdateRate";
+        }
     }
 }

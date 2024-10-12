@@ -323,5 +323,10 @@ internal static class ElementName
         {
             public const string Dispersion = "dispersion";
         }
+
+        public static class KHR_materials_emissive_strength
+        {
+            public const string EmissiveStrength = "emissiveStrength";
+        }
     }
 }

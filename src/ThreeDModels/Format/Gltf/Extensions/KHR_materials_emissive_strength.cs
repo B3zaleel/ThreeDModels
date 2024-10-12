@@ -81,6 +81,33 @@ public class KhrMaterialsEmissiveStrengthExtension : IGltfExtension
 
     public void Write(ref Utf8JsonWriter jsonWriter, GltfWriterContext context, Type parentType, object? element)
     {
-        throw new NotImplementedException(/* TODO: Implement this*/);
+        if (parentType != typeof(Material))
+        {
+            throw new InvalidDataException("KHR_materials_emissive_strength must be used in a Material.");
+        }
+        var khrMaterialsEmissiveStrength = (KHR_materials_emissive_strength?)element;
+        if (khrMaterialsEmissiveStrength == null)
+        {
+            jsonWriter.WriteNullValue();
+            return;
+        }
+        if (khrMaterialsEmissiveStrength.EmissiveStrength < 0)
+        {
+            throw new InvalidDataException("KHR_materials_emissive_strength.emissiveStrength must be greater than or equal to 0.");
+        }
+        jsonWriter.WriteStartObject();
+        jsonWriter.WritePropertyName(ElementName.Extensions.KHR_materials_emissive_strength.EmissiveStrength);
+        jsonWriter.WriteNumberValue(khrMaterialsEmissiveStrength.EmissiveStrength);
+        if (khrMaterialsEmissiveStrength.Extensions != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extensions);
+            ExtensionsSerialization.Write<KHR_materials_emissive_strength>(ref jsonWriter, context, khrMaterialsEmissiveStrength.Extensions);
+        }
+        if (khrMaterialsEmissiveStrength.Extras != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extras);
+            JsonSerialization.Write(ref jsonWriter, context, khrMaterialsEmissiveStrength.Extras);
+        }
+        jsonWriter.WriteEndObject();
     }
 }

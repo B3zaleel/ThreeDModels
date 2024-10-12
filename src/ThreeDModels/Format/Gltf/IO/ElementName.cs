@@ -318,5 +318,10 @@ internal static class ElementName
             public const string ClearcoatRoughnessTexture = "clearcoatRoughnessTexture";
             public const string ClearcoatNormalTexture = "clearcoatNormalTexture";
         }
+
+        public static class KHR_materials_dispersion
+        {
+            public const string Dispersion = "dispersion";
+        }
     }
 }

@@ -81,6 +81,33 @@ public class KhrMaterialsDispersionExtension : IGltfExtension
 
     public void Write(ref Utf8JsonWriter jsonWriter, GltfWriterContext context, Type parentType, object? element)
     {
-        throw new NotImplementedException(/* TODO: Implement this*/);
+        if (parentType != typeof(Material))
+        {
+            throw new InvalidDataException("KHR_materials_dispersion must be used in a Material.");
+        }
+        var khrMaterialsDispersion = (KHR_materials_dispersion?)element;
+        if (khrMaterialsDispersion == null)
+        {
+            jsonWriter.WriteNullValue();
+            return;
+        }
+        if (khrMaterialsDispersion.Dispersion < 0.0f)
+        {
+            throw new InvalidDataException("KHR_materials_dispersion.dispersion must be greater than or equal to 0.0.");
+        }
+        jsonWriter.WriteStartObject();
+        jsonWriter.WritePropertyName(ElementName.Extensions.KHR_materials_dispersion.Dispersion);
+        jsonWriter.WriteNumberValue(khrMaterialsDispersion.Dispersion);
+        if (khrMaterialsDispersion.Extensions != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extensions);
+            ExtensionsSerialization.Write<KHR_materials_dispersion>(ref jsonWriter, context, khrMaterialsDispersion.Extensions);
+        }
+        if (khrMaterialsDispersion.Extras != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extras);
+            JsonSerialization.Write(ref jsonWriter, context, khrMaterialsDispersion.Extras);
+        }
+        jsonWriter.WriteEndObject();
     }
 }

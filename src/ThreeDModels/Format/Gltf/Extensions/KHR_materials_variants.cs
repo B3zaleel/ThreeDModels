@@ -2,6 +2,7 @@ using System.Text.Json;
 using ThreeDModels.Format.Gltf.Elements;
 using ThreeDModels.Format.Gltf.IO;
 using static ThreeDModels.Format.Gltf.IO.Utf8JsonReaderHelpers;
+using static ThreeDModels.Format.Gltf.IO.Utf8JsonWriterHelpers;
 
 namespace ThreeDModels.Format.Gltf.Extensions;
 
@@ -33,7 +34,7 @@ public class KHR_materials_variants_mesh_primitive : IGltfProperty
     /// <summary>
     /// A list of material to variant mappings.
     /// </summary>
-    public required List<KhrMaterialsVariantsMapping>? Mappings { get; set; }
+    public required List<KhrMaterialsVariantsMapping> Mappings { get; set; }
     public Dictionary<string, object?>? Extensions { get; set; }
     public Elements.JsonElement? Extras { get; set; }
 }
@@ -172,7 +173,67 @@ public class KhrMaterialsVariantsExtension : IGltfExtension
 
     public void Write(ref Utf8JsonWriter jsonWriter, GltfWriterContext context, Type parentType, object? element)
     {
-        throw new NotImplementedException(/* TODO: Implement this*/);
+        if (parentType == typeof(Gltf))
+        {
+            var khrMaterialsVariants = (KHR_materials_variants?)element;
+            if (khrMaterialsVariants == null)
+            {
+                jsonWriter.WriteNullValue();
+                return;
+            }
+            if (khrMaterialsVariants.Variants.Count < 1)
+            {
+                throw new InvalidDataException("KHR_materials_variants.variants must have at least one variant.");
+            }
+            jsonWriter.WriteStartObject();
+            jsonWriter.WritePropertyName(ElementName.Extensions.KHR_materials_variants.Variants);
+            WriteList(ref jsonWriter, context, khrMaterialsVariants.Variants, KhrMaterialsVariantsVariantSerialization.Write);
+            if (khrMaterialsVariants.Extensions != null)
+            {
+                jsonWriter.WritePropertyName(ElementName.Gltf.Extensions);
+                ExtensionsSerialization.Write<KHR_materials_variants>(ref jsonWriter, context, khrMaterialsVariants.Extensions);
+            }
+            if (khrMaterialsVariants.Extras != null)
+            {
+                jsonWriter.WritePropertyName(ElementName.Gltf.Extras);
+                JsonSerialization.Write(ref jsonWriter, context, khrMaterialsVariants.Extras);
+            }
+            jsonWriter.WriteEndObject();
+        }
+        else if (parentType == typeof(MeshPrimitive))
+        {
+            var khrMaterialsVariantsMeshPrimitive = (KHR_materials_variants_mesh_primitive?)element;
+            if (khrMaterialsVariantsMeshPrimitive == null)
+            {
+                jsonWriter.WriteNullValue();
+                return;
+            }
+            if (khrMaterialsVariantsMeshPrimitive.Mappings == null || khrMaterialsVariantsMeshPrimitive.Mappings.Count < 1)
+            {
+                throw new InvalidDataException("KHR_materials_variants.mappings must have at least 1 mapping.");
+            }
+            jsonWriter.WriteStartObject();
+            if (khrMaterialsVariantsMeshPrimitive.Mappings != null)
+            {
+                jsonWriter.WritePropertyName(ElementName.Extensions.KHR_materials_variants.Mappings);
+                WriteList(ref jsonWriter, context, khrMaterialsVariantsMeshPrimitive.Mappings, KhrMaterialsVariantsMappingSerialization.Write);
+            }
+            if (khrMaterialsVariantsMeshPrimitive.Extensions != null)
+            {
+                jsonWriter.WritePropertyName(ElementName.Gltf.Extensions);
+                ExtensionsSerialization.Write<KHR_materials_variants_mesh_primitive>(ref jsonWriter, context, khrMaterialsVariantsMeshPrimitive.Extensions);
+            }
+            if (khrMaterialsVariantsMeshPrimitive.Extras != null)
+            {
+                jsonWriter.WritePropertyName(ElementName.Gltf.Extras);
+                JsonSerialization.Write(ref jsonWriter, context, khrMaterialsVariantsMeshPrimitive.Extras);
+            }
+            jsonWriter.WriteEndObject();
+        }
+        else
+        {
+            throw new InvalidDataException("KHR_materials_variants must be used in a either the Gltf root or a MeshPrimitive.");
+        }
     }
 }
 
@@ -230,9 +291,31 @@ public class KhrMaterialsVariantsVariantSerialization
         };
     }
 
-    public void Write(ref Utf8JsonWriter jsonWriter, GltfWriterContext context, Type parentType, object? element)
+    public static void Write(ref Utf8JsonWriter jsonWriter, GltfWriterContext context, KhrMaterialsVariantsVariant? khrMaterialsVariantsVariant)
     {
-        throw new NotImplementedException(/* TODO: Implement this*/);
+        if (khrMaterialsVariantsVariant == null)
+        {
+            jsonWriter.WriteNullValue();
+            return;
+        }
+        jsonWriter.WriteStartObject();
+        if (khrMaterialsVariantsVariant.Name == null)
+        {
+            throw new InvalidDataException("KhrMaterialsVariantsVariant.name is a required property.");
+        }
+        jsonWriter.WritePropertyName(ElementName.Accessor.Name);
+        jsonWriter.WriteStringValue(khrMaterialsVariantsVariant.Name);
+        if (khrMaterialsVariantsVariant.Extensions != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extensions);
+            ExtensionsSerialization.Write<KhrMaterialsVariantsVariant>(ref jsonWriter, context, khrMaterialsVariantsVariant.Extensions);
+        }
+        if (khrMaterialsVariantsVariant.Extras != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extras);
+            JsonSerialization.Write(ref jsonWriter, context, khrMaterialsVariantsVariant.Extras);
+        }
+        jsonWriter.WriteEndObject();
     }
 }
 
@@ -306,8 +389,37 @@ public class KhrMaterialsVariantsMappingSerialization
         };
     }
 
-    public void Write(ref Utf8JsonWriter jsonWriter, GltfWriterContext context, Type parentType, object? element)
+    public static void Write(ref Utf8JsonWriter jsonWriter, GltfWriterContext context, KhrMaterialsVariantsMapping? khrMaterialsVariantsMapping)
     {
-        throw new NotImplementedException(/* TODO: Implement this*/);
+        if (khrMaterialsVariantsMapping == null)
+        {
+            jsonWriter.WriteNullValue();
+            return;
+        }
+        if (khrMaterialsVariantsMapping.Variants.Count < 1)
+        {
+            throw new InvalidDataException("KHR_materials_variants.mappings[i].variants must have at least one variant.");
+        }
+        jsonWriter.WriteStartObject();
+        jsonWriter.WritePropertyName(ElementName.Extensions.KHR_materials_variants.Variants);
+        WriteIntegerList(ref jsonWriter, context, khrMaterialsVariantsMapping.Variants);
+        jsonWriter.WritePropertyName(ElementName.MeshPrimitive.Material);
+        jsonWriter.WriteNumberValue(khrMaterialsVariantsMapping.Material);
+        if (khrMaterialsVariantsMapping.Name != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Accessor.Name);
+            jsonWriter.WriteStringValue(khrMaterialsVariantsMapping.Name);
+        }
+        if (khrMaterialsVariantsMapping.Extensions != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extensions);
+            ExtensionsSerialization.Write<KhrMaterialsVariantsMapping>(ref jsonWriter, context, khrMaterialsVariantsMapping.Extensions);
+        }
+        if (khrMaterialsVariantsMapping.Extras != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extras);
+            JsonSerialization.Write(ref jsonWriter, context, khrMaterialsVariantsMapping.Extras);
+        }
+        jsonWriter.WriteEndObject();
     }
 }

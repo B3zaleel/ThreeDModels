@@ -2,6 +2,7 @@ using System.Text.Json;
 using ThreeDModels.Format.Gltf.Elements;
 using ThreeDModels.Format.Gltf.IO;
 using static ThreeDModels.Format.Gltf.IO.Utf8JsonReaderHelpers;
+using static ThreeDModels.Format.Gltf.IO.Utf8JsonWriterHelpers;
 
 namespace ThreeDModels.Format.Gltf.Extensions;
 
@@ -168,7 +169,57 @@ public class ExtIightsImageBasedExtension : IGltfExtension
 
     public void Write(ref Utf8JsonWriter jsonWriter, GltfWriterContext context, Type parentType, object? element)
     {
-        throw new NotImplementedException(/* TODO: Implement this*/);
+        if (parentType == typeof(Gltf))
+        {
+            var extLightsImageBased = (EXT_lights_image_based?)element;
+            if (extLightsImageBased == null)
+            {
+                jsonWriter.WriteNullValue();
+                return;
+            }
+            jsonWriter.WriteStartObject();
+            jsonWriter.WritePropertyName(ElementName.Extensions.EXT_lights_ies.Lights);
+            WriteList(ref jsonWriter, context, extLightsImageBased.Lights, ExtIightsImageBasedLightSerialization.Write);
+
+            if (extLightsImageBased.Extensions != null)
+            {
+                jsonWriter.WritePropertyName(ElementName.Gltf.Extensions);
+                ExtensionsSerialization.Write<EXT_lights_image_based>(ref jsonWriter, context, extLightsImageBased.Extensions);
+            }
+            if (extLightsImageBased.Extras != null)
+            {
+                jsonWriter.WritePropertyName(ElementName.Gltf.Extras);
+                JsonSerialization.Write(ref jsonWriter, context, extLightsImageBased.Extras);
+            }
+            jsonWriter.WriteEndObject();
+        }
+        else if (parentType == typeof(Scene))
+        {
+            var extIightsImageBasedScene = (ExtIightsImageBasedScene?)element;
+            if (extIightsImageBasedScene == null)
+            {
+                jsonWriter.WriteNullValue();
+                return;
+            }
+            jsonWriter.WriteStartObject();
+            jsonWriter.WritePropertyName(ElementName.Extensions.EXT_lights_ies.Light);
+            jsonWriter.WriteNumberValue(extIightsImageBasedScene.Light);
+            if (extIightsImageBasedScene.Extensions != null)
+            {
+                jsonWriter.WritePropertyName(ElementName.Gltf.Extensions);
+                ExtensionsSerialization.Write<ExtIightsImageBasedScene>(ref jsonWriter, context, extIightsImageBasedScene.Extensions);
+            }
+            if (extIightsImageBasedScene.Extras != null)
+            {
+                jsonWriter.WritePropertyName(ElementName.Gltf.Extras);
+                JsonSerialization.Write(ref jsonWriter, context, extIightsImageBasedScene.Extras);
+            }
+            jsonWriter.WriteEndObject();
+        }
+        else
+        {
+            throw new InvalidDataException("EXT_lights_image_based must be used in either a Gltf root or a Scene.");
+        }
     }
 }
 
@@ -259,8 +310,48 @@ public class ExtIightsImageBasedLightSerialization
         };
     }
 
-    public void Write(ref Utf8JsonWriter jsonWriter, GltfWriterContext context, Type parentType, object? element)
+    public static void Write(ref Utf8JsonWriter jsonWriter, GltfWriterContext context, ExtIightsImageBasedLight? extIightsImageBasedLight)
     {
-        throw new NotImplementedException(/* TODO: Implement this*/);
+        if (extIightsImageBasedLight == null)
+        {
+            jsonWriter.WriteNullValue();
+            return;
+        }
+        jsonWriter.WriteStartObject();
+        if (extIightsImageBasedLight.Rotation != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Node.Rotation);
+            WriteFloatList(ref jsonWriter, context, extIightsImageBasedLight.Rotation.ToList());
+        }
+        jsonWriter.WritePropertyName(ElementName.Extensions.EXT_lights_image_based.Intensity);
+        jsonWriter.WriteNumberValue(extIightsImageBasedLight.Intensity);
+        if (extIightsImageBasedLight.Rotation != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Node.Rotation);
+            WriteFloatList(ref jsonWriter, context, extIightsImageBasedLight.Rotation.ToList());
+        }
+        if (extIightsImageBasedLight.Rotation != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Node.Rotation);
+            WriteFloatList(ref jsonWriter, context, extIightsImageBasedLight.Rotation.ToList());
+        }
+        if (extIightsImageBasedLight.Rotation != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Node.Rotation);
+            WriteFloatList(ref jsonWriter, context, extIightsImageBasedLight.Rotation.ToList());
+        }
+        jsonWriter.WritePropertyName(ElementName.Accessor.Name);
+        jsonWriter.WriteStringValue(extIightsImageBasedLight.Name);
+        if (extIightsImageBasedLight.Extensions != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extensions);
+            ExtensionsSerialization.Write<ExtIightsImageBasedLight>(ref jsonWriter, context, extIightsImageBasedLight.Extensions);
+        }
+        if (extIightsImageBasedLight.Extras != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extras);
+            JsonSerialization.Write(ref jsonWriter, context, extIightsImageBasedLight.Extras);
+        }
+        jsonWriter.WriteEndObject();
     }
 }

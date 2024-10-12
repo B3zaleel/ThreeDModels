@@ -2,6 +2,7 @@ using System.Text.Json;
 using ThreeDModels.Format.Gltf.Elements;
 using ThreeDModels.Format.Gltf.IO;
 using static ThreeDModels.Format.Gltf.IO.Utf8JsonReaderHelpers;
+using static ThreeDModels.Format.Gltf.IO.Utf8JsonWriterHelpers;
 
 namespace ThreeDModels.Format.Gltf.Extensions;
 
@@ -197,7 +198,71 @@ public class AgiArticulationsExtension : IGltfExtension
 
     public void Write(ref Utf8JsonWriter jsonWriter, GltfWriterContext context, Type parentType, object? element)
     {
-        throw new NotImplementedException(/* TODO: Implement this*/);
+        if (parentType == typeof(Gltf))
+        {
+            var agiArticulations = (AGI_articulations?)element;
+            if (agiArticulations == null)
+            {
+                jsonWriter.WriteNullValue();
+                return;
+            }
+            if (agiArticulations.Articulations != null && agiArticulations.Articulations.Count == 0)
+            {
+                throw new InvalidDataException("AGI_articulations.articulations must contain at least one articulation.");
+            }
+            jsonWriter.WriteStartObject();
+            if (agiArticulations.Articulations != null)
+            {
+                jsonWriter.WritePropertyName(ElementName.Extensions.AGI_articulations.Articulations);
+                WriteList(ref jsonWriter, context, agiArticulations.Articulations, AgiArticulationSerialization.Write);
+            }
+            if (agiArticulations.Extensions != null)
+            {
+                jsonWriter.WritePropertyName(ElementName.Gltf.Extensions);
+                ExtensionsSerialization.Write<AGI_articulations>(ref jsonWriter, context, agiArticulations.Extensions);
+            }
+            if (agiArticulations.Extras != null)
+            {
+                jsonWriter.WritePropertyName(ElementName.Gltf.Extras);
+                JsonSerialization.Write(ref jsonWriter, context, agiArticulations.Extras);
+            }
+            jsonWriter.WriteEndObject();
+        }
+        else if (parentType == typeof(Node))
+        {
+            var agiArticulationNode = (AgiArticulationNode?)element;
+            if (agiArticulationNode == null)
+            {
+                jsonWriter.WriteNullValue();
+                return;
+            }
+            jsonWriter.WriteStartObject();
+            if (agiArticulationNode.IsAttachPoint != null)
+            {
+                jsonWriter.WritePropertyName(ElementName.Extensions.AGI_articulations.IsAttachPoint);
+                jsonWriter.WriteBooleanValue((bool)agiArticulationNode.IsAttachPoint);
+            }
+            if (agiArticulationNode.ArticulationName != null)
+            {
+                jsonWriter.WritePropertyName(ElementName.Extensions.AGI_articulations.ArticulationName);
+                jsonWriter.WriteStringValue(agiArticulationNode.ArticulationName);
+            }
+            if (agiArticulationNode.Extensions != null)
+            {
+                jsonWriter.WritePropertyName(ElementName.Gltf.Extensions);
+                ExtensionsSerialization.Write<AgiArticulationNode>(ref jsonWriter, context, agiArticulationNode.Extensions);
+            }
+            if (agiArticulationNode.Extras != null)
+            {
+                jsonWriter.WritePropertyName(ElementName.Gltf.Extras);
+                JsonSerialization.Write(ref jsonWriter, context, agiArticulationNode.Extras);
+            }
+            jsonWriter.WriteEndObject();
+        }
+        else
+        {
+            throw new InvalidDataException("AGI_articulations must be used in either a Gltf root or a Node.");
+        }
     }
 }
 
@@ -267,9 +332,34 @@ public class AgiArticulationSerialization
         };
     }
 
-    public void Write(ref Utf8JsonWriter jsonWriter, GltfWriterContext context, Type parentType, object? element)
+    public static void Write(ref Utf8JsonWriter jsonWriter, GltfWriterContext context, AgiArticulation? agiArticulation)
     {
-        throw new NotImplementedException(/* TODO: Implement this*/);
+        if (agiArticulation == null)
+        {
+            jsonWriter.WriteNullValue();
+            return;
+        }
+        jsonWriter.WriteStartObject();
+        jsonWriter.WritePropertyName(ElementName.Accessor.Name);
+        jsonWriter.WriteStringValue(agiArticulation.Name);
+        jsonWriter.WritePropertyName(ElementName.Extensions.AGI_articulations.AgiArticulation.Stages);
+        WriteList(ref jsonWriter, context, agiArticulation.Stages, AgiArticulationStageSerialization.Write);
+        if (agiArticulation.PointingVector != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Extensions.AGI_articulations.AgiArticulation.PointingVector);
+            WriteFloatList(ref jsonWriter, context, agiArticulation.PointingVector.ToList());
+        }
+        if (agiArticulation.Extensions != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extensions);
+            ExtensionsSerialization.Write<AgiArticulation>(ref jsonWriter, context, agiArticulation.Extensions);
+        }
+        if (agiArticulation.Extras != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extras);
+            JsonSerialization.Write(ref jsonWriter, context, agiArticulation.Extras);
+        }
+        jsonWriter.WriteEndObject();
     }
 }
 
@@ -351,8 +441,34 @@ public class AgiArticulationStageSerialization
         };
     }
 
-    public void Write(ref Utf8JsonWriter jsonWriter, GltfWriterContext context, Type parentType, object? element)
+    public static void Write(ref Utf8JsonWriter jsonWriter, GltfWriterContext context, AgiArticulationStage? agiArticulationStage)
     {
-        throw new NotImplementedException(/* TODO: Implement this*/);
+        if (agiArticulationStage == null)
+        {
+            jsonWriter.WriteNullValue();
+            return;
+        }
+        jsonWriter.WriteStartObject();
+        jsonWriter.WritePropertyName(ElementName.Accessor.Name);
+        jsonWriter.WriteStringValue(agiArticulationStage.Name);
+        jsonWriter.WritePropertyName(ElementName.Accessor.Type);
+        jsonWriter.WriteStringValue(agiArticulationStage.Type);
+        jsonWriter.WritePropertyName(ElementName.Extensions.AGI_articulations.AgiArticulationStage.MinimumValue);
+        jsonWriter.WriteNumberValue(agiArticulationStage.MinimumValue);
+        jsonWriter.WritePropertyName(ElementName.Extensions.AGI_articulations.AgiArticulationStage.MaximumValue);
+        jsonWriter.WriteNumberValue(agiArticulationStage.MaximumValue);
+        jsonWriter.WritePropertyName(ElementName.Extensions.AGI_articulations.AgiArticulationStage.InitialValue);
+        jsonWriter.WriteNumberValue(agiArticulationStage.InitialValue);
+        if (agiArticulationStage.Extensions != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extensions);
+            ExtensionsSerialization.Write<AgiArticulationStage>(ref jsonWriter, context, agiArticulationStage.Extensions);
+        }
+        if (agiArticulationStage.Extras != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extras);
+            JsonSerialization.Write(ref jsonWriter, context, agiArticulationStage.Extras);
+        }
+        jsonWriter.WriteEndObject();
     }
 }

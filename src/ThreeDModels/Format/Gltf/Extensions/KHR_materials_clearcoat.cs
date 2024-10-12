@@ -126,6 +126,54 @@ public class KhrMaterialsClearcoatExtension : IGltfExtension
 
     public void Write(ref Utf8JsonWriter jsonWriter, GltfWriterContext context, Type parentType, object? element)
     {
-        throw new NotImplementedException(/* TODO: Implement this*/);
+        if (parentType != typeof(Material))
+        {
+            throw new InvalidDataException("KHR_materials_clearcoat must be used in a Material.");
+        }
+        var khrMaterialsClearcoat = (KHR_materials_clearcoat?)element;
+        if (khrMaterialsClearcoat == null)
+        {
+            jsonWriter.WriteNullValue();
+            return;
+        }
+        if (khrMaterialsClearcoat.ClearcoatFactor < 0.0f || khrMaterialsClearcoat.ClearcoatFactor > 1.0f)
+        {
+            throw new InvalidDataException("KHR_materials_clearcoat.clearcoatFactor must be in the range [0.0, 1.0].");
+        }
+        if (khrMaterialsClearcoat.ClearcoatRoughnessFactor < 0.0f || khrMaterialsClearcoat.ClearcoatRoughnessFactor > 1.0f)
+        {
+            throw new InvalidDataException("KHR_materials_clearcoat.clearcoatRoughnessFactor must be in the range [0.0, 1.0].");
+        }
+        jsonWriter.WriteStartObject();
+        jsonWriter.WritePropertyName(ElementName.Extensions.KHR_materials_clearcoat.ClearcoatFactor);
+        jsonWriter.WriteNumberValue(khrMaterialsClearcoat.ClearcoatFactor);
+        if (khrMaterialsClearcoat.ClearcoatTexture != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Extensions.KHR_materials_clearcoat.ClearcoatTexture);
+            TextureInfoSerialization.Write(ref jsonWriter, context, khrMaterialsClearcoat.ClearcoatTexture);
+        }
+        jsonWriter.WritePropertyName(ElementName.Extensions.KHR_materials_clearcoat.ClearcoatRoughnessFactor);
+        jsonWriter.WriteNumberValue(khrMaterialsClearcoat.ClearcoatRoughnessFactor);
+        if (khrMaterialsClearcoat.ClearcoatRoughnessTexture != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Extensions.KHR_materials_clearcoat.ClearcoatRoughnessTexture);
+            TextureInfoSerialization.Write(ref jsonWriter, context, khrMaterialsClearcoat.ClearcoatRoughnessTexture);
+        }
+        if (khrMaterialsClearcoat.ClearcoatNormalTexture != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Extensions.KHR_materials_clearcoat.ClearcoatNormalTexture);
+            TextureInfoSerialization.Write(ref jsonWriter, context, khrMaterialsClearcoat.ClearcoatNormalTexture);
+        }
+        if (khrMaterialsClearcoat.Extensions != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extensions);
+            ExtensionsSerialization.Write<KHR_materials_clearcoat>(ref jsonWriter, context, khrMaterialsClearcoat.Extensions);
+        }
+        if (khrMaterialsClearcoat.Extras != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extras);
+            JsonSerialization.Write(ref jsonWriter, context, khrMaterialsClearcoat.Extras);
+        }
+        jsonWriter.WriteEndObject();
     }
 }

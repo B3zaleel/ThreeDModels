@@ -77,6 +77,29 @@ public class KhrMaterialsIorExtension : IGltfExtension
 
     public void Write(ref Utf8JsonWriter jsonWriter, GltfWriterContext context, Type parentType, object? element)
     {
-        throw new NotImplementedException(/* TODO: Implement this*/);
+        if (parentType != typeof(MeshPrimitive))
+        {
+            throw new InvalidDataException("KHR_materials_ior must be used in a MeshPrimitive.");
+        }
+        var khrMaterialsIor = (KHR_materials_ior?)element;
+        if (khrMaterialsIor == null)
+        {
+            jsonWriter.WriteNullValue();
+            return;
+        }
+        jsonWriter.WriteStartObject();
+        jsonWriter.WritePropertyName(ElementName.Extensions.KHR_materials_ior.Ior);
+        jsonWriter.WriteNumberValue(khrMaterialsIor.Ior);
+        if (khrMaterialsIor.Extensions != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extensions);
+            ExtensionsSerialization.Write<KHR_materials_ior>(ref jsonWriter, context, khrMaterialsIor.Extensions);
+        }
+        if (khrMaterialsIor.Extras != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extras);
+            JsonSerialization.Write(ref jsonWriter, context, khrMaterialsIor.Extras);
+        }
+        jsonWriter.WriteEndObject();
     }
 }

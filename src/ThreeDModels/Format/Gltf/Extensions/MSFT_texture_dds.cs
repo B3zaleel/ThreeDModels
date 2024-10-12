@@ -80,6 +80,29 @@ public class MsftTextureDdsExtension : IGltfExtension
 
     public void Write(ref Utf8JsonWriter jsonWriter, GltfWriterContext context, Type parentType, object? element)
     {
-        throw new NotImplementedException(/* TODO: Implement this*/);
+        if (parentType != typeof(Gltf))
+        {
+            throw new InvalidDataException("MSFT_texture_dds must be used in a Gltf root.");
+        }
+        var msftTextureDds = (MSFT_texture_dds?)element;
+        if (msftTextureDds == null)
+        {
+            jsonWriter.WriteNullValue();
+            return;
+        }
+        jsonWriter.WriteStartObject();
+        jsonWriter.WritePropertyName(ElementName.Texture.Source);
+        jsonWriter.WriteNumberValue(msftTextureDds.Source);
+        if (msftTextureDds.Extensions != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extensions);
+            ExtensionsSerialization.Write<MSFT_texture_dds>(ref jsonWriter, context, msftTextureDds.Extensions);
+        }
+        if (msftTextureDds.Extras != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extras);
+            JsonSerialization.Write(ref jsonWriter, context, msftTextureDds.Extras);
+        }
+        jsonWriter.WriteEndObject();
     }
 }

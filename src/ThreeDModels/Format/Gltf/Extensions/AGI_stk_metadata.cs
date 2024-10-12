@@ -2,6 +2,7 @@ using System.Text.Json;
 using ThreeDModels.Format.Gltf.Elements;
 using ThreeDModels.Format.Gltf.IO;
 using static ThreeDModels.Format.Gltf.IO.Utf8JsonReaderHelpers;
+using static ThreeDModels.Format.Gltf.IO.Utf8JsonWriterHelpers;
 
 namespace ThreeDModels.Format.Gltf.Extensions;
 
@@ -164,7 +165,71 @@ public class AgiStkMetadataExtension : IGltfExtension
 
     public void Write(ref Utf8JsonWriter jsonWriter, GltfWriterContext context, Type parentType, object? element)
     {
-        throw new NotImplementedException(/* TODO: Implement this*/);
+        if (parentType == typeof(Gltf))
+        {
+            var agiStkMetadata = (AGI_stk_metadata?)element;
+            if (agiStkMetadata == null)
+            {
+                jsonWriter.WriteNullValue();
+                return;
+            }
+            if (agiStkMetadata.SolarPanelGroups != null && agiStkMetadata.SolarPanelGroups.Count == 0)
+            {
+                throw new InvalidDataException("AGI_stk_metadata.solarPanelGroups must contain at least one solar panel group.");
+            }
+            jsonWriter.WriteStartObject();
+            if (agiStkMetadata.SolarPanelGroups != null)
+            {
+                jsonWriter.WritePropertyName(ElementName.Extensions.AGI_stk_metadata.SolarPanelGroups);
+                WriteList(ref jsonWriter, context, agiStkMetadata.SolarPanelGroups, AgiStkSolarPanelGroupSerialization.Write);
+            }
+            if (agiStkMetadata.Extensions != null)
+            {
+                jsonWriter.WritePropertyName(ElementName.Gltf.Extensions);
+                ExtensionsSerialization.Write<AGI_stk_metadata>(ref jsonWriter, context, agiStkMetadata.Extensions);
+            }
+            if (agiStkMetadata.Extras != null)
+            {
+                jsonWriter.WritePropertyName(ElementName.Gltf.Extras);
+                JsonSerialization.Write(ref jsonWriter, context, agiStkMetadata.Extras);
+            }
+            jsonWriter.WriteEndObject();
+        }
+        else if (parentType == typeof(Node))
+        {
+            var agiStkMetadataNode = (AgiStkMetadataNode?)element;
+            if (agiStkMetadataNode == null)
+            {
+                jsonWriter.WriteNullValue();
+                return;
+            }
+            jsonWriter.WriteStartObject();
+            if (agiStkMetadataNode.SolarPanelGroupName != null)
+            {
+                jsonWriter.WritePropertyName(ElementName.Extensions.AGI_stk_metadata.SolarPanelGroupName);
+                jsonWriter.WriteStringValue(agiStkMetadataNode.SolarPanelGroupName);
+            }
+            if (agiStkMetadataNode.NoObscuration != null)
+            {
+                jsonWriter.WritePropertyName(ElementName.Extensions.AGI_stk_metadata.NoObscuration);
+                jsonWriter.WriteBooleanValue((bool)agiStkMetadataNode.NoObscuration);
+            }
+            if (agiStkMetadataNode.Extensions != null)
+            {
+                jsonWriter.WritePropertyName(ElementName.Gltf.Extensions);
+                ExtensionsSerialization.Write<AgiStkMetadataNode>(ref jsonWriter, context, agiStkMetadataNode.Extensions);
+            }
+            if (agiStkMetadataNode.Extras != null)
+            {
+                jsonWriter.WritePropertyName(ElementName.Gltf.Extras);
+                JsonSerialization.Write(ref jsonWriter, context, agiStkMetadataNode.Extras);
+            }
+            jsonWriter.WriteEndObject();
+        }
+        else
+        {
+            throw new InvalidDataException("AGI_stk_metadata must be used in either a Gltf root or a Node.");
+        }
     }
 }
 
@@ -228,8 +293,28 @@ public class AgiStkSolarPanelGroupSerialization
         };
     }
 
-    public void Write(ref Utf8JsonWriter jsonWriter, GltfWriterContext context, Type parentType, object? element)
+    public static void Write(ref Utf8JsonWriter jsonWriter, GltfWriterContext context, AgiStkSolarPanelGroup? agiStkSolarPanelGroup)
     {
-        throw new NotImplementedException(/* TODO: Implement this*/);
+        if (agiStkSolarPanelGroup == null)
+        {
+            jsonWriter.WriteNullValue();
+            return;
+        }
+        jsonWriter.WriteStartObject();
+        jsonWriter.WritePropertyName(ElementName.Accessor.Name);
+        jsonWriter.WriteStringValue(agiStkSolarPanelGroup.Name);
+        jsonWriter.WritePropertyName(ElementName.Extensions.AGI_stk_metadata.AgiStkSolarPanelGroup.Efficiency);
+        jsonWriter.WriteNumberValue(agiStkSolarPanelGroup.Efficiency);
+        if (agiStkSolarPanelGroup.Extensions != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extensions);
+            ExtensionsSerialization.Write<AgiStkSolarPanelGroup>(ref jsonWriter, context, agiStkSolarPanelGroup.Extensions);
+        }
+        if (agiStkSolarPanelGroup.Extras != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extras);
+            JsonSerialization.Write(ref jsonWriter, context, agiStkSolarPanelGroup.Extras);
+        }
+        jsonWriter.WriteEndObject();
     }
 }

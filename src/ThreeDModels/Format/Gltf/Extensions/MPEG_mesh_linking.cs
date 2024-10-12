@@ -106,6 +106,34 @@ public class MpegMeshLinkingExtension : IGltfExtension
 
     public void Write(ref Utf8JsonWriter jsonWriter, GltfWriterContext context, Type parentType, object? element)
     {
-        throw new NotImplementedException(/* TODO: Implement this*/);
+        var mpegMeshLinking = (MPEG_mesh_linking?)element;
+        if (mpegMeshLinking == null)
+        {
+            jsonWriter.WriteNullValue();
+            return;
+        }
+        jsonWriter.WriteStartObject();
+        jsonWriter.WritePropertyName(ElementName.Extensions.MPEG_mesh_linking.Correspondence);
+        jsonWriter.WriteNumberValue(mpegMeshLinking.Correspondence);
+        jsonWriter.WritePropertyName(ElementName.Node.Mesh);
+        jsonWriter.WriteNumberValue(mpegMeshLinking.Mesh);
+        jsonWriter.WritePropertyName(ElementName.Extensions.MPEG_mesh_linking.Pose);
+        jsonWriter.WriteNumberValue(mpegMeshLinking.Pose);
+        if (mpegMeshLinking.Weights != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Mesh.Weights);
+            jsonWriter.WriteNumberValue((int)mpegMeshLinking.Weights);
+        }
+        if (mpegMeshLinking.Extensions != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extensions);
+            ExtensionsSerialization.Write<MPEG_mesh_linking>(ref jsonWriter, context, mpegMeshLinking.Extensions);
+        }
+        if (mpegMeshLinking.Extras != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extras);
+            JsonSerialization.Write(ref jsonWriter, context, mpegMeshLinking.Extras);
+        }
+        jsonWriter.WriteEndObject();
     }
 }

@@ -62,6 +62,27 @@ public class KhrMaterialsUnlitExtension : IGltfExtension
 
     public void Write(ref Utf8JsonWriter jsonWriter, GltfWriterContext context, Type parentType, object? element)
     {
-        throw new NotImplementedException(/* TODO: Implement this*/);
+        if (parentType != typeof(Material))
+        {
+            throw new InvalidDataException("KHR_materials_unlit must be used in a Material.");
+        }
+        var khrMaterialsUnlit = (KHR_materials_unlit?)element;
+        if (khrMaterialsUnlit == null)
+        {
+            jsonWriter.WriteNullValue();
+            return;
+        }
+        jsonWriter.WriteStartObject();
+        if (khrMaterialsUnlit.Extensions != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extensions);
+            ExtensionsSerialization.Write<KHR_materials_unlit>(ref jsonWriter, context, khrMaterialsUnlit.Extensions);
+        }
+        if (khrMaterialsUnlit.Extras != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extras);
+            JsonSerialization.Write(ref jsonWriter, context, khrMaterialsUnlit.Extras);
+        }
+        jsonWriter.WriteEndObject();
     }
 }

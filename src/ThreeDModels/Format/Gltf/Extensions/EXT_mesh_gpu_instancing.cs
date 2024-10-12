@@ -75,6 +75,32 @@ public class ExtMeshGpuInstancingExtension : IGltfExtension
 
     public void Write(ref Utf8JsonWriter jsonWriter, GltfWriterContext context, Type parentType, object? element)
     {
-        throw new NotImplementedException(/* TODO: Implement this*/);
+        if (parentType != typeof(Gltf))
+        {
+            throw new InvalidDataException("EXT_mesh_gpu_instancing must be used in a Gltf root.");
+        }
+        var extMeshGpuInstancing = (EXT_mesh_gpu_instancing?)element;
+        if (extMeshGpuInstancing == null)
+        {
+            jsonWriter.WriteNullValue();
+            return;
+        }
+        jsonWriter.WriteStartObject();
+        if (extMeshGpuInstancing.Attributes != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.MeshPrimitive.Attributes);
+            IntegerMapSerialization.Write(ref jsonWriter, context, extMeshGpuInstancing.Attributes);
+        }
+        if (extMeshGpuInstancing.Extensions != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extensions);
+            ExtensionsSerialization.Write<EXT_mesh_gpu_instancing>(ref jsonWriter, context, extMeshGpuInstancing.Extensions);
+        }
+        if (extMeshGpuInstancing.Extras != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extras);
+            JsonSerialization.Write(ref jsonWriter, context, extMeshGpuInstancing.Extras);
+        }
+        jsonWriter.WriteEndObject();
     }
 }

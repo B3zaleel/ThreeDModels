@@ -203,5 +203,340 @@ internal static class ElementName
             public const string ClearcoatSpecularFactor = "clearcoatSpecularFactor";
             public const string ClearcoatSpecularTexture = "clearcoatSpecularTexture";
         }
+
+        public static class ADOBE_materials_clearcoat_tint
+        {
+            public const string ClearcoatTintFactor = "clearcoatTintFactor";
+            public const string ClearcoatTintTexture = "clearcoatTintTexture";
+        }
+
+        public static class ADOBE_materials_thin_transparency
+        {
+            public const string TransmissionFactor = "transmissionFactor";
+            public const string TransmissionTexture = "transmissionTexture";
+            public const string Ior = "ior";
+        }
+
+        public static class AGI_articulations
+        {
+            public const string Articulations = "articulations";
+            public const string IsAttachPoint = "isAttachPoint";
+            public const string ArticulationName = "articulationName";
+
+            public static class AgiArticulation
+            {
+                public const string Stages = "stages";
+                public const string PointingVector = "pointingVector";
+            }
+
+            public static class AgiArticulationStage
+            {
+                public const string MinimumValue = "minimumValue";
+                public const string MaximumValue = "maximumValue";
+                public const string InitialValue = "initialValue";
+            }
+        }
+
+        public static class AGI_stk_metadata
+        {
+            public const string SolarPanelGroups = "solarPanelGroups";
+            public const string SolarPanelGroupName = "solarPanelGroupName";
+            public const string NoObscuration = "noObscuration";
+
+            public static class AgiStkSolarPanelGroup
+            {
+                public const string Efficiency = "efficiency";
+            }
+        }
+
+        public static class EXT_lights_ies
+        {
+            public const string Lights = "lights";
+            public const string Light = "light";
+            public const string Multiplier = "multiplier";
+            public const string Color = "color";
+        }
+
+        public static class EXT_lights_image_based
+        {
+            public const string Intensity = "intensity";
+        }
+
+        public static class EXT_mesh_manifold
+        {
+            public const string ManifoldPrimitive = "manifoldPrimitive";
+            public const string MergeIndices = "mergeIndices";
+            public const string MergeValues = "mergeValues";
+        }
+
+        public static class EXT_meshopt_compression
+        {
+            public const string Fallback = "fallback";
+            public const string Filter = "filter";
+        }
+
+        public static class FB_geometry_metadata
+        {
+            public const string VertexCount = "vertexCount";
+            public const string PrimitiveCount = "primitiveCount";
+            public const string SceneBounds = "sceneBounds";
+        }
+
+        public static class KHR_animation_pointer
+        {
+            public const string Pointer = "pointer";
+        }
+
+        public static class KHR_lights_punctual
+        {
+            public static class KhrLightsPunctualLight
+            {
+                public const string Intensity = "intensity";
+                public const string Range = "range";
+                public const string Spot = "spot";
+            }
+
+            public static class KhrLightsPunctualLightSpot
+            {
+                public const string InnerConeAngle = "innerConeAngle";
+                public const string OuterConeAngle = "outerConeAngle";
+            }
+        }
+
+        public static class KHR_materials_anisotropy
+        {
+            public const string AnisotropyStrength = "anisotropyStrength";
+            public const string AnisotropyRotation = "anisotropyRotation";
+            public const string AnisotropyTexture = "anisotropyTexture";
+        }
+
+        public static class KHR_materials_clearcoat
+        {
+            public const string ClearcoatFactor = "clearcoatFactor";
+            public const string ClearcoatTexture = "clearcoatTexture";
+            public const string ClearcoatRoughnessFactor = "clearcoatRoughnessFactor";
+            public const string ClearcoatRoughnessTexture = "clearcoatRoughnessTexture";
+            public const string ClearcoatNormalTexture = "clearcoatNormalTexture";
+        }
+
+        public static class KHR_materials_dispersion
+        {
+            public const string Dispersion = "dispersion";
+        }
+
+        public static class KHR_materials_emissive_strength
+        {
+            public const string EmissiveStrength = "emissiveStrength";
+        }
+
+        public static class KHR_materials_ior
+        {
+            public const string Ior = "ior";
+        }
+
+        public static class KHR_materials_iridescence
+        {
+            public const string IridescenceFactor = "iridescenceFactor";
+            public const string IridescenceTexture = "iridescenceTexture";
+            public const string IridescenceIor = "iridescenceIor";
+            public const string IridescenceThicknessMinimum = "iridescenceThicknessMinimum";
+            public const string IridescenceThicknessMaximum = "iridescenceThicknessMaximum";
+            public const string IridescenceThicknessTexture = "iridescenceThicknessTexture";
+        }
+
+        public static class KHR_materials_sheen
+        {
+            public const string SheenColorFactor = "sheenColorFactor";
+            public const string SheenColorTexture = "sheenColorTexture";
+            public const string SheenRoughnessFactor = "sheenRoughnessFactor";
+            public const string SheenRoughnessTexture = "sheenRoughnessTexture";
+        }
+
+        public static class KHR_materials_specular
+        {
+            public const string SpecularFactor = "specularFactor";
+            public const string SpecularTexture = "specularTexture";
+            public const string SpecularColorFactor = "specularColorFactor";
+            public const string SpecularColorTexture = "specularColorTexture";
+        }
+
+        public static class KHR_materials_transmission
+        {
+            public const string TransmissionFactor = "transmissionFactor";
+            public const string TransmissionTexture = "transmissionTexture";
+        }
+
+        public static class KHR_materials_variants
+        {
+            public const string Variants = "variants";
+            public const string Mappings = "mappings";
+        }
+
+        public static class KHR_materials_volume
+        {
+            public const string ThicknessFactor = "thicknessFactor";
+            public const string ThicknessTexture = "thicknessTexture";
+            public const string AttenuationDistance = "attenuationDistance";
+            public const string AttenuationColor = "attenuationColor";
+        }
+
+        public static class KHR_texture_basisu
+        {
+            public const string Source = "source";
+        }
+
+        public static class KHR_texture_transform
+        {
+            public const string Offset = "offset";
+        }
+
+        public static class MPEG_accessor_timed
+        {
+            public const string Immutable = "immutable";
+            public const string SuggestedUpdateRate = "suggestedUpdateRate";
+        }
+
+        public static class MPEG_animation_timing
+        {
+            public const string Accessor = "accessor";
+        }
+
+        public static class MPEG_audio_spatial
+        {
+            public const string Sources = "sources";
+            public const string Listener = "listener";
+            public const string Reverbs = "reverbs";
+
+            public static class MpegAudioSpatialSource
+            {
+                public const string Id = "id";
+                public const string Pregain = "pregain";
+                public const string PlaybackSpeed = "playbackSpeed";
+                public const string Attenuation = "attenuation";
+                public const string AttenuationParameters = "attenuationParameters";
+                public const string ReferenceDistance = "referenceDistance";
+                public const string ReverbFeed = "reverbFeed";
+                public const string ReverbFeedGain = "reverbFeedGain";
+            }
+
+            public static class MpegAudioSpatialReverb
+            {
+                public const string Bypass = "bypass";
+                public const string Properties = "properties";
+                public const string Predelay = "predelay";
+            }
+
+            public static class MpegAudioSpatialReverbProperty
+            {
+                public const string Frequency = "frequency";
+                public const string RT60 = "RT60";
+                public const string DSR = "DSR";
+            }
+        }
+
+        public static class MPEG_buffer_circular
+        {
+            public const string Media = "media";
+            public const string Tracks = "tracks";
+        }
+
+        public static class MPEG_media
+        {
+            public const string Media = "media";
+
+            public static class MpegMedia
+            {
+                public const string StartTime = "startTime";
+                public const string StartTimeOffset = "startTimeOffset";
+                public const string EndTimeOffset = "endTimeOffset";
+                public const string Autoplay = "autoplay";
+                public const string AutoplayGroup = "autoplayGroup";
+                public const string Loop = "loop";
+                public const string Controls = "controls";
+                public const string Alternatives = "alternatives";
+            }
+
+            public static class MpegMediaAlternative
+            {
+                public const string ExtraParams = "extraParams";
+            }
+
+            public static class MpegMediaAlternativeTrack
+            {
+                public const string Track = "track";
+                public const string Codecs = "codecs";
+            }
+        }
+
+        public static class MPEG_mesh_linking
+        {
+            public const string Correspondence = "correspondence";
+            public const string Pose = "pose";
+        }
+
+        public static class MPEG_texture_video
+        {
+            public const string Width = "width";
+            public const string Height = "height";
+            public const string Format = "format";
+        }
+
+        public static class MPEG_viewport_recommended
+        {
+            public const string Viewports = "viewports";
+
+            public static class MpegViewportRecommended
+            {
+                public const string Parameters = "parameters";
+            }
+        }
+
+        public static class MSFT_lod
+        {
+            public const string Ids = "ids";
+        }
+
+        public static class MSFT_packing_normalRoughnessMetallic
+        {
+            public const string NormalRoughnessMetallicTexture = "normalRoughnessMetallicTexture";
+        }
+
+        public static class MSFT_packing_occlusionRoughnessMetallic
+        {
+            public const string OcclusionRoughnessMetallicTexture = "occlusionRoughnessMetallicTexture";
+            public const string RoughnessMetallicOcclusionTexture = "roughnessMetallicOcclusionTexture";
+        }
+
+        public static class NV_materials_mdl
+        {
+            public const string Modules = "modules";
+            public const string FunctionCalls = "functionCalls";
+            public const string BsdfMeasurements = "bsdfMeasurements";
+            public const string FunctionCall = "functionCall";
+
+            public static class NvMaterialsMdlModule
+            {
+                public const string ModulePath = "modulePath";
+            }
+
+            public static class NvMaterialsMdlFunctionCall
+            {
+                public const string Module = "module";
+                public const string FunctionName = "functionName";
+                public const string Arguments = "arguments";
+            }
+
+            public static class NvMaterialsMdlType
+            {
+                public const string TypeName = "typeName";
+                public const string ArraySize = "arraySize";
+                public const string Modifier = "modifier";
+            }
+
+            public static class NvMaterialsMdlFunctionCallArgument
+            {
+                public const string Value = "value";
+            }
+        }
     }
 }

@@ -75,6 +75,32 @@ public class MsftPackingNormalRoughnessMetallicExtension : IGltfExtension
 
     public void Write(ref Utf8JsonWriter jsonWriter, GltfWriterContext context, Type parentType, object? element)
     {
-        throw new NotImplementedException(/* TODO: Implement this*/);
+        if (parentType != typeof(Gltf))
+        {
+            throw new InvalidDataException("MSFT_packing_normalRoughnessMetallic must be used in a Gltf root.");
+        }
+        var msftPackingNormalRoughnessMetallic = (MSFT_packing_normalRoughnessMetallic?)element;
+        if (msftPackingNormalRoughnessMetallic == null)
+        {
+            jsonWriter.WriteNullValue();
+            return;
+        }
+        jsonWriter.WriteStartObject();
+        if (msftPackingNormalRoughnessMetallic.NormalRoughnessMetallicTexture != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Extensions.MSFT_packing_normalRoughnessMetallic.NormalRoughnessMetallicTexture);
+            MsftTextureIndexSerialization.Write(ref jsonWriter, context, msftPackingNormalRoughnessMetallic.NormalRoughnessMetallicTexture);
+        }
+        if (msftPackingNormalRoughnessMetallic.Extensions != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extensions);
+            ExtensionsSerialization.Write<MSFT_packing_normalRoughnessMetallic>(ref jsonWriter, context, msftPackingNormalRoughnessMetallic.Extensions);
+        }
+        if (msftPackingNormalRoughnessMetallic.Extras != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extras);
+            JsonSerialization.Write(ref jsonWriter, context, msftPackingNormalRoughnessMetallic.Extras);
+        }
+        jsonWriter.WriteEndObject();
     }
 }

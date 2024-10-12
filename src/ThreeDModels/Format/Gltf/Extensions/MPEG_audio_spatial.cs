@@ -2,6 +2,7 @@ using System.Text.Json;
 using ThreeDModels.Format.Gltf.Elements;
 using ThreeDModels.Format.Gltf.IO;
 using static ThreeDModels.Format.Gltf.IO.Utf8JsonReaderHelpers;
+using static ThreeDModels.Format.Gltf.IO.Utf8JsonWriterHelpers;
 
 namespace ThreeDModels.Format.Gltf.Extensions;
 
@@ -199,7 +200,47 @@ public class MpegAudioSpatialExtension : IGltfExtension
 
     public void Write(ref Utf8JsonWriter jsonWriter, GltfWriterContext context, Type parentType, object? element)
     {
-        throw new NotImplementedException(/* TODO: Implement this*/);
+        var mpegAudioSpatial = (MPEG_audio_spatial?)element;
+        if (mpegAudioSpatial == null)
+        {
+            jsonWriter.WriteNullValue();
+            return;
+        }
+        if (mpegAudioSpatial.Sources != null && mpegAudioSpatial.Sources.Count < 1)
+        {
+            throw new InvalidDataException("MPEG_audio_spatial.sources must contain at least one element.");
+        }
+        if (mpegAudioSpatial.Reverbs != null && mpegAudioSpatial.Reverbs.Count < 1)
+        {
+            throw new InvalidDataException("MPEG_audio_spatial.reverbs must contain at least one element.");
+        }
+        jsonWriter.WriteStartObject();
+        if (mpegAudioSpatial.Sources != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Extensions.MPEG_audio_spatial.Sources);
+            WriteList(ref jsonWriter, context, mpegAudioSpatial.Sources, MpegAudioSpatialSourceSerialization.Write);
+        }
+        if (mpegAudioSpatial.Listener != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Extensions.MPEG_audio_spatial.Listener);
+            MpegAudioSpatialListenerSerialization.Write(ref jsonWriter, context, mpegAudioSpatial.Listener);
+        }
+        if (mpegAudioSpatial.Reverbs != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Extensions.MPEG_audio_spatial.Reverbs);
+            WriteList(ref jsonWriter, context, mpegAudioSpatial.Reverbs, MpegAudioSpatialReverbSerialization.Write);
+        }
+        if (mpegAudioSpatial.Extensions != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extensions);
+            ExtensionsSerialization.Write<MPEG_audio_spatial>(ref jsonWriter, context, mpegAudioSpatial.Extensions);
+        }
+        if (mpegAudioSpatial.Extras != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extras);
+            JsonSerialization.Write(ref jsonWriter, context, mpegAudioSpatial.Extras);
+        }
+        jsonWriter.WriteEndObject();
     }
 }
 
@@ -326,6 +367,74 @@ public class MpegAudioSpatialSourceSerialization
             Extras = extras,
         };
     }
+
+    public static void Write(ref Utf8JsonWriter jsonWriter, GltfWriterContext context, MpegAudioSpatialSource? mpegAudioSpatialSource)
+    {
+        if (mpegAudioSpatialSource == null)
+        {
+            jsonWriter.WriteNullValue();
+            return;
+        }
+        if (mpegAudioSpatialSource.Pregain < 0.0f)
+        {
+            throw new InvalidDataException("MPEG_audio_spatial.sources[n].pregain must be greater than or equal to 0.0.");
+        }
+        if (mpegAudioSpatialSource.PlaybackSpeed < 0.5 || mpegAudioSpatialSource.PlaybackSpeed > 2.0)
+        {
+            throw new InvalidDataException("MPEG_audio_spatial.sources[n].playbackSpeed must be between 0.5 and 2.0.");
+        }
+        if (mpegAudioSpatialSource.ReferenceDistance < 1.0)
+        {
+            throw new InvalidDataException("MPEG_audio_spatial.sources[n].referenceDistance must be greater than or equal to 1.0.");
+        }
+        jsonWriter.WriteStartObject();
+        jsonWriter.WritePropertyName(ElementName.Extensions.MPEG_audio_spatial.MpegAudioSpatialSource.Id);
+        jsonWriter.WriteNumberValue(mpegAudioSpatialSource.Id);
+        jsonWriter.WritePropertyName(ElementName.Accessor.Type);
+        jsonWriter.WriteStringValue(mpegAudioSpatialSource.Type);
+        jsonWriter.WritePropertyName(ElementName.Extensions.MPEG_audio_spatial.MpegAudioSpatialSource.Pregain);
+        jsonWriter.WriteNumberValue(mpegAudioSpatialSource.Pregain);
+        jsonWriter.WritePropertyName(ElementName.Extensions.MPEG_audio_spatial.MpegAudioSpatialSource.PlaybackSpeed);
+        jsonWriter.WriteNumberValue(mpegAudioSpatialSource.PlaybackSpeed);
+        if (mpegAudioSpatialSource.Attenuation != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Extensions.MPEG_audio_spatial.MpegAudioSpatialSource.Attenuation);
+            jsonWriter.WriteStringValue(mpegAudioSpatialSource.Attenuation);
+        }
+        if (mpegAudioSpatialSource.AttenuationParameters != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Extensions.MPEG_audio_spatial.MpegAudioSpatialSource.AttenuationParameters);
+            WriteFloatList(ref jsonWriter, context, mpegAudioSpatialSource.AttenuationParameters);
+        }
+        jsonWriter.WritePropertyName(ElementName.Extensions.MPEG_audio_spatial.MpegAudioSpatialSource.ReferenceDistance);
+        jsonWriter.WriteNumberValue(mpegAudioSpatialSource.ReferenceDistance);
+        if (mpegAudioSpatialSource.Accessors != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Accessors);
+            WriteIntegerList(ref jsonWriter, context, mpegAudioSpatialSource.Accessors);
+        }
+        if (mpegAudioSpatialSource.ReverbFeed != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Extensions.MPEG_audio_spatial.MpegAudioSpatialSource.ReverbFeed);
+            WriteIntegerList(ref jsonWriter, context, mpegAudioSpatialSource.ReverbFeed);
+        }
+        if (mpegAudioSpatialSource.ReverbFeedGain != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Extensions.MPEG_audio_spatial.MpegAudioSpatialSource.ReverbFeedGain);
+            WriteFloatList(ref jsonWriter, context, mpegAudioSpatialSource.ReverbFeedGain);
+        }
+        if (mpegAudioSpatialSource.Extensions != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extensions);
+            ExtensionsSerialization.Write<MpegAudioSpatialSource>(ref jsonWriter, context, mpegAudioSpatialSource.Extensions);
+        }
+        if (mpegAudioSpatialSource.Extras != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extras);
+            JsonSerialization.Write(ref jsonWriter, context, mpegAudioSpatialSource.Extras);
+        }
+        jsonWriter.WriteEndObject();
+    }
 }
 
 public class MpegAudioSpatialListenerSerialization
@@ -380,6 +489,29 @@ public class MpegAudioSpatialListenerSerialization
             Extensions = extensions,
             Extras = extras,
         };
+    }
+
+    public static void Write(ref Utf8JsonWriter jsonWriter, GltfWriterContext context, MpegAudioSpatialListener? mpegAudioSpatialListener)
+    {
+        if (mpegAudioSpatialListener == null)
+        {
+            jsonWriter.WriteNullValue();
+            return;
+        }
+        jsonWriter.WriteStartObject();
+        jsonWriter.WritePropertyName(ElementName.Extensions.MPEG_audio_spatial.MpegAudioSpatialSource.Id);
+        jsonWriter.WriteNumberValue(mpegAudioSpatialListener.Id);
+        if (mpegAudioSpatialListener.Extensions != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extensions);
+            ExtensionsSerialization.Write<MpegAudioSpatialListener>(ref jsonWriter, context, mpegAudioSpatialListener.Extensions);
+        }
+        if (mpegAudioSpatialListener.Extras != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extras);
+            JsonSerialization.Write(ref jsonWriter, context, mpegAudioSpatialListener.Extras);
+        }
+        jsonWriter.WriteEndObject();
     }
 }
 
@@ -457,6 +589,38 @@ public class MpegAudioSpatialReverbSerialization
             Extras = extras,
         };
     }
+
+    public static void Write(ref Utf8JsonWriter jsonWriter, GltfWriterContext context, MpegAudioSpatialReverb? mpegAudioSpatialReverb)
+    {
+        if (mpegAudioSpatialReverb == null)
+        {
+            jsonWriter.WriteNullValue();
+            return;
+        }
+        jsonWriter.WriteStartObject();
+        jsonWriter.WritePropertyName(ElementName.Extensions.MPEG_audio_spatial.MpegAudioSpatialSource.Id);
+        jsonWriter.WriteNumberValue(mpegAudioSpatialReverb.Id);
+        jsonWriter.WritePropertyName(ElementName.Extensions.MPEG_audio_spatial.MpegAudioSpatialReverb.Bypass);
+        jsonWriter.WriteBooleanValue(mpegAudioSpatialReverb.Bypass);
+        if (mpegAudioSpatialReverb.Properties != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Extensions.MPEG_audio_spatial.MpegAudioSpatialReverb.Properties);
+            WriteList(ref jsonWriter, context, mpegAudioSpatialReverb.Properties, MpegAudioSpatialReverbPropertySerialization.Write);
+        }
+        jsonWriter.WritePropertyName(ElementName.Extensions.MPEG_audio_spatial.MpegAudioSpatialReverb.Predelay);
+        jsonWriter.WriteNumberValue(mpegAudioSpatialReverb.Predelay);
+        if (mpegAudioSpatialReverb.Extensions != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extensions);
+            ExtensionsSerialization.Write<MpegAudioSpatialReverb>(ref jsonWriter, context, mpegAudioSpatialReverb.Extensions);
+        }
+        if (mpegAudioSpatialReverb.Extras != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extras);
+            JsonSerialization.Write(ref jsonWriter, context, mpegAudioSpatialReverb.Extras);
+        }
+        jsonWriter.WriteEndObject();
+    }
 }
 
 public class MpegAudioSpatialReverbPropertySerialization
@@ -523,5 +687,32 @@ public class MpegAudioSpatialReverbPropertySerialization
             Extensions = extensions,
             Extras = extras,
         };
+    }
+
+    public static void Write(ref Utf8JsonWriter jsonWriter, GltfWriterContext context, MpegAudioSpatialReverbProperty? mpegAudioSpatialReverbProperty)
+    {
+        if (mpegAudioSpatialReverbProperty == null)
+        {
+            jsonWriter.WriteNullValue();
+            return;
+        }
+        jsonWriter.WriteStartObject();
+        jsonWriter.WritePropertyName(ElementName.Extensions.MPEG_audio_spatial.MpegAudioSpatialReverbProperty.Frequency);
+        jsonWriter.WriteNumberValue(mpegAudioSpatialReverbProperty.Frequency);
+        jsonWriter.WritePropertyName(ElementName.Extensions.MPEG_audio_spatial.MpegAudioSpatialReverbProperty.RT60);
+        jsonWriter.WriteNumberValue(mpegAudioSpatialReverbProperty.RT60);
+        jsonWriter.WritePropertyName(ElementName.Extensions.MPEG_audio_spatial.MpegAudioSpatialReverbProperty.DSR);
+        jsonWriter.WriteNumberValue(mpegAudioSpatialReverbProperty.DSR);
+        if (mpegAudioSpatialReverbProperty.Extensions != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extensions);
+            ExtensionsSerialization.Write<MpegAudioSpatialReverbProperty>(ref jsonWriter, context, mpegAudioSpatialReverbProperty.Extensions);
+        }
+        if (mpegAudioSpatialReverbProperty.Extras != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extras);
+            JsonSerialization.Write(ref jsonWriter, context, mpegAudioSpatialReverbProperty.Extras);
+        }
+        jsonWriter.WriteEndObject();
     }
 }

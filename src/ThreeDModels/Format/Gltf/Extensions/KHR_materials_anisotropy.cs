@@ -98,6 +98,36 @@ public class KhrMaterialsAnisotropyExtension : IGltfExtension
 
     public void Write(ref Utf8JsonWriter jsonWriter, GltfWriterContext context, Type parentType, object? element)
     {
-        throw new NotImplementedException(/* TODO: Implement this*/);
+        if (parentType != typeof(Material))
+        {
+            throw new InvalidDataException("KHR_materials_anisotropy must be used in a Material.");
+        }
+        var khrMaterialsAnisotropy = (KHR_materials_anisotropy?)element;
+        if (khrMaterialsAnisotropy == null)
+        {
+            jsonWriter.WriteNullValue();
+            return;
+        }
+        jsonWriter.WriteStartObject();
+        jsonWriter.WritePropertyName(ElementName.Extensions.KHR_materials_anisotropy.AnisotropyStrength);
+        jsonWriter.WriteNumberValue(khrMaterialsAnisotropy.AnisotropyStrength);
+        jsonWriter.WritePropertyName(ElementName.Extensions.KHR_materials_anisotropy.AnisotropyRotation);
+        jsonWriter.WriteNumberValue(khrMaterialsAnisotropy.AnisotropyRotation);
+        if (khrMaterialsAnisotropy.AnisotropyTexture != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Extensions.KHR_materials_anisotropy.AnisotropyTexture);
+            TextureInfoSerialization.Write(ref jsonWriter, context, khrMaterialsAnisotropy.AnisotropyTexture);
+        }
+        if (khrMaterialsAnisotropy.Extensions != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extensions);
+            ExtensionsSerialization.Write<KHR_materials_anisotropy>(ref jsonWriter, context, khrMaterialsAnisotropy.Extensions);
+        }
+        if (khrMaterialsAnisotropy.Extras != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extras);
+            JsonSerialization.Write(ref jsonWriter, context, khrMaterialsAnisotropy.Extras);
+        }
+        jsonWriter.WriteEndObject();
     }
 }

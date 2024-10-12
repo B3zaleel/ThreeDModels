@@ -97,6 +97,42 @@ public class ExtMeshManifoldExtension : IGltfExtension
 
     public void Write(ref Utf8JsonWriter jsonWriter, GltfWriterContext context, Type parentType, object? element)
     {
-        throw new NotImplementedException(/* TODO: Implement this*/);
+        if (parentType != typeof(Mesh))
+        {
+            throw new InvalidDataException("EXT_mesh_manifold must be used in a Mesh.");
+        }
+        var extMeshManifold = (EXT_mesh_manifold?)element;
+        if (extMeshManifold == null)
+        {
+            jsonWriter.WriteNullValue();
+            return;
+        }
+        jsonWriter.WriteStartObject();
+        if (extMeshManifold.ManifoldPrimitive != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Extensions.EXT_mesh_manifold.ManifoldPrimitive);
+            MeshPrimitiveSerialization.Write(ref jsonWriter, context, extMeshManifold.ManifoldPrimitive);
+        }
+        if (extMeshManifold.MergeIndices != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Extensions.EXT_mesh_manifold.MergeIndices);
+            jsonWriter.WriteNumberValue((int)extMeshManifold.MergeIndices);
+        }
+        if (extMeshManifold.MergeValues != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Extensions.EXT_mesh_manifold.MergeValues);
+            jsonWriter.WriteNumberValue((int)extMeshManifold.MergeValues);
+        }
+        if (extMeshManifold.Extensions != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extensions);
+            ExtensionsSerialization.Write<EXT_mesh_manifold>(ref jsonWriter, context, extMeshManifold.Extensions);
+        }
+        if (extMeshManifold.Extras != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extras);
+            JsonSerialization.Write(ref jsonWriter, context, extMeshManifold.Extras);
+        }
+        jsonWriter.WriteEndObject();
     }
 }

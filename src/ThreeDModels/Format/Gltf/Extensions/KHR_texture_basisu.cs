@@ -76,6 +76,32 @@ public class KhrTextureBasisuExtension : IGltfExtension
 
     public void Write(ref Utf8JsonWriter jsonWriter, GltfWriterContext context, Type parentType, object? element)
     {
-        throw new NotImplementedException(/* TODO: Implement this*/);
+        if (parentType != typeof(Texture))
+        {
+            throw new InvalidDataException("KHR_texture_basisu must be used in a Texture.");
+        }
+        var khrTextureBasisu = (KHR_texture_basisu?)element;
+        if (khrTextureBasisu == null)
+        {
+            jsonWriter.WriteNullValue();
+            return;
+        }
+        jsonWriter.WriteStartObject();
+        if (khrTextureBasisu.Source != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Extensions.KHR_texture_basisu.Source);
+            jsonWriter.WriteNumberValue((int)khrTextureBasisu.Source);
+        }
+        if (khrTextureBasisu.Extensions != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extensions);
+            ExtensionsSerialization.Write<KHR_texture_basisu>(ref jsonWriter, context, khrTextureBasisu.Extensions);
+        }
+        if (khrTextureBasisu.Extras != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extras);
+            JsonSerialization.Write(ref jsonWriter, context, khrTextureBasisu.Extras);
+        }
+        jsonWriter.WriteEndObject();
     }
 }

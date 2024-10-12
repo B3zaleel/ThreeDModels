@@ -74,6 +74,29 @@ public class KhrAnimationPointerExtension : IGltfExtension
 
     public void Write(ref Utf8JsonWriter jsonWriter, GltfWriterContext context, Type parentType, object? element)
     {
-        throw new NotImplementedException(/* TODO: Implement this*/);
+        if (parentType != typeof(MeshPrimitive))
+        {
+            throw new InvalidDataException("KHR_animation_pointer must be used in a MeshPrimitive.");
+        }
+        var khrAnimationPointer = (KHR_animation_pointer?)element;
+        if (khrAnimationPointer == null)
+        {
+            jsonWriter.WriteNullValue();
+            return;
+        }
+        jsonWriter.WriteStartObject();
+        jsonWriter.WritePropertyName(ElementName.Extensions.KHR_animation_pointer.Pointer);
+        jsonWriter.WriteStringValue(khrAnimationPointer.Pointer);
+        if (khrAnimationPointer.Extensions != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extensions);
+            ExtensionsSerialization.Write<KHR_animation_pointer>(ref jsonWriter, context, khrAnimationPointer.Extensions);
+        }
+        if (khrAnimationPointer.Extras != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extras);
+            JsonSerialization.Write(ref jsonWriter, context, khrAnimationPointer.Extras);
+        }
+        jsonWriter.WriteEndObject();
     }
 }

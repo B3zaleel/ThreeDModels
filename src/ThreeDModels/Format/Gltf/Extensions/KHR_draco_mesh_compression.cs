@@ -87,6 +87,31 @@ public class KhrDracoMeshCompressionExtension : IGltfExtension
 
     public void Write(ref Utf8JsonWriter jsonWriter, GltfWriterContext context, Type parentType, object? element)
     {
-        throw new NotImplementedException(/* TODO: Implement this*/);
+        if (parentType != typeof(MeshPrimitive))
+        {
+            throw new InvalidDataException("KHR_draco_mesh_compression must be used in a MeshPrimitive.");
+        }
+        var khrDracoMeshCompression = (KHR_draco_mesh_compression?)element;
+        if (khrDracoMeshCompression == null)
+        {
+            jsonWriter.WriteNullValue();
+            return;
+        }
+        jsonWriter.WriteStartObject();
+        jsonWriter.WritePropertyName(ElementName.Accessor.BufferView);
+        jsonWriter.WriteNumberValue(khrDracoMeshCompression.BufferView);
+        jsonWriter.WritePropertyName(ElementName.MeshPrimitive.Attributes);
+        IntegerMapSerialization.Write(ref jsonWriter, context, khrDracoMeshCompression.Attributes);
+        if (khrDracoMeshCompression.Extensions != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extensions);
+            ExtensionsSerialization.Write<KHR_draco_mesh_compression>(ref jsonWriter, context, khrDracoMeshCompression.Extensions);
+        }
+        if (khrDracoMeshCompression.Extras != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extras);
+            JsonSerialization.Write(ref jsonWriter, context, khrDracoMeshCompression.Extras);
+        }
+        jsonWriter.WriteEndObject();
     }
 }

@@ -2,6 +2,7 @@ using System.Text.Json;
 using ThreeDModels.Format.Gltf.Elements;
 using ThreeDModels.Format.Gltf.IO;
 using static ThreeDModels.Format.Gltf.IO.Utf8JsonReaderHelpers;
+using static ThreeDModels.Format.Gltf.IO.Utf8JsonWriterHelpers;
 
 namespace ThreeDModels.Format.Gltf.Extensions;
 
@@ -112,6 +113,45 @@ public class KhrMaterialsSpecularExtension : IGltfExtension
 
     public void Write(ref Utf8JsonWriter jsonWriter, GltfWriterContext context, Type parentType, object? element)
     {
-        throw new NotImplementedException(/* TODO: Implement this*/);
+        if (parentType != typeof(Material))
+        {
+            throw new InvalidDataException("KHR_materials_specular must be used in a Material.");
+        }
+        var khrMaterialsSpecular = (KHR_materials_specular?)element;
+        if (khrMaterialsSpecular == null)
+        {
+            jsonWriter.WriteNullValue();
+            return;
+        }
+        if (khrMaterialsSpecular.SpecularColorFactor.Length != 3)
+        {
+            throw new InvalidDataException("KHR_materials_specular.specularColorFactor must have 3 elements.");
+        }
+        jsonWriter.WriteStartObject();
+        jsonWriter.WritePropertyName(ElementName.Extensions.KHR_materials_specular.SpecularFactor);
+        jsonWriter.WriteNumberValue(khrMaterialsSpecular.SpecularFactor);
+        if (khrMaterialsSpecular.SpecularTexture != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Extensions.KHR_materials_specular.SpecularTexture);
+            TextureInfoSerialization.Write(ref jsonWriter, context, khrMaterialsSpecular.SpecularTexture);
+        }
+        jsonWriter.WritePropertyName(ElementName.Extensions.KHR_materials_specular.SpecularColorFactor);
+        WriteFloatList(ref jsonWriter, context, khrMaterialsSpecular.SpecularColorFactor.ToList());
+        if (khrMaterialsSpecular.SpecularColorTexture != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Extensions.KHR_materials_specular.SpecularColorTexture);
+            TextureInfoSerialization.Write(ref jsonWriter, context, khrMaterialsSpecular.SpecularColorTexture);
+        }
+        if (khrMaterialsSpecular.Extensions != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extensions);
+            ExtensionsSerialization.Write<KHR_materials_specular>(ref jsonWriter, context, khrMaterialsSpecular.Extensions);
+        }
+        if (khrMaterialsSpecular.Extras != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extras);
+            JsonSerialization.Write(ref jsonWriter, context, khrMaterialsSpecular.Extras);
+        }
+        jsonWriter.WriteEndObject();
     }
 }

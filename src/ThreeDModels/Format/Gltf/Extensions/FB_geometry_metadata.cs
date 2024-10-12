@@ -2,6 +2,7 @@ using System.Text.Json;
 using ThreeDModels.Format.Gltf.Elements;
 using ThreeDModels.Format.Gltf.IO;
 using static ThreeDModels.Format.Gltf.IO.Utf8JsonReaderHelpers;
+using static ThreeDModels.Format.Gltf.IO.Utf8JsonWriterHelpers;
 
 namespace ThreeDModels.Format.Gltf.Extensions;
 
@@ -35,7 +36,7 @@ public class SceneBounds : IGltfProperty
     /// <summary>
     /// The bounding box corner with the numerically highest scene-space coordinates.
     /// </summary>
-    public required float[]? Max { get; set; }
+    public required float[] Max { get; set; }
     public Dictionary<string, object?>? Extensions { get; set; }
     public Elements.JsonElement? Extras { get; set; }
 }
@@ -110,7 +111,43 @@ public class FbGeometryMetadataExtension : IGltfExtension
 
     public void Write(ref Utf8JsonWriter jsonWriter, GltfWriterContext context, Type parentType, object? element)
     {
-        throw new NotImplementedException(/* TODO: Implement this*/);
+        if (parentType != typeof(Scene))
+        {
+            throw new InvalidDataException("FB_geometry_metadata must be used in a Scene.");
+        }
+        var fbGeometryMetadata = (FB_geometry_metadata?)element;
+        if (fbGeometryMetadata == null)
+        {
+            jsonWriter.WriteNullValue();
+            return;
+        }
+        jsonWriter.WriteStartObject();
+        if (fbGeometryMetadata.VertexCount != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Extensions.FB_geometry_metadata.VertexCount);
+            jsonWriter.WriteNumberValue((int)fbGeometryMetadata.VertexCount);
+        }
+        if (fbGeometryMetadata.PrimitiveCount != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Extensions.FB_geometry_metadata.PrimitiveCount);
+            jsonWriter.WriteNumberValue((int)fbGeometryMetadata.PrimitiveCount);
+        }
+        if (fbGeometryMetadata.SceneBounds != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Extensions.FB_geometry_metadata.SceneBounds);
+            SceneBoundsSerialization.Write(ref jsonWriter, context, fbGeometryMetadata.SceneBounds);
+        }
+        if (fbGeometryMetadata.Extensions != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extensions);
+            ExtensionsSerialization.Write<FB_geometry_metadata>(ref jsonWriter, context, fbGeometryMetadata.Extensions);
+        }
+        if (fbGeometryMetadata.Extras != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extras);
+            JsonSerialization.Write(ref jsonWriter, context, fbGeometryMetadata.Extras);
+        }
+        jsonWriter.WriteEndObject();
     }
 }
 
@@ -182,8 +219,36 @@ public class SceneBoundsSerialization
         };
     }
 
-    public void Write(ref Utf8JsonWriter jsonWriter, GltfWriterContext context, Type parentType, object? element)
+    public static void Write(ref Utf8JsonWriter jsonWriter, GltfWriterContext context, SceneBounds? sceneBounds)
     {
-        throw new NotImplementedException(/* TODO: Implement this*/);
+        if (sceneBounds == null)
+        {
+            jsonWriter.WriteNullValue();
+            return;
+        }
+        if (sceneBounds.Min.Length != sceneBounds.Max.Length)
+        {
+            throw new InvalidDataException("SceneBounds.min and SceneBounds.max must have the same number of elements.");
+        }
+        if (sceneBounds.Min.Length != 3 || sceneBounds.Max.Length != 3)
+        {
+            throw new InvalidDataException("SceneBounds.min and SceneBounds.max must have exactly 3 elements.");
+        }
+        jsonWriter.WriteStartObject();
+        jsonWriter.WritePropertyName(ElementName.Accessor.Min);
+        WriteFloatList(ref jsonWriter, context, sceneBounds.Min.ToList());
+        jsonWriter.WritePropertyName(ElementName.Accessor.Max);
+        WriteFloatList(ref jsonWriter, context, sceneBounds.Max.ToList());
+        if (sceneBounds.Extensions != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extensions);
+            ExtensionsSerialization.Write<SceneBounds>(ref jsonWriter, context, sceneBounds.Extensions);
+        }
+        if (sceneBounds.Extras != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extras);
+            JsonSerialization.Write(ref jsonWriter, context, sceneBounds.Extras);
+        }
+        jsonWriter.WriteEndObject();
     }
 }

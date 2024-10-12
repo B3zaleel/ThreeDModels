@@ -73,6 +73,32 @@ public class CesiumPrimitiveOutlineExtension : IGltfExtension
 
     public void Write(ref Utf8JsonWriter jsonWriter, GltfWriterContext context, Type parentType, object? element)
     {
-        throw new NotImplementedException(/* TODO: Implement this*/);
+        if (parentType != typeof(MeshPrimitive))
+        {
+            throw new InvalidDataException("CESIUM_primitive_outline must be used in a MeshPrimitive.");
+        }
+        var cesiumPrimitiveOutline = (CESIUM_primitive_outline?)element;
+        if (cesiumPrimitiveOutline == null)
+        {
+            jsonWriter.WriteNullValue();
+            return;
+        }
+        jsonWriter.WriteStartObject();
+        if (cesiumPrimitiveOutline.Indices != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.AccessorSparse.Indices);
+            jsonWriter.WriteNumberValue((int)cesiumPrimitiveOutline.Indices);
+        }
+        if (cesiumPrimitiveOutline.Extensions != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extensions);
+            ExtensionsSerialization.Write<CESIUM_primitive_outline>(ref jsonWriter, context, cesiumPrimitiveOutline.Extensions);
+        }
+        if (cesiumPrimitiveOutline.Extras != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extras);
+            JsonSerialization.Write(ref jsonWriter, context, cesiumPrimitiveOutline.Extras);
+        }
+        jsonWriter.WriteEndObject();
     }
 }

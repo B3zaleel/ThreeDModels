@@ -2,6 +2,7 @@ using System.Text.Json;
 using ThreeDModels.Format.Gltf.Elements;
 using ThreeDModels.Format.Gltf.IO;
 using static ThreeDModels.Format.Gltf.IO.Utf8JsonReaderHelpers;
+using static ThreeDModels.Format.Gltf.IO.Utf8JsonWriterHelpers;
 
 namespace ThreeDModels.Format.Gltf.Extensions;
 
@@ -113,6 +114,42 @@ public class KhrMaterialsVolumeExtension : IGltfExtension
 
     public void Write(ref Utf8JsonWriter jsonWriter, GltfWriterContext context, Type parentType, object? element)
     {
-        throw new NotImplementedException(/* TODO: Implement this*/);
+        if (parentType != typeof(Material))
+        {
+            throw new InvalidDataException("KHR_materials_volume must be used in a Material.");
+        }
+        var khrMaterialsVolume = (KHR_materials_volume?)element;
+        if (khrMaterialsVolume == null)
+        {
+            jsonWriter.WriteNullValue();
+            return;
+        }
+        if (khrMaterialsVolume.AttenuationColor.Length != 3)
+        {
+            throw new InvalidDataException("KHR_materials_volume.attenuationColor must have 3 elements.");
+        }
+        jsonWriter.WriteStartObject();
+        jsonWriter.WritePropertyName(ElementName.Extensions.KHR_materials_volume.ThicknessFactor);
+        jsonWriter.WriteNumberValue(khrMaterialsVolume.ThicknessFactor);
+        if (khrMaterialsVolume.ThicknessTexture != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Extensions.KHR_materials_volume.ThicknessTexture);
+            TextureInfoSerialization.Write(ref jsonWriter, context, khrMaterialsVolume.ThicknessTexture);
+        }
+        jsonWriter.WritePropertyName(ElementName.Extensions.KHR_materials_volume.AttenuationDistance);
+        jsonWriter.WriteNumberValue(khrMaterialsVolume.AttenuationDistance);
+        jsonWriter.WritePropertyName(ElementName.Extensions.KHR_materials_volume.AttenuationColor);
+        WriteFloatList(ref jsonWriter, context, khrMaterialsVolume.AttenuationColor.ToList());
+        if (khrMaterialsVolume.Extensions != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extensions);
+            ExtensionsSerialization.Write<KHR_materials_volume>(ref jsonWriter, context, khrMaterialsVolume.Extensions);
+        }
+        if (khrMaterialsVolume.Extras != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extras);
+            JsonSerialization.Write(ref jsonWriter, context, khrMaterialsVolume.Extras);
+        }
+        jsonWriter.WriteEndObject();
     }
 }

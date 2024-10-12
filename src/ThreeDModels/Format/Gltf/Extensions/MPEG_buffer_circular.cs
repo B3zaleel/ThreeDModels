@@ -2,6 +2,7 @@ using System.Text.Json;
 using ThreeDModels.Format.Gltf.Elements;
 using ThreeDModels.Format.Gltf.IO;
 using static ThreeDModels.Format.Gltf.IO.Utf8JsonReaderHelpers;
+using static ThreeDModels.Format.Gltf.IO.Utf8JsonWriterHelpers;
 
 namespace ThreeDModels.Format.Gltf.Extensions;
 
@@ -110,13 +111,43 @@ public class MpegBufferCircularExtension : IGltfExtension
         {
             throw new InvalidDataException("MPEG_buffer_circular must be used in a MeshPrimitive.");
         }
-        if (element == null)
+        var mpegBufferCircular = (MPEG_buffer_circular?)element;
+        if (mpegBufferCircular == null)
         {
             jsonWriter.WriteNullValue();
             return;
         }
-        var mpegBufferCircular = (MPEG_buffer_circular)element;
+        if (mpegBufferCircular.Count != null && mpegBufferCircular.Count < 2)
+        {
+            throw new InvalidDataException("MPEG_buffer_circular.count must be greater than or equal to 2.");
+        }
+        if (mpegBufferCircular.Tracks != null && mpegBufferCircular.Tracks.Count < 1)
+        {
+            throw new InvalidDataException("MPEG_buffer_circular.tracks must have at least one element.");
+        }
         jsonWriter.WriteStartObject();
-        throw new NotImplementedException(/* TODO: Implement this*/);
+        if (mpegBufferCircular.Count != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Accessor.Count);
+            jsonWriter.WriteNumberValue((int)mpegBufferCircular.Count);
+        }
+        jsonWriter.WritePropertyName(ElementName.Extensions.MPEG_buffer_circular.Media);
+        jsonWriter.WriteNumberValue(mpegBufferCircular.Media);
+        if (mpegBufferCircular.Tracks != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Extensions.MPEG_buffer_circular.Tracks);
+            WriteIntegerList(ref jsonWriter, context, mpegBufferCircular.Tracks);
+        }
+        if (mpegBufferCircular.Extensions != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extensions);
+            ExtensionsSerialization.Write<MPEG_buffer_circular>(ref jsonWriter, context, mpegBufferCircular.Extensions);
+        }
+        if (mpegBufferCircular.Extras != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extras);
+            JsonSerialization.Write(ref jsonWriter, context, mpegBufferCircular.Extras);
+        }
+        jsonWriter.WriteEndObject();
     }
 }

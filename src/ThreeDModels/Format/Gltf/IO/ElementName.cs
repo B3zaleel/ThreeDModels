@@ -302,5 +302,12 @@ internal static class ElementName
                 public const string OuterConeAngle = "outerConeAngle";
             }
         }
+
+        public static class KHR_materials_anisotropy
+        {
+            public const string AnisotropyStrength = "anisotropyStrength";
+            public const string AnisotropyRotation = "anisotropyRotation";
+            public const string AnisotropyTexture = "anisotropyTexture";
+        }
     }
 }

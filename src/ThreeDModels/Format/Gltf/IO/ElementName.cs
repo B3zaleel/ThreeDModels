@@ -333,5 +333,15 @@ internal static class ElementName
         {
             public const string Ior = "ior";
         }
+
+        public static class KHR_materials_iridescence
+        {
+            public const string IridescenceFactor = "iridescenceFactor";
+            public const string IridescenceTexture = "iridescenceTexture";
+            public const string IridescenceIor = "iridescenceIor";
+            public const string IridescenceThicknessMinimum = "iridescenceThicknessMinimum";
+            public const string IridescenceThicknessMaximum = "iridescenceThicknessMaximum";
+            public const string IridescenceThicknessTexture = "iridescenceThicknessTexture";
+        }
     }
 }

@@ -149,6 +149,61 @@ public class KhrMaterialsIridescenceExtension : IGltfExtension
 
     public void Write(ref Utf8JsonWriter jsonWriter, GltfWriterContext context, Type parentType, object? element)
     {
-        throw new NotImplementedException(/* TODO: Implement this*/);
+        if (parentType != typeof(Material))
+        {
+            throw new InvalidDataException("KHR_materials_iridescence must be used in a Material.");
+        }
+        var khrMaterialsIridescence = (KHR_materials_iridescence?)element;
+        if (khrMaterialsIridescence == null)
+        {
+            jsonWriter.WriteNullValue();
+            return;
+        }
+        if (khrMaterialsIridescence.IridescenceFactor < 0.0f || khrMaterialsIridescence.IridescenceFactor > 1.0f)
+        {
+            throw new InvalidDataException("KHR_materials_iridescence.iridescenceFactor must be in the range [0.0, 1.0].");
+        }
+        if (khrMaterialsIridescence.IridescenceIor < 1.0f)
+        {
+            throw new InvalidDataException("KHR_materials_iridescence.iridescenceIor must be greater than or equal to 1.0.");
+        }
+        if (khrMaterialsIridescence.IridescenceThicknessMinimum < 0.0f)
+        {
+            throw new InvalidDataException("KHR_materials_iridescence.iridescenceThicknessMinimum must be greater than or equal to 0.0.");
+        }
+        if (khrMaterialsIridescence.IridescenceThicknessMaximum < 0.0f)
+        {
+            throw new InvalidDataException("KHR_materials_iridescence.iridescenceThicknessMaximum must be greater than or equal to 0.0.");
+        }
+        jsonWriter.WriteStartObject();
+        jsonWriter.WritePropertyName(ElementName.Extensions.KHR_materials_iridescence.IridescenceFactor);
+        jsonWriter.WriteNumberValue(khrMaterialsIridescence.IridescenceFactor);
+        if (khrMaterialsIridescence.IridescenceTexture != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Extensions.KHR_materials_iridescence.IridescenceTexture);
+            TextureInfoSerialization.Write(ref jsonWriter, context, khrMaterialsIridescence.IridescenceTexture);
+        }
+        jsonWriter.WritePropertyName(ElementName.Extensions.KHR_materials_iridescence.IridescenceIor);
+        jsonWriter.WriteNumberValue(khrMaterialsIridescence.IridescenceIor);
+        jsonWriter.WritePropertyName(ElementName.Extensions.KHR_materials_iridescence.IridescenceThicknessMinimum);
+        jsonWriter.WriteNumberValue(khrMaterialsIridescence.IridescenceThicknessMinimum);
+        jsonWriter.WritePropertyName(ElementName.Extensions.KHR_materials_iridescence.IridescenceThicknessMaximum);
+        jsonWriter.WriteNumberValue(khrMaterialsIridescence.IridescenceThicknessMaximum);
+        if (khrMaterialsIridescence.IridescenceThicknessTexture != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Extensions.KHR_materials_iridescence.IridescenceThicknessTexture);
+            TextureInfoSerialization.Write(ref jsonWriter, context, khrMaterialsIridescence.IridescenceThicknessTexture);
+        }
+        if (khrMaterialsIridescence.Extensions != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extensions);
+            ExtensionsSerialization.Write<KHR_materials_iridescence>(ref jsonWriter, context, khrMaterialsIridescence.Extensions);
+        }
+        if (khrMaterialsIridescence.Extras != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extras);
+            JsonSerialization.Write(ref jsonWriter, context, khrMaterialsIridescence.Extras);
+        }
+        jsonWriter.WriteEndObject();
     }
 }

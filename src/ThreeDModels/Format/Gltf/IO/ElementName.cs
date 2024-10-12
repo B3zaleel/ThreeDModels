@@ -236,5 +236,17 @@ internal static class ElementName
                 public const string InitialValue = "initialValue";
             }
         }
+
+        public static class AGI_stk_metadata
+        {
+            public const string SolarPanelGroups = "solarPanelGroups";
+            public const string SolarPanelGroupName = "solarPanelGroupName";
+            public const string NoObscuration = "noObscuration";
+
+            public static class AgiStkSolarPanelGroup
+            {
+                public const string Efficiency = "efficiency";
+            }
+        }
     }
 }

@@ -480,5 +480,15 @@ internal static class ElementName
             public const string Height = "height";
             public const string Format = "format";
         }
+
+        public static class MPEG_viewport_recommended
+        {
+            public const string Viewports = "viewports";
+
+            public static class MpegViewportRecommended
+            {
+                public const string Parameters = "parameters";
+            }
+        }
     }
 }

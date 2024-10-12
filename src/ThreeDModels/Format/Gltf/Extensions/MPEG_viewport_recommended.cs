@@ -2,6 +2,7 @@ using System.Text.Json;
 using ThreeDModels.Format.Gltf.Elements;
 using ThreeDModels.Format.Gltf.IO;
 using static ThreeDModels.Format.Gltf.IO.Utf8JsonReaderHelpers;
+using static ThreeDModels.Format.Gltf.IO.Utf8JsonWriterHelpers;
 
 namespace ThreeDModels.Format.Gltf.Extensions;
 
@@ -102,7 +103,30 @@ public class MpegViewportRecommendedExtension : IGltfExtension
 
     public void Write(ref Utf8JsonWriter jsonWriter, GltfWriterContext context, Type parentType, object? element)
     {
-        throw new NotImplementedException(/* TODO: Implement this*/);
+        var mpegViewportRecommended = (MPEG_viewport_recommended?)element;
+        if (mpegViewportRecommended == null)
+        {
+            jsonWriter.WriteNullValue();
+            return;
+        }
+        if (mpegViewportRecommended.Viewports.Count < 1)
+        {
+            throw new InvalidDataException("MPEG_viewport_recommended.viewports must contain at least 1 element.");
+        }
+        jsonWriter.WriteStartObject();
+        jsonWriter.WritePropertyName(ElementName.Extensions.MPEG_viewport_recommended.Viewports);
+        WriteList(ref jsonWriter, context, mpegViewportRecommended.Viewports, MpegViewportRecommendedSerialization.Write);
+        if (mpegViewportRecommended.Extensions != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extensions);
+            ExtensionsSerialization.Write<MPEG_viewport_recommended>(ref jsonWriter, context, mpegViewportRecommended.Extensions);
+        }
+        if (mpegViewportRecommended.Extras != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extras);
+            JsonSerialization.Write(ref jsonWriter, context, mpegViewportRecommended.Extras);
+        }
+        jsonWriter.WriteEndObject();
     }
 }
 
@@ -180,5 +204,51 @@ public class MpegViewportRecommendedSerialization
             Extensions = extensions,
             Extras = extras,
         };
+    }
+
+    public static void Write(ref Utf8JsonWriter jsonWriter, GltfWriterContext context, MpegViewportRecommended? mpegViewportRecommended)
+    {
+        if (mpegViewportRecommended == null)
+        {
+            jsonWriter.WriteNullValue();
+            return;
+        }
+        jsonWriter.WriteStartObject();
+        if (mpegViewportRecommended.Name != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Accessor.Name);
+            jsonWriter.WriteStringValue(mpegViewportRecommended.Name);
+        }
+        if (mpegViewportRecommended.Translation != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Node.Translation);
+            jsonWriter.WriteNumberValue((int)mpegViewportRecommended.Translation);
+        }
+        if (mpegViewportRecommended.Rotation != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Node.Rotation);
+            jsonWriter.WriteNumberValue((int)mpegViewportRecommended.Rotation);
+        }
+        if (mpegViewportRecommended.Type != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Accessor.Type);
+            jsonWriter.WriteStringValue(mpegViewportRecommended.Type);
+        }
+        if (mpegViewportRecommended.Parameters != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Extensions.MPEG_viewport_recommended.MpegViewportRecommended.Parameters);
+            jsonWriter.WriteNumberValue((int)mpegViewportRecommended.Parameters);
+        }
+        if (mpegViewportRecommended.Extensions != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extensions);
+            ExtensionsSerialization.Write<MpegViewportRecommended>(ref jsonWriter, context, mpegViewportRecommended.Extensions);
+        }
+        if (mpegViewportRecommended.Extras != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extras);
+            JsonSerialization.Write(ref jsonWriter, context, mpegViewportRecommended.Extras);
+        }
+        jsonWriter.WriteEndObject();
     }
 }

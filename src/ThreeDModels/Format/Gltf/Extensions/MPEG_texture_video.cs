@@ -107,6 +107,34 @@ public class MpegTextureVideoExtension : IGltfExtension
 
     public void Write(ref Utf8JsonWriter jsonWriter, GltfWriterContext context, Type parentType, object? element)
     {
-        throw new NotImplementedException(/* TODO: Implement this*/);
+        var mpegTextureVideo = (MPEG_texture_video?)element;
+        if (mpegTextureVideo == null)
+        {
+            jsonWriter.WriteNullValue();
+            return;
+        }
+        jsonWriter.WriteStartObject();
+        jsonWriter.WritePropertyName(ElementName.Extensions.MPEG_animation_timing.Accessor);
+        jsonWriter.WriteNumberValue(mpegTextureVideo.Accessor);
+        jsonWriter.WritePropertyName(ElementName.Extensions.MPEG_texture_video.Width);
+        jsonWriter.WriteNumberValue(mpegTextureVideo.Width);
+        jsonWriter.WritePropertyName(ElementName.Extensions.MPEG_texture_video.Height);
+        jsonWriter.WriteNumberValue(mpegTextureVideo.Height);
+        if (mpegTextureVideo.Format != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Extensions.MPEG_texture_video.Format);
+            jsonWriter.WriteStringValue(mpegTextureVideo.Format);
+        }
+        if (mpegTextureVideo.Extensions != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extensions);
+            ExtensionsSerialization.Write<MPEG_texture_video>(ref jsonWriter, context, mpegTextureVideo.Extensions);
+        }
+        if (mpegTextureVideo.Extras != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extras);
+            JsonSerialization.Write(ref jsonWriter, context, mpegTextureVideo.Extras);
+        }
+        jsonWriter.WriteEndObject();
     }
 }

@@ -473,5 +473,12 @@ internal static class ElementName
             public const string Correspondence = "correspondence";
             public const string Pose = "pose";
         }
+
+        public static class MPEG_texture_video
+        {
+            public const string Width = "width";
+            public const string Height = "height";
+            public const string Format = "format";
+        }
     }
 }

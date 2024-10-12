@@ -328,5 +328,10 @@ internal static class ElementName
         {
             public const string EmissiveStrength = "emissiveStrength";
         }
+
+        public static class KHR_materials_ior
+        {
+            public const string Ior = "ior";
+        }
     }
 }

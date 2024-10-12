@@ -281,5 +281,10 @@ internal static class ElementName
             public const string PrimitiveCount = "primitiveCount";
             public const string SceneBounds = "sceneBounds";
         }
+
+        public static class KHR_animation_pointer
+        {
+            public const string Pointer = "pointer";
+        }
     }
 }

@@ -216,5 +216,25 @@ internal static class ElementName
             public const string TransmissionTexture = "transmissionTexture";
             public const string Ior = "ior";
         }
+
+        public static class AGI_articulations
+        {
+            public const string Articulations = "articulations";
+            public const string IsAttachPoint = "isAttachPoint";
+            public const string ArticulationName = "articulationName";
+
+            public static class AgiArticulation
+            {
+                public const string Stages = "stages";
+                public const string PointingVector = "pointingVector";
+            }
+
+            public static class AgiArticulationStage
+            {
+                public const string MinimumValue = "minimumValue";
+                public const string MaximumValue = "maximumValue";
+                public const string InitialValue = "initialValue";
+            }
+        }
     }
 }

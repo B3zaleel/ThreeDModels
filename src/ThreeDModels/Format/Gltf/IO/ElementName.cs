@@ -248,5 +248,13 @@ internal static class ElementName
                 public const string Efficiency = "efficiency";
             }
         }
+
+        public static class EXT_lights_ies
+        {
+            public const string Lights = "lights";
+            public const string Light = "light";
+            public const string Multiplier = "multiplier";
+            public const string Color = "color";
+        }
     }
 }

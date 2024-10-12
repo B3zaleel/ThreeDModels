@@ -2,6 +2,7 @@ using System.Text.Json;
 using ThreeDModels.Format.Gltf.Elements;
 using ThreeDModels.Format.Gltf.IO;
 using static ThreeDModels.Format.Gltf.IO.Utf8JsonReaderHelpers;
+using static ThreeDModels.Format.Gltf.IO.Utf8JsonWriterHelpers;
 
 namespace ThreeDModels.Format.Gltf.Extensions;
 
@@ -186,7 +187,63 @@ public class ExtLightsIesExtension : IGltfExtension
 
     public void Write(ref Utf8JsonWriter jsonWriter, GltfWriterContext context, Type parentType, object? element)
     {
-        throw new NotImplementedException(/* TODO: Implement this*/);
+        if (parentType == typeof(Gltf))
+        {
+            var extLightsIes = (EXT_lights_ies?)element;
+            if (extLightsIes == null)
+            {
+                jsonWriter.WriteNullValue();
+                return;
+            }
+            jsonWriter.WriteStartObject();
+            jsonWriter.WritePropertyName(ElementName.Extensions.EXT_lights_ies.Lights);
+            WriteList(ref jsonWriter, context, extLightsIes.Lights, ExtLightsIesLightProfileSerialization.Write);
+            if (extLightsIes.Extensions != null)
+            {
+                jsonWriter.WritePropertyName(ElementName.Gltf.Extensions);
+                ExtensionsSerialization.Write<EXT_lights_ies>(ref jsonWriter, context, extLightsIes.Extensions);
+            }
+            if (extLightsIes.Extras != null)
+            {
+                jsonWriter.WritePropertyName(ElementName.Gltf.Extras);
+                JsonSerialization.Write(ref jsonWriter, context, extLightsIes.Extras);
+            }
+            jsonWriter.WriteEndObject();
+        }
+        else if (parentType == typeof(Node))
+        {
+            var extLightsIesNode = (ExtLightsIesNode?)element;
+            if (extLightsIesNode == null)
+            {
+                jsonWriter.WriteNullValue();
+                return;
+            }
+            jsonWriter.WriteStartObject();
+            jsonWriter.WritePropertyName(ElementName.Extensions.EXT_lights_ies.Light);
+            jsonWriter.WriteNumberValue(extLightsIesNode.Light);
+            jsonWriter.WritePropertyName(ElementName.Extensions.EXT_lights_ies.Multiplier);
+            jsonWriter.WriteNumberValue(extLightsIesNode.Multiplier);
+            if (extLightsIesNode.Color != null)
+            {
+                jsonWriter.WritePropertyName(ElementName.Extensions.EXT_lights_ies.Color);
+                WriteFloatList(ref jsonWriter, context, extLightsIesNode.Color.ToList());
+            }
+            if (extLightsIesNode.Extensions != null)
+            {
+                jsonWriter.WritePropertyName(ElementName.Gltf.Extensions);
+                ExtensionsSerialization.Write<ExtLightsIesNode>(ref jsonWriter, context, extLightsIesNode.Extensions);
+            }
+            if (extLightsIesNode.Extras != null)
+            {
+                jsonWriter.WritePropertyName(ElementName.Gltf.Extras);
+                JsonSerialization.Write(ref jsonWriter, context, extLightsIesNode.Extras);
+            }
+            jsonWriter.WriteEndObject();
+        }
+        else
+        {
+            throw new InvalidDataException("EXT_lights_ies must be used in either a Gltf root or a Node.");
+        }
     }
 }
 
@@ -270,8 +327,56 @@ public class ExtLightsIesLightProfileSerialization
         };
     }
 
-    public void Write(ref Utf8JsonWriter jsonWriter, GltfWriterContext context, Type parentType, object? element)
+    public static void Write(ref Utf8JsonWriter jsonWriter, GltfWriterContext context, ExtLightsIesLightProfile? extLightsIesLightProfile)
     {
-        throw new NotImplementedException(/* TODO: Implement this*/);
+        if (extLightsIesLightProfile == null)
+        {
+            jsonWriter.WriteNullValue();
+            return;
+        }
+        if (extLightsIesLightProfile.BufferView != null && extLightsIesLightProfile.MimeType == null)
+        {
+            throw new InvalidDataException("EXT_lights_ies.lights[i].bufferView requires EXT_lights_ies.lights[i].mimeType.");
+        }
+        if (extLightsIesLightProfile.Uri != null && extLightsIesLightProfile.BufferView != null)
+        {
+            throw new InvalidDataException("EXT_lights_ies.lights[i].uri cannot be defined when EXT_lights_ies.lights[i].bufferView is defined.");
+        }
+        if (extLightsIesLightProfile.Uri == null && extLightsIesLightProfile.BufferView == null)
+        {
+            throw new InvalidDataException("EXT_lights_ies.lights[i].uri or EXT_lights_ies.lights[i].bufferView is a required property.");
+        }
+        jsonWriter.WriteStartObject();
+        if (extLightsIesLightProfile.Uri != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Buffer.Uri);
+            jsonWriter.WriteStringValue(extLightsIesLightProfile.Uri);
+        }
+        if (extLightsIesLightProfile.MimeType != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Image.MimeType);
+            jsonWriter.WriteStringValue(extLightsIesLightProfile.MimeType);
+        }
+        if (extLightsIesLightProfile.BufferView != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Accessor.BufferView);
+            jsonWriter.WriteNumberValue((int)extLightsIesLightProfile.BufferView);
+        }
+        if (extLightsIesLightProfile.Name != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Accessor.Name);
+            jsonWriter.WriteStringValue(extLightsIesLightProfile.Name);
+        }
+        if (extLightsIesLightProfile.Extensions != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extensions);
+            ExtensionsSerialization.Write<ExtLightsIesLightProfile>(ref jsonWriter, context, extLightsIesLightProfile.Extensions);
+        }
+        if (extLightsIesLightProfile.Extras != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extras);
+            JsonSerialization.Write(ref jsonWriter, context, extLightsIesLightProfile.Extras);
+        }
+        jsonWriter.WriteEndObject();
     }
 }

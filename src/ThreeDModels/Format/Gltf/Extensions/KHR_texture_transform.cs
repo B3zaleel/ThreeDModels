@@ -2,6 +2,7 @@ using System.Text.Json;
 using ThreeDModels.Format.Gltf.Elements;
 using ThreeDModels.Format.Gltf.IO;
 using static ThreeDModels.Format.Gltf.IO.Utf8JsonReaderHelpers;
+using static ThreeDModels.Format.Gltf.IO.Utf8JsonWriterHelpers;
 
 namespace ThreeDModels.Format.Gltf.Extensions;
 
@@ -114,6 +115,46 @@ public class KhrTextureTransformExtension : IGltfExtension
 
     public void Write(ref Utf8JsonWriter jsonWriter, GltfWriterContext context, Type parentType, object? element)
     {
-        throw new NotImplementedException(/* TODO: Implement this*/);
+        if (parentType != typeof(TextureInfo))
+        {
+            throw new InvalidDataException("KHR_texture_transform must be used in a TextureInfo.");
+        }
+        var khrTextureTransform = (KHR_texture_transform?)element;
+        if (khrTextureTransform == null)
+        {
+            jsonWriter.WriteNullValue();
+            return;
+        }
+        if (khrTextureTransform.Offset.Length != 2)
+        {
+            throw new InvalidDataException("KHR_texture_transform.offset must have 2 items.");
+        }
+        if (khrTextureTransform.Scale.Length != 2)
+        {
+            throw new InvalidDataException("KHR_texture_transform.scale must have 2 items.");
+        }
+        jsonWriter.WriteStartObject();
+        jsonWriter.WritePropertyName(ElementName.Extensions.KHR_texture_transform.Offset);
+        WriteFloatList(ref jsonWriter, context, khrTextureTransform.Offset.ToList());
+        jsonWriter.WritePropertyName(ElementName.Node.Rotation);
+        jsonWriter.WriteNumberValue(khrTextureTransform.Rotation);
+        jsonWriter.WritePropertyName(ElementName.Node.Scale);
+        WriteFloatList(ref jsonWriter, context, khrTextureTransform.Scale.ToList());
+        if (khrTextureTransform.TexCoord != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.TextureInfo.TexCoord);
+            jsonWriter.WriteNumberValue((int)khrTextureTransform.TexCoord);
+        }
+        if (khrTextureTransform.Extensions != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extensions);
+            ExtensionsSerialization.Write<KHR_texture_transform>(ref jsonWriter, context, khrTextureTransform.Extensions);
+        }
+        if (khrTextureTransform.Extras != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extras);
+            JsonSerialization.Write(ref jsonWriter, context, khrTextureTransform.Extras);
+        }
+        jsonWriter.WriteEndObject();
     }
 }

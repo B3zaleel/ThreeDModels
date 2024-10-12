@@ -384,5 +384,10 @@ internal static class ElementName
         {
             public const string Source = "source";
         }
+
+        public static class KHR_texture_transform
+        {
+            public const string Offset = "offset";
+        }
     }
 }

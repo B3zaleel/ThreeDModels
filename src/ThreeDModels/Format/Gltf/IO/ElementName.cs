@@ -343,5 +343,13 @@ internal static class ElementName
             public const string IridescenceThicknessMaximum = "iridescenceThicknessMaximum";
             public const string IridescenceThicknessTexture = "iridescenceThicknessTexture";
         }
+
+        public static class KHR_materials_sheen
+        {
+            public const string SheenColorFactor = "sheenColorFactor";
+            public const string SheenColorTexture = "sheenColorTexture";
+            public const string SheenRoughnessFactor = "sheenRoughnessFactor";
+            public const string SheenRoughnessTexture = "sheenRoughnessTexture";
+        }
     }
 }

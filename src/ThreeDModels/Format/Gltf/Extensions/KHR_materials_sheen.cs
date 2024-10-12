@@ -2,6 +2,7 @@ using System.Text.Json;
 using ThreeDModels.Format.Gltf.Elements;
 using ThreeDModels.Format.Gltf.IO;
 using static ThreeDModels.Format.Gltf.IO.Utf8JsonReaderHelpers;
+using static ThreeDModels.Format.Gltf.IO.Utf8JsonWriterHelpers;
 
 namespace ThreeDModels.Format.Gltf.Extensions;
 
@@ -112,6 +113,45 @@ public class KhrMaterialsSheenExtension : IGltfExtension
 
     public void Write(ref Utf8JsonWriter jsonWriter, GltfWriterContext context, Type parentType, object? element)
     {
-        throw new NotImplementedException(/* TODO: Implement this*/);
+        if (parentType != typeof(Material))
+        {
+            throw new InvalidDataException("KHR_materials_sheen must be used in a Material.");
+        }
+        var khrMaterialsSheen = (KHR_materials_sheen?)element;
+        if (khrMaterialsSheen == null)
+        {
+            jsonWriter.WriteNullValue();
+            return;
+        }
+        if (khrMaterialsSheen.SheenColorFactor.Length != 3)
+        {
+            throw new InvalidDataException("KHR_materials_sheen.sheenColorFactor must have 3 elements.");
+        }
+        jsonWriter.WriteStartObject();
+        jsonWriter.WritePropertyName(ElementName.Extensions.KHR_materials_sheen.SheenColorFactor);
+        WriteFloatList(ref jsonWriter, context, khrMaterialsSheen.SheenColorFactor.ToList());
+        if (khrMaterialsSheen.SheenColorTexture != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Extensions.KHR_materials_sheen.SheenColorTexture);
+            TextureInfoSerialization.Write(ref jsonWriter, context, khrMaterialsSheen.SheenColorTexture);
+        }
+        jsonWriter.WritePropertyName(ElementName.Extensions.KHR_materials_sheen.SheenRoughnessFactor);
+        jsonWriter.WriteNumberValue(khrMaterialsSheen.SheenRoughnessFactor);
+        if (khrMaterialsSheen.SheenRoughnessTexture != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Extensions.KHR_materials_sheen.SheenRoughnessTexture);
+            TextureInfoSerialization.Write(ref jsonWriter, context, khrMaterialsSheen.SheenRoughnessTexture);
+        }
+        if (khrMaterialsSheen.Extensions != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extensions);
+            ExtensionsSerialization.Write<KHR_materials_sheen>(ref jsonWriter, context, khrMaterialsSheen.Extensions);
+        }
+        if (khrMaterialsSheen.Extras != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extras);
+            JsonSerialization.Write(ref jsonWriter, context, khrMaterialsSheen.Extras);
+        }
+        jsonWriter.WriteEndObject();
     }
 }

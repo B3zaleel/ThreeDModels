@@ -351,5 +351,13 @@ internal static class ElementName
             public const string SheenRoughnessFactor = "sheenRoughnessFactor";
             public const string SheenRoughnessTexture = "sheenRoughnessTexture";
         }
+
+        public static class KHR_materials_specular
+        {
+            public const string SpecularFactor = "specularFactor";
+            public const string SpecularTexture = "specularTexture";
+            public const string SpecularColorFactor = "specularColorFactor";
+            public const string SpecularColorTexture = "specularColorTexture";
+        }
     }
 }

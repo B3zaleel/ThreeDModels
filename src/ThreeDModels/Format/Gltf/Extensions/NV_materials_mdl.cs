@@ -2,6 +2,7 @@ using System.Text.Json;
 using ThreeDModels.Format.Gltf.Elements;
 using ThreeDModels.Format.Gltf.IO;
 using static ThreeDModels.Format.Gltf.IO.Utf8JsonReaderHelpers;
+using static ThreeDModels.Format.Gltf.IO.Utf8JsonWriterHelpers;
 
 namespace ThreeDModels.Format.Gltf.Extensions;
 
@@ -296,7 +297,81 @@ public class NvMaterialsMdlExtension : IGltfExtension
 
     public void Write(ref Utf8JsonWriter jsonWriter, GltfWriterContext context, Type parentType, object? element)
     {
-        throw new NotImplementedException(/* TODO: Implement this*/);
+        if (parentType == typeof(Gltf))
+        {
+            var nvMaterialsMdl = (NV_materials_mdl?)element;
+            if (nvMaterialsMdl == null)
+            {
+                jsonWriter.WriteNullValue();
+                return;
+            }
+            if (nvMaterialsMdl.Modules != null && nvMaterialsMdl.Modules.Count == 0)
+            {
+                throw new InvalidDataException("NV_materials_mdl.modules must not be empty.");
+            }
+            if (nvMaterialsMdl.FunctionCalls != null && nvMaterialsMdl.FunctionCalls.Count == 0)
+            {
+                throw new InvalidDataException("NV_materials_mdl.functionCalls must not be empty.");
+            }
+            if (nvMaterialsMdl.BsdfMeasurements != null && nvMaterialsMdl.BsdfMeasurements.Count == 0)
+            {
+                throw new InvalidDataException("NV_materials_mdl.bsdfMeasurements must not be empty.");
+            }
+            jsonWriter.WriteStartObject();
+            if (nvMaterialsMdl.Modules != null)
+            {
+                jsonWriter.WritePropertyName(ElementName.Extensions.NV_materials_mdl.Modules);
+                WriteList(ref jsonWriter, context, nvMaterialsMdl.Modules, NvMaterialsMdlModuleSerialization.Write);
+            }
+            if (nvMaterialsMdl.FunctionCalls != null)
+            {
+                jsonWriter.WritePropertyName(ElementName.Extensions.NV_materials_mdl.FunctionCalls);
+                WriteList(ref jsonWriter, context, nvMaterialsMdl.FunctionCalls, NvMaterialsMdlFunctionCallSerialization.Write);
+            }
+            if (nvMaterialsMdl.BsdfMeasurements != null)
+            {
+                jsonWriter.WritePropertyName(ElementName.Extensions.NV_materials_mdl.BsdfMeasurements);
+                WriteList(ref jsonWriter, context, nvMaterialsMdl.BsdfMeasurements, NvMaterialsMdlBsdfMeasurementSerialization.Write);
+            }
+            if (nvMaterialsMdl.Extensions != null)
+            {
+                jsonWriter.WritePropertyName(ElementName.Gltf.Extensions);
+                ExtensionsSerialization.Write<NV_materials_mdl>(ref jsonWriter, context, nvMaterialsMdl.Extensions);
+            }
+            if (nvMaterialsMdl.Extras != null)
+            {
+                jsonWriter.WritePropertyName(ElementName.Gltf.Extras);
+                JsonSerialization.Write(ref jsonWriter, context, nvMaterialsMdl.Extras);
+            }
+            jsonWriter.WriteEndObject();
+        }
+        else if (parentType == typeof(Material))
+        {
+            var nvMaterialsMdlMaterial = (NvMaterialsMdlMaterial?)element;
+            if (nvMaterialsMdlMaterial == null)
+            {
+                jsonWriter.WriteNullValue();
+                return;
+            }
+            jsonWriter.WriteStartObject();
+            jsonWriter.WritePropertyName(ElementName.Extensions.NV_materials_mdl.FunctionCall);
+            jsonWriter.WriteNumberValue(nvMaterialsMdlMaterial.FunctionCall);
+            if (nvMaterialsMdlMaterial.Extensions != null)
+            {
+                jsonWriter.WritePropertyName(ElementName.Gltf.Extensions);
+                ExtensionsSerialization.Write<NvMaterialsMdlMaterial>(ref jsonWriter, context, nvMaterialsMdlMaterial.Extensions);
+            }
+            if (nvMaterialsMdlMaterial.Extras != null)
+            {
+                jsonWriter.WritePropertyName(ElementName.Gltf.Extras);
+                JsonSerialization.Write(ref jsonWriter, context, nvMaterialsMdlMaterial.Extras);
+            }
+            jsonWriter.WriteEndObject();
+        }
+        else
+        {
+            throw new InvalidDataException("NV_materials_mdl must be used in a Gltf root or a Material.");
+        }
     }
 }
 
@@ -385,6 +460,76 @@ public class NvMaterialsMdlModuleSerialization
             Extras = extras,
         };
     }
+
+    public static void Write(ref Utf8JsonWriter jsonWriter, GltfWriterContext context, NvMaterialsMdlModule? nvMaterialsMdlModule)
+    {
+        if (nvMaterialsMdlModule == null)
+        {
+            jsonWriter.WriteNullValue();
+            return;
+        }
+        if (nvMaterialsMdlModule.Uri != null && nvMaterialsMdlModule.BufferView != null)
+        {
+            throw new InvalidDataException("Both NV_materials_mdl.modules[i].uri and NV_materials_mdl.modules[i].bufferView cannot be defined.");
+        }
+        if (nvMaterialsMdlModule.BufferView != null && (nvMaterialsMdlModule.MimeType == null || nvMaterialsMdlModule.ModulePath == null))
+        {
+            throw new InvalidDataException("NV_materials_mdl.modules[i].bufferView requires NV_materials_mdl.modules[i].mimeType and NV_materials_mdl.modules[i].modulePath.");
+        }
+        if (nvMaterialsMdlModule.Uri != null && nvMaterialsMdlModule.Uri.StartsWith("data:") && nvMaterialsMdlModule.ModulePath == null)
+        {
+            throw new InvalidDataException("NV_materials_mdl.modules[i].uri is a data URI and requires NV_materials_mdl.modules[i].modulePath.");
+        }
+        if (nvMaterialsMdlModule.Uri != null && nvMaterialsMdlModule.BufferView != null)
+        {
+            throw new InvalidDataException("Both NV_materials_mdl.modules[i].uri and NV_materials_mdl.modules[i].bufferView cannot be defined.");
+        }
+        if (nvMaterialsMdlModule.BufferView != null && (nvMaterialsMdlModule.MimeType == null || nvMaterialsMdlModule.ModulePath == null))
+        {
+            throw new InvalidDataException("NV_materials_mdl.modules[i].bufferView requires NV_materials_mdl.modules[i].mimeType and NV_materials_mdl.modules[i].modulePath.");
+        }
+        if (nvMaterialsMdlModule.Uri != null && nvMaterialsMdlModule.Uri.StartsWith("data:") && nvMaterialsMdlModule.ModulePath == null)
+        {
+            throw new InvalidDataException("NV_materials_mdl.modules[i].uri is a data URI and requires NV_materials_mdl.modules[i].modulePath.");
+        }
+        jsonWriter.WriteStartObject();
+        if (nvMaterialsMdlModule.Uri != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Buffer.Uri);
+            jsonWriter.WriteStringValue(nvMaterialsMdlModule.Uri);
+        }
+        if (nvMaterialsMdlModule.BufferView != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Accessor.BufferView);
+            jsonWriter.WriteNumberValue((int)nvMaterialsMdlModule.BufferView);
+        }
+        if (nvMaterialsMdlModule.MimeType != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Image.MimeType);
+            jsonWriter.WriteStringValue(nvMaterialsMdlModule.MimeType);
+        }
+        if (nvMaterialsMdlModule.ModulePath != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Extensions.NV_materials_mdl.NvMaterialsMdlModule.ModulePath);
+            jsonWriter.WriteStringValue(nvMaterialsMdlModule.ModulePath);
+        }
+        if (nvMaterialsMdlModule.Name != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Accessor.Name);
+            jsonWriter.WriteStringValue(nvMaterialsMdlModule.Name);
+        }
+        if (nvMaterialsMdlModule.Extensions != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extensions);
+            ExtensionsSerialization.Write<NvMaterialsMdlModule>(ref jsonWriter, context, nvMaterialsMdlModule.Extensions);
+        }
+        if (nvMaterialsMdlModule.Extras != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extras);
+            JsonSerialization.Write(ref jsonWriter, context, nvMaterialsMdlModule.Extras);
+        }
+        jsonWriter.WriteEndObject();
+    }
 }
 
 public class NvMaterialsMdlFunctionCallSerialization
@@ -468,6 +613,49 @@ public class NvMaterialsMdlFunctionCallSerialization
             Extras = extras,
         };
     }
+
+    public static void Write(ref Utf8JsonWriter jsonWriter, GltfWriterContext context, NvMaterialsMdlFunctionCall? nvMaterialsMdlFunctionCall)
+    {
+        if (nvMaterialsMdlFunctionCall == null)
+        {
+            jsonWriter.WriteNullValue();
+            return;
+        }
+        jsonWriter.WriteStartObject();
+        if (nvMaterialsMdlFunctionCall.Module != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Extensions.NV_materials_mdl.NvMaterialsMdlFunctionCall.Module);
+            jsonWriter.WriteNumberValue((int)nvMaterialsMdlFunctionCall.Module);
+        }
+        jsonWriter.WritePropertyName(ElementName.Extensions.NV_materials_mdl.NvMaterialsMdlFunctionCall.FunctionName);
+        jsonWriter.WriteStringValue(nvMaterialsMdlFunctionCall.FunctionName);
+        if (nvMaterialsMdlFunctionCall.Type != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Accessor.Type);
+            NvMaterialsMdlTypeSerialization.Write(ref jsonWriter, context, nvMaterialsMdlFunctionCall.Type);
+        }
+        if (nvMaterialsMdlFunctionCall.Arguments != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Extensions.NV_materials_mdl.NvMaterialsMdlFunctionCall.Arguments);
+            WriteList(ref jsonWriter, context, nvMaterialsMdlFunctionCall.Arguments, NvMaterialsMdlFunctionCallArgumentSerialization.Write);
+        }
+        if (nvMaterialsMdlFunctionCall.Name != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Accessor.Name);
+            jsonWriter.WriteStringValue(nvMaterialsMdlFunctionCall.Name);
+        }
+        if (nvMaterialsMdlFunctionCall.Extensions != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extensions);
+            ExtensionsSerialization.Write<ADOBE_materials_clearcoat_tint>(ref jsonWriter, context, nvMaterialsMdlFunctionCall.Extensions);
+        }
+        if (nvMaterialsMdlFunctionCall.Extras != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extras);
+            JsonSerialization.Write(ref jsonWriter, context, nvMaterialsMdlFunctionCall.Extras);
+        }
+        jsonWriter.WriteEndObject();
+    }
 }
 
 public class NvMaterialsMdlTypeSerialization
@@ -541,6 +729,44 @@ public class NvMaterialsMdlTypeSerialization
             Extras = extras,
         };
     }
+
+    public static void Write(ref Utf8JsonWriter jsonWriter, GltfWriterContext context, NvMaterialsMdlType? nvMaterialsMdlType)
+    {
+        if (nvMaterialsMdlType == null)
+        {
+            jsonWriter.WriteNullValue();
+            return;
+        }
+        jsonWriter.WriteStartObject();
+        if (nvMaterialsMdlType.Module != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Extensions.NV_materials_mdl.NvMaterialsMdlFunctionCall.Module);
+            jsonWriter.WriteNumberValue((int)nvMaterialsMdlType.Module);
+        }
+        jsonWriter.WritePropertyName(ElementName.Extensions.NV_materials_mdl.NvMaterialsMdlType.TypeName);
+        jsonWriter.WriteStringValue(nvMaterialsMdlType.TypeName);
+        if (nvMaterialsMdlType.ArraySize != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Extensions.NV_materials_mdl.NvMaterialsMdlType.ArraySize);
+            jsonWriter.WriteNumberValue((int)nvMaterialsMdlType.ArraySize);
+        }
+        if (nvMaterialsMdlType.Modifier != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Extensions.NV_materials_mdl.NvMaterialsMdlType.Modifier);
+            jsonWriter.WriteStringValue(nvMaterialsMdlType.Modifier);
+        }
+        if (nvMaterialsMdlType.Extensions != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extensions);
+            ExtensionsSerialization.Write<NvMaterialsMdlType>(ref jsonWriter, context, nvMaterialsMdlType.Extensions);
+        }
+        if (nvMaterialsMdlType.Extras != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extras);
+            JsonSerialization.Write(ref jsonWriter, context, nvMaterialsMdlType.Extras);
+        }
+        jsonWriter.WriteEndObject();
+    }
 }
 
 public class NvMaterialsMdlFunctionCallArgumentSerialization
@@ -613,6 +839,47 @@ public class NvMaterialsMdlFunctionCallArgumentSerialization
             Extensions = extensions,
             Extras = extras,
         };
+    }
+
+    public static void Write(ref Utf8JsonWriter jsonWriter, GltfWriterContext context, NvMaterialsMdlFunctionCallArgument? nvMaterialsMdlFunctionCallArgument)
+    {
+        if (nvMaterialsMdlFunctionCallArgument == null)
+        {
+            jsonWriter.WriteNullValue();
+            return;
+        }
+        jsonWriter.WriteStartObject();
+        if (nvMaterialsMdlFunctionCallArgument.Name != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Accessor.Name);
+            jsonWriter.WriteStringValue(nvMaterialsMdlFunctionCallArgument.Name);
+        }
+        if (nvMaterialsMdlFunctionCallArgument.Type != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Accessor.Type);
+            NvMaterialsMdlTypeSerialization.Write(ref jsonWriter, context, nvMaterialsMdlFunctionCallArgument.Type);
+        }
+        if (nvMaterialsMdlFunctionCallArgument.FunctionCall != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Extensions.NV_materials_mdl.FunctionCall);
+            jsonWriter.WriteNumberValue((int)nvMaterialsMdlFunctionCallArgument.FunctionCall);
+        }
+        if (nvMaterialsMdlFunctionCallArgument.Value != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Extensions.NV_materials_mdl.NvMaterialsMdlFunctionCallArgument.Value);
+            JsonSerialization.Write(ref jsonWriter, context, (Elements.JsonElement?)nvMaterialsMdlFunctionCallArgument.Value);
+        }
+        if (nvMaterialsMdlFunctionCallArgument.Extensions != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extensions);
+            ExtensionsSerialization.Write<NvMaterialsMdlFunctionCallArgument>(ref jsonWriter, context, nvMaterialsMdlFunctionCallArgument.Extensions);
+        }
+        if (nvMaterialsMdlFunctionCallArgument.Extras != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extras);
+            JsonSerialization.Write(ref jsonWriter, context, nvMaterialsMdlFunctionCallArgument.Extras);
+        }
+        jsonWriter.WriteEndObject();
     }
 }
 
@@ -690,5 +957,54 @@ public class NvMaterialsMdlBsdfMeasurementSerialization
             Extensions = extensions,
             Extras = extras,
         };
+    }
+
+    public static void Write(ref Utf8JsonWriter jsonWriter, GltfWriterContext context, NvMaterialsMdlBsdfMeasurement? nvMaterialsMdlBsdfMeasurement)
+    {
+        if (nvMaterialsMdlBsdfMeasurement == null)
+        {
+            jsonWriter.WriteNullValue();
+            return;
+        }
+        if (nvMaterialsMdlBsdfMeasurement.Uri != null && nvMaterialsMdlBsdfMeasurement.BufferView != null)
+        {
+            throw new InvalidDataException("Both NV_materials_mdl.bsdfMeasurements[i].uri and NV_materials_mdl.bsdfMeasurements[i].bufferView cannot be defined.");
+        }
+        if (nvMaterialsMdlBsdfMeasurement.BufferView != null && nvMaterialsMdlBsdfMeasurement.MimeType == null)
+        {
+            throw new InvalidDataException("NV_materials_mdl.bsdfMeasurements[i].bufferView requires NV_materials_mdl.bsdfMeasurements[i].mimeType.");
+        }
+        jsonWriter.WriteStartObject();
+        if (nvMaterialsMdlBsdfMeasurement.Uri != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Buffer.Uri);
+            jsonWriter.WriteStringValue(nvMaterialsMdlBsdfMeasurement.Uri);
+        }
+        if (nvMaterialsMdlBsdfMeasurement.BufferView != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Accessor.BufferView);
+            jsonWriter.WriteNumberValue((int)nvMaterialsMdlBsdfMeasurement.BufferView);
+        }
+        if (nvMaterialsMdlBsdfMeasurement.MimeType != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Image.MimeType);
+            jsonWriter.WriteStringValue(nvMaterialsMdlBsdfMeasurement.MimeType);
+        }
+        if (nvMaterialsMdlBsdfMeasurement.Name != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Accessor.Name);
+            jsonWriter.WriteStringValue(nvMaterialsMdlBsdfMeasurement.Name);
+        }
+        if (nvMaterialsMdlBsdfMeasurement.Extensions != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extensions);
+            ExtensionsSerialization.Write<NvMaterialsMdlBsdfMeasurement>(ref jsonWriter, context, nvMaterialsMdlBsdfMeasurement.Extensions);
+        }
+        if (nvMaterialsMdlBsdfMeasurement.Extras != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extras);
+            JsonSerialization.Write(ref jsonWriter, context, nvMaterialsMdlBsdfMeasurement.Extras);
+        }
+        jsonWriter.WriteEndObject();
     }
 }

@@ -506,5 +506,37 @@ internal static class ElementName
             public const string OcclusionRoughnessMetallicTexture = "occlusionRoughnessMetallicTexture";
             public const string RoughnessMetallicOcclusionTexture = "roughnessMetallicOcclusionTexture";
         }
+
+        public static class NV_materials_mdl
+        {
+            public const string Modules = "modules";
+            public const string FunctionCalls = "functionCalls";
+            public const string BsdfMeasurements = "bsdfMeasurements";
+            public const string FunctionCall = "functionCall";
+
+            public static class NvMaterialsMdlModule
+            {
+                public const string ModulePath = "modulePath";
+            }
+
+            public static class NvMaterialsMdlFunctionCall
+            {
+                public const string Module = "module";
+                public const string FunctionName = "functionName";
+                public const string Arguments = "arguments";
+            }
+
+            public static class NvMaterialsMdlType
+            {
+                public const string TypeName = "typeName";
+                public const string ArraySize = "arraySize";
+                public const string Modifier = "modifier";
+            }
+
+            public static class NvMaterialsMdlFunctionCallArgument
+            {
+                public const string Value = "value";
+            }
+        }
     }
 }

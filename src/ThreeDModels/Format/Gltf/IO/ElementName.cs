@@ -365,5 +365,11 @@ internal static class ElementName
             public const string TransmissionFactor = "transmissionFactor";
             public const string TransmissionTexture = "transmissionTexture";
         }
+
+        public static class KHR_materials_variants
+        {
+            public const string Variants = "variants";
+            public const string Mappings = "mappings";
+        }
     }
 }

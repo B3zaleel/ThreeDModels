@@ -207,6 +207,75 @@ public class EXT_meshopt_compressionExtension : IGltfExtension
 
     public void Write(ref Utf8JsonWriter jsonWriter, GltfWriterContext context, Type parentType, object? element)
     {
-        throw new NotImplementedException(/* TODO: Implement this*/);
+        if (parentType == typeof(Elements.Buffer))
+        {
+            var extMeshoptCompressionBuffer = (ExtMeshoptCompressionBuffer?)element;
+            if (extMeshoptCompressionBuffer == null)
+            {
+                jsonWriter.WriteNullValue();
+                return;
+            }
+            jsonWriter.WriteStartObject();
+            jsonWriter.WritePropertyName(ElementName.Extensions.EXT_meshopt_compression.Fallback);
+            jsonWriter.WriteBooleanValue(extMeshoptCompressionBuffer.Fallback);
+            if (extMeshoptCompressionBuffer.Extensions != null)
+            {
+                jsonWriter.WritePropertyName(ElementName.Gltf.Extensions);
+                ExtensionsSerialization.Write<ExtMeshoptCompressionBuffer>(ref jsonWriter, context, extMeshoptCompressionBuffer.Extensions);
+            }
+            if (extMeshoptCompressionBuffer.Extras != null)
+            {
+                jsonWriter.WritePropertyName(ElementName.Gltf.Extras);
+                JsonSerialization.Write(ref jsonWriter, context, extMeshoptCompressionBuffer.Extras);
+            }
+            jsonWriter.WriteEndObject();
+        }
+        else if (parentType == typeof(BufferView))
+        {
+            var extMeshoptCompressionBufferView = (ExtMeshoptCompressionBufferView?)element;
+            if (extMeshoptCompressionBufferView == null)
+            {
+                jsonWriter.WriteNullValue();
+                return;
+            }
+            if (!Modes.Contains(extMeshoptCompressionBufferView.Mode))
+            {
+                throw new InvalidDataException($"bufferView.EXT_meshopt_compression.mode must be one of: [{string.Join(", ", Modes)}].");
+            }
+            if (extMeshoptCompressionBufferView.Filter != null && !Filters.Contains(extMeshoptCompressionBufferView.Filter))
+            {
+                throw new InvalidDataException($"bufferView.EXT_meshopt_compression.filter must be one of: [{string.Join(", ", Filters)}].");
+            }
+            jsonWriter.WriteStartObject();
+            jsonWriter.WritePropertyName(ElementName.BufferView.Buffer);
+            jsonWriter.WriteNumberValue(extMeshoptCompressionBufferView.Buffer);
+            jsonWriter.WritePropertyName(ElementName.Accessor.ByteOffset);
+            jsonWriter.WriteNumberValue(extMeshoptCompressionBufferView.ByteOffset);
+            jsonWriter.WritePropertyName(ElementName.Buffer.ByteLength);
+            jsonWriter.WriteNumberValue(extMeshoptCompressionBufferView.ByteLength);
+            jsonWriter.WritePropertyName(ElementName.BufferView.ByteStride);
+            jsonWriter.WriteNumberValue(extMeshoptCompressionBufferView.ByteStride);
+            jsonWriter.WritePropertyName(ElementName.Accessor.Count);
+            jsonWriter.WriteNumberValue(extMeshoptCompressionBufferView.Count);
+            jsonWriter.WritePropertyName(ElementName.MeshPrimitive.Mode);
+            jsonWriter.WriteStringValue(extMeshoptCompressionBufferView.Mode);
+            jsonWriter.WritePropertyName(ElementName.Extensions.EXT_meshopt_compression.Filter);
+            jsonWriter.WriteStringValue(extMeshoptCompressionBufferView.Filter);
+            if (extMeshoptCompressionBufferView.Extensions != null)
+            {
+                jsonWriter.WritePropertyName(ElementName.Gltf.Extensions);
+                ExtensionsSerialization.Write<ExtMeshoptCompressionBufferView>(ref jsonWriter, context, extMeshoptCompressionBufferView.Extensions);
+            }
+            if (extMeshoptCompressionBufferView.Extras != null)
+            {
+                jsonWriter.WritePropertyName(ElementName.Gltf.Extras);
+                JsonSerialization.Write(ref jsonWriter, context, extMeshoptCompressionBufferView.Extras);
+            }
+            jsonWriter.WriteEndObject();
+        }
+        else
+        {
+            throw new InvalidDataException("EXT_meshopt_compression must be used in either a Buffer or a BufferView.");
+        }
     }
 }

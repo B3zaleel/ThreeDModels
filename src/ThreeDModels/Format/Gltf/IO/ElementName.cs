@@ -268,5 +268,11 @@ internal static class ElementName
             public const string MergeIndices = "mergeIndices";
             public const string MergeValues = "mergeValues";
         }
+
+        public static class EXT_meshopt_compression
+        {
+            public const string Fallback = "fallback";
+            public const string Filter = "filter";
+        }
     }
 }

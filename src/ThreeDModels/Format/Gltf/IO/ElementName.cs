@@ -433,5 +433,11 @@ internal static class ElementName
                 public const string DSR = "DSR";
             }
         }
+
+        public static class MPEG_buffer_circular
+        {
+            public const string Media = "media";
+            public const string Tracks = "tracks";
+        }
     }
 }

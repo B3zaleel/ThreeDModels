@@ -495,5 +495,10 @@ internal static class ElementName
         {
             public const string Ids = "ids";
         }
+
+        public static class MSFT_packing_normalRoughnessMetallic
+        {
+            public const string NormalRoughnessMetallicTexture = "normalRoughnessMetallicTexture";
+        }
     }
 }

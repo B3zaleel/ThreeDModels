@@ -500,5 +500,11 @@ internal static class ElementName
         {
             public const string NormalRoughnessMetallicTexture = "normalRoughnessMetallicTexture";
         }
+
+        public static class MSFT_packing_occlusionRoughnessMetallic
+        {
+            public const string OcclusionRoughnessMetallicTexture = "occlusionRoughnessMetallicTexture";
+            public const string RoughnessMetallicOcclusionTexture = "roughnessMetallicOcclusionTexture";
+        }
     }
 }

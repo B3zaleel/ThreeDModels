@@ -104,7 +104,43 @@ public class MsftPackingOcclusionRoughnessMetallicExtension : IGltfExtension
 
     public void Write(ref Utf8JsonWriter jsonWriter, GltfWriterContext context, Type parentType, object? element)
     {
-        throw new NotImplementedException(/* TODO: Implement this*/);
+        if (parentType != typeof(Gltf))
+        {
+            throw new InvalidDataException("MSFT_packing_occlusionRoughnessMetallic must be used in a Gltf root.");
+        }
+        var msftPackingOcclusionRoughnessMetallic = (MSFT_packing_occlusionRoughnessMetallic?)element;
+        if (msftPackingOcclusionRoughnessMetallic == null)
+        {
+            jsonWriter.WriteNullValue();
+            return;
+        }
+        jsonWriter.WriteStartObject();
+        if (msftPackingOcclusionRoughnessMetallic.OcclusionRoughnessMetallicTexture != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Extensions.MSFT_packing_occlusionRoughnessMetallic.OcclusionRoughnessMetallicTexture);
+            MsftTextureIndexSerialization.Write(ref jsonWriter, context, msftPackingOcclusionRoughnessMetallic.OcclusionRoughnessMetallicTexture);
+        }
+        if (msftPackingOcclusionRoughnessMetallic.RoughnessMetallicOcclusionTexture != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Extensions.MSFT_packing_occlusionRoughnessMetallic.RoughnessMetallicOcclusionTexture);
+            MsftTextureIndexSerialization.Write(ref jsonWriter, context, msftPackingOcclusionRoughnessMetallic.RoughnessMetallicOcclusionTexture);
+        }
+        if (msftPackingOcclusionRoughnessMetallic.NormalTexture != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Material.NormalTexture);
+            MsftTextureIndexSerialization.Write(ref jsonWriter, context, msftPackingOcclusionRoughnessMetallic.NormalTexture);
+        }
+        if (msftPackingOcclusionRoughnessMetallic.Extensions != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extensions);
+            ExtensionsSerialization.Write<MSFT_packing_occlusionRoughnessMetallic>(ref jsonWriter, context, msftPackingOcclusionRoughnessMetallic.Extensions);
+        }
+        if (msftPackingOcclusionRoughnessMetallic.Extras != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extras);
+            JsonSerialization.Write(ref jsonWriter, context, msftPackingOcclusionRoughnessMetallic.Extras);
+        }
+        jsonWriter.WriteEndObject();
     }
 }
 
@@ -144,5 +180,21 @@ public class MsftTextureIndexSerialization
         {
             Index = index,
         };
+    }
+
+    public static void Write(ref Utf8JsonWriter jsonWriter, GltfWriterContext context, MsftTextureIndex? msftTextureIndex)
+    {
+        if (msftTextureIndex == null)
+        {
+            jsonWriter.WriteNullValue();
+            return;
+        }
+        jsonWriter.WriteStartObject();
+        if (msftTextureIndex.Index != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.TextureInfo.Index);
+            jsonWriter.WriteNumberValue((int)msftTextureIndex.Index);
+        }
+        jsonWriter.WriteEndObject();
     }
 }

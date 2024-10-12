@@ -379,5 +379,10 @@ internal static class ElementName
             public const string AttenuationDistance = "attenuationDistance";
             public const string AttenuationColor = "attenuationColor";
         }
+
+        public static class KHR_texture_basisu
+        {
+            public const string Source = "source";
+        }
     }
 }

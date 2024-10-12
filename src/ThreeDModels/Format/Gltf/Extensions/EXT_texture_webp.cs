@@ -76,6 +76,32 @@ public class ExtTextureWebpExtension : IGltfExtension
 
     public void Write(ref Utf8JsonWriter jsonWriter, GltfWriterContext context, Type parentType, object? element)
     {
-        throw new NotImplementedException(/* TODO: Implement this*/);
+        if (parentType != typeof(MeshPrimitive))
+        {
+            throw new InvalidDataException("EXT_texture_webp must be used in a MeshPrimitive.");
+        }
+        var extTextureWebp = (EXT_texture_webp?)element;
+        if (extTextureWebp == null)
+        {
+            jsonWriter.WriteNullValue();
+            return;
+        }
+        jsonWriter.WriteStartObject();
+        if (extTextureWebp.Source != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Texture.Source);
+            jsonWriter.WriteNumberValue((int)extTextureWebp.Source);
+        }
+        if (extTextureWebp.Extensions != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extensions);
+            ExtensionsSerialization.Write<EXT_texture_webp>(ref jsonWriter, context, extTextureWebp.Extensions);
+        }
+        if (extTextureWebp.Extras != null)
+        {
+            jsonWriter.WritePropertyName(ElementName.Gltf.Extras);
+            JsonSerialization.Write(ref jsonWriter, context, extTextureWebp.Extras);
+        }
+        jsonWriter.WriteEndObject();
     }
 }
